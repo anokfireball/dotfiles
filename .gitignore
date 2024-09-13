@@ -1,6 +1,7 @@
 *
 !.bashrc
 !.bash_aliases
+!.bash_ssh_agent
 !.binary_check
 !.expected_binaries
 !.inputrc
