@@ -1,0 +1,30 @@
+EXPECTED_BINARIES_FILE="$HOME/.expected_binaries"
+if [[ ! -f "$EXPECTED_BINARIES_FILE" ]]; then
+  echo "Expected binaries file not found: $EXPECTED_BINARIES_FILE"
+  exit 1
+fi
+
+missing_binaries=()
+while IFS= read -r binary; do
+  if [[ -z "$binary" || "$binary" =~ ^[[:space:]]*$ ]]; then
+    continue
+  fi
+
+  if ! command -v "$binary" &> /dev/null; then
+    missing_binaries+=("$binary")
+  fi
+done < "$EXPECTED_BINARIES_FILE"
+if [[ ${#missing_binaries[@]} -ne 0 ]]; then
+  echo "Warning: The following binaries are not installed. Please install them:"
+  for binary in "${missing_binaries[@]}"; do
+    echo "  - $binary"
+  done
+fi
+
+if command -v fzf >/dev/null 2>&1; then
+  eval "$(fzf --bash)"
+fi
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init bash)"
+fi
+

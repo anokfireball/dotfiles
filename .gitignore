@@ -1,3 +1,8 @@
 *
+!.bashrc
+!.bash_aliases
+!.binary_check
+!.expected_binaries
 !.inputrc
+!.vimrc
 
