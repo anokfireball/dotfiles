@@ -39,8 +39,9 @@ fi
 
 if command -v fd &>/dev/null; then
   fd() {
-    current_dir=$(pwd)
-    if [[ $current_dir == $HOME || $current_dir == $HOME/* ]]; then
+    current_dir=$(realpath "$PWD")
+    home=$(realpath "$HOME")
+    if [[ $current_dir == $home || $current_dir == $home/* ]]; then
       # workaround for this dotfile config repo
       command fd --no-ignore-vcs "$@"
     else
@@ -50,16 +51,28 @@ if command -v fd &>/dev/null; then
 fi
 
 if command -v fzf &>/dev/null && command -v fd &>/dev/null; then
-  export FZF_COMPLETION_TRIGGER='~~'
-
   _fzf_compgen_path() {
     fd --hidden --follow --exclude ".git" . "$1"
   }
+  _fzf_setup_completion path eza git kubectl
 
   _fzf_compgen_dir() {
     fd --type d --hidden --follow --exclude ".git" . "$1"
   }
-
-  _fzf_setup_completion path eza git kubectl
   _fzf_setup_completion dir tree z zoxide
+
+  export FZF_COMPLETION_TRIGGER='~~'
+fi
+
+if command -v rg &>/dev/null; then
+  rg() {
+    current_dir=$(realpath "$PWD")
+    home=$(realpath "$HOME")
+    if [[ $current_dir == $home || $current_dir == $home/* ]]; then
+      # workaround for this dotfile config repo
+      command rg -u "$@"
+    else
+      command rg "$@"
+    fi
+  }
 fi

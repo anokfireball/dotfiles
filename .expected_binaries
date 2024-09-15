@@ -4,6 +4,7 @@ fd
 fzf
 jq
 nvim
+rg
 starship
 tmux
 zoxide
