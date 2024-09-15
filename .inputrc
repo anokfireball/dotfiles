@@ -6,6 +6,13 @@ set vi-cmd-mode-string \1\e[2 q\2
 set keymap vi-insert
 RETURN: "\e\n"
 
-# partially complete the word and show all possible completions if it is still ambiguous
+# more modern and user-friendly autocompletions
 set show-all-if-ambiguous on
+set menu-complete-display-prefix on
+set colored-completion-prefix on
+# pure TAB: cycle through the available options
+TAB: menu-complete
+# SHIFT-TAB: show verbose descriptions where available
+"\e[Z": menu-complete-backward
 
+set match-hidden-files off
