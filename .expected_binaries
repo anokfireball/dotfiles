@@ -3,5 +3,6 @@ eza
 fzf
 jq
 nvim
+starship
 tmux
 zoxide

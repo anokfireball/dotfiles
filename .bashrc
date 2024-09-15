@@ -97,13 +97,11 @@ if [ -d /home/linuxbrew/.linuxbrew ] || [ -d /opt/homebrew ] || [ -d /usr/local 
 fi
 
 # manual completions
-if [ -d /usr/share/bash-completion/completions ]; then
-    for COMPLETION in /usr/share/bash-completion/completions/*; do
-        if [[ -r "${COMPLETION}" ]]; then
-            source "${COMPLETION}"
-        fi
-    done
-fi
+for COMPLETION in /usr/share/bash-completion/completions/*; do
+    if [[ -r "${COMPLETION}" ]]; then
+        source "${COMPLETION}"
+    fi
+done
 
 if [ -f ~/.binary_check ]; then
     source ~/.binary_check
@@ -114,6 +112,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 fi
 
 export PATH="$HOME/.local/bin:$PATH"
+export VISUAL=vim
 export EDITOR=vim
 export GPG_TTY=$(tty)
 if [[ $- == *i* ]]; then
