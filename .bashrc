@@ -73,15 +73,14 @@ esac
 
 # нєяє вє ∂яαgσиѕ #
 
-if [ -d /home/linuxbrew/.linuxbrew ] || [ -d /opt/homebrew ] || [ -d /usr/local ]; then
-    if [ -d /home/linuxbrew/.linuxbrew ]; then
-        BREW_PREFIX=/home/linuxbrew/.linuxbrew
-    elif [ -d /opt/homebrew ]; then
-        BREW_PREFIX=/opt/homebrew
-    elif [ -d /usr/local ]; then
-        BREW_PREFIX=/usr/local
-    fi
-
+if [ -f /home/linuxbrew/.linuxbrew/bin/brew ]; then
+    BREW_PREFIX=/home/linuxbrew/.linuxbrew
+elif [ -f /opt/homebrew/bin/brew ]; then
+    BREW_PREFIX=/opt/homebrew
+elif [ -f /usr/local/bin/brew ]; then
+    BREW_PREFIX=/usr/local
+fi
+if [ -n "$BREW_PREFIX" ]; then
     eval "$(${BREW_PREFIX}/bin/brew shellenv)"
     # brew completions
     if [[ -r "${BREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
