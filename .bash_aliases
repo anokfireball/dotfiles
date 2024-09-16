@@ -1,10 +1,26 @@
 if command -v kubectl &>/dev/null; then
   alias k=kubectl
-  alias kctx='kubectl config use-context'
-  alias kns='kubectl config set-context --current --namespace'
   if [ -n "$(type -t __start_kubectl)" ]; then
     complete -F __start_kubectl k
   fi
+
+  klsctx() {
+    if [ -n "$1" ]; then
+      kubectl config get-contexts | grep "$1"
+    else
+      kubectl config get-contexts
+    fi
+  }
+  alias kctx='kubectl config use-context'
+
+  klsns() {
+    if [ -n "$1" ]; then
+      kubectl get ns | grep "$1"
+    else
+      kubectl get ns
+    fi
+  }
+  alias kns='kubectl config set-context --current --namespace'
 fi
 
 if command -v git &>/dev/null; then

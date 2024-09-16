@@ -1,33 +1,30 @@
 # Get editor completions based on the config schema
 "$schema" = 'https://starship.rs/config-schema.json'
+command_timeout = 5000
+scan_timeout = 300
 
-# starship preset plain-text-symbols -o ~/.config/starship.toml
-[character]
-success_symbol = "[>](bold green)"
-error_symbol = "[x](bold red)"
-vimcmd_symbol = "[<](bold green)"
-
-[git_commit]
-tag_symbol = " tag "
-
-[git_status]
-ahead = ">"
-behind = "<"
-diverged = "<>"
-renamed = "r"
-deleted = "x"
-
+# starship preset plain-text-symbols
 [aws]
 symbol = "aws "
 
 [azure]
 symbol = "az "
 
+[buf]
+symbol = "buf "
+
 [bun]
 symbol = "bun "
 
 [c]
 symbol = "C "
+
+[character]
+error_symbol = "[x](bold red)"
+success_symbol = "[>](bold green)"
+
+[cmake]
+symbol = "cmake "
 
 [cobol]
 symbol = "cobol "
@@ -38,9 +35,6 @@ symbol = "conda "
 [crystal]
 symbol = "cr "
 
-[cmake]
-symbol = "cmake "
-
 [daml]
 symbol = "daml "
 
@@ -50,20 +44,25 @@ symbol = "dart "
 [deno]
 symbol = "deno "
 
-[dotnet]
-symbol = ".NET "
-
 [directory]
+fish_style_pwd_dir_length = 1
+format = "in [$path]($style)[$read_only]($read_only_style) "
 read_only = " ro"
 
 [docker_context]
 symbol = "docker "
+
+[dotnet]
+symbol = ".NET "
 
 [elixir]
 symbol = "exs "
 
 [elm]
 symbol = "elm "
+
+[erlang]
+symbol = "erl "
 
 [fennel]
 symbol = "fnl "
@@ -75,7 +74,19 @@ symbol = "fossil "
 symbol = "gcp "
 
 [git_branch]
-symbol = "git "
+format = "at [$symbol$branch(:$remote_branch)]($style) "
+symbol = ""
+
+[git_commit]
+tag_disabled = false
+tag_symbol = " tag "
+
+[git_status]
+ahead = ">"
+behind = "<"
+deleted = "x"
+diverged = "<>"
+renamed = "r"
 
 [gleam]
 symbol = "gleam "
@@ -83,14 +94,26 @@ symbol = "gleam "
 [golang]
 symbol = "go "
 
-[gradle]
-symbol = "gradle "
-
 [guix_shell]
 symbol = "guix "
 
+[gradle]
+symbol = "gradle "
+
+[haskell]
+symbol = "hs "
+
+[haxe]
+symbol = "hx "
+
+[helm]
+symbol = "helm "
+
 [hg_branch]
 symbol = "hg "
+
+[hostname]
+ssh_symbol = "ssh "
 
 [java]
 symbol = "java "
@@ -101,11 +124,23 @@ symbol = "jl "
 [kotlin]
 symbol = "kt "
 
+[kubernetes]
+disabled = false
+format = "on [$symbol$context \\[$namespace\\]]($style) "
+symbol = ""
+
+[[kubernetes.contexts]]
+context_pattern = "oci-oke:\\w*:(?P<cluster>[\\w]+):[\\w+\\d+-]+"
+context_alias = "$cluster"
+style = "red bold"
+
+[[kubernetes.contexts]]
+context_pattern = "aws-eks:[\\w-]+:(?P<cluster>[\\w]+):[\\w+\\d+-]+"
+context_alias = "$cluster"
+style = "yellow bold"
+
 [lua]
 symbol = "lua "
-
-[nodejs]
-symbol = "nodejs "
 
 [memory_usage]
 symbol = "memory "
@@ -122,16 +157,25 @@ symbol = "nim "
 [nix_shell]
 symbol = "nix "
 
+[nodejs]
+symbol = "js "
+
 [ocaml]
 symbol = "ml "
+
+[odin]
+symbol = "odin "
 
 [opa]
 symbol = "opa "
 
+[openstack]
+symbol = "os "
+
 [os.symbols]
 AIX = "aix "
-Alpaquita = "alq "
 AlmaLinux = "alma "
+Alpaquita = "alq "
 Alpine = "alp "
 Amazon = "amz "
 Android = "andr "
@@ -165,12 +209,12 @@ openSUSE = "osuse "
 OracleLinux = "orac "
 Pop = "pop "
 Raspbian = "rasp "
-Redhat = "rhl "
 RedHatEnterprise = "rhel "
-RockyLinux = "rky "
+Redhat = "rhl "
 Redox = "redox "
-Solus = "sol "
+RockyLinux = "rky "
 SUSE = "suse "
+Solus = "sol "
 Ubuntu = "ubnt "
 Ultramarine = "ultm "
 Unknown = "unk "
@@ -204,6 +248,12 @@ symbol = "quarto "
 [raku]
 symbol = "raku "
 
+[red]
+symbol = "red "
+
+[rlang]
+symbol = "r "
+
 [ruby]
 symbol = "rb "
 
@@ -212,6 +262,10 @@ symbol = "rs "
 
 [scala]
 symbol = "scala "
+
+[shlvl]
+repeat = true
+symbol = '>'
 
 [spack]
 symbol = "spack "
@@ -228,11 +282,18 @@ symbol = "sudo "
 [swift]
 symbol = "swift "
 
+[terraform]
+symbol = "terraform "
+
 [typst]
 symbol = "typst "
 
-[terraform]
-symbol = "terraform "
+[username]
+format = "[$user]($style) "
+show_always = true
+
+[vagrant]
+symbol = "vagrant "
 
 [zig]
 symbol = "zig "

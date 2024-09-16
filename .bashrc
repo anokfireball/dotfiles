@@ -84,11 +84,11 @@ if [ -n "$BREW_PREFIX" ]; then
     eval "$(${BREW_PREFIX}/bin/brew shellenv)"
     # brew completions
     if [[ -r "${BREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
-        source "${BREW_PREFIX}/etc/profile.d/bash_completion.sh" 2>/dev/null
+        source "${BREW_PREFIX}/etc/profile.d/bash_completion.sh"
     fi
     for COMPLETION in "${BREW_PREFIX}/etc/bash_completion.d/"*; do
         if [[ -r "${COMPLETION}" ]]; then
-            source "${COMPLETION}" 2>/dev/null
+            source "${COMPLETION}"
         fi
     done
 
