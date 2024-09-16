@@ -6,4 +6,5 @@
 !.expected_binaries
 !.inputrc
 !.vimrc
+!.config/starship.toml
 !.config/Code/User/settings.json
