@@ -85,11 +85,11 @@ if [ -d /home/linuxbrew/.linuxbrew ] || [ -d /opt/homebrew ] || [ -d /usr/local 
     eval "$(${BREW_PREFIX}/bin/brew shellenv)"
     # brew completions
     if [[ -r "${BREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
-        source "${BREW_PREFIX}/etc/profile.d/bash_completion.sh"
+        source "${BREW_PREFIX}/etc/profile.d/bash_completion.sh" 2>/dev/null
     fi
     for COMPLETION in "${BREW_PREFIX}/etc/bash_completion.d/"*; do
         if [[ -r "${COMPLETION}" ]]; then
-            source "${COMPLETION}"
+            source "${COMPLETION}" 2>/dev/null
         fi
     done
 
@@ -115,10 +115,6 @@ export PATH="$HOME/.local/bin:$PATH"
 export VISUAL=vim
 export EDITOR=vim
 export GPG_TTY=$(tty)
-if [[ $- == *i* ]]; then
-    # turn OFF software flow control for interactive sessions (e.g. enable CTRL-S)
-    stty -ixon
-fi
 
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
