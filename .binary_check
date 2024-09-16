@@ -10,10 +10,10 @@ while IFS= read -r binary; do
     continue
   fi
 
-  if ! command -v "$binary" &> /dev/null; then
+  if ! command -v "$binary" &>/dev/null; then
     missing_binaries+=("$binary")
   fi
-done < "$EXPECTED_BINARIES_FILE"
+done <"$EXPECTED_BINARIES_FILE"
 if [[ ${#missing_binaries[@]} -ne 0 ]]; then
   echo "Warning: The following binaries are not installed. Please install them:"
   for binary in "${missing_binaries[@]}"; do
@@ -30,4 +30,3 @@ fi
 if command -v zoxide >/dev/null 2>&1; then
   eval "$(zoxide init bash --cmd cd)"
 fi
-

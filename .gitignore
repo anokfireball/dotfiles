@@ -5,6 +5,7 @@
 !.binary_check
 !.expected_binaries
 !.inputrc
+!.wezterm.lua
 !.vimrc
 !.config/starship.toml
 !.config/Code/User/settings.json

@@ -44,6 +44,7 @@
   "terminal.integrated.initialHint": false,
   "terminal.integrated.smoothScrolling": true,
   "workbench.activityBar.location": "top",
+  "workbench.colorTheme": "Dracula Theme",
   "workbench.editor.decorations.badges": false,
   "workbench.editor.pinnedTabsOnSeparateRow": true,
   "workbench.editor.scrollToSwitchTabs": true,

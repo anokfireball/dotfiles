@@ -109,7 +109,6 @@ fi
 if [[ "$OSTYPE" == "darwin"* ]]; then
     export BASH_SILENCE_DEPRECATION_WARNING=1
 fi
-
 export PATH="$HOME/.local/bin:$PATH"
 export VISUAL=vim
 export EDITOR=vim
