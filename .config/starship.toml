@@ -113,7 +113,8 @@ symbol = "helm "
 symbol = "hg "
 
 [hostname]
-ssh_symbol = "ssh "
+format = "[$ssh_symbol$hostname]($style) "
+ssh_symbol = "@"
 
 [java]
 symbol = "java "
