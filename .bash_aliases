@@ -12,6 +12,10 @@ if command -v kubectl &>/dev/null; then
     fi
   }
   alias kctx='kubectl config use-context'
+  _kctx_completions() {
+    COMPREPLY=($(compgen -W "$(kubectl config get-contexts | awk 'NR>1 {gsub(/^\*/, ""); print $1}')" -- "${COMP_WORDS[COMP_CWORD]}"))
+  }
+  complete -F _kctx_completions kctx
 
   klsns() {
     if [ -n "$1" ]; then
@@ -21,6 +25,32 @@ if command -v kubectl &>/dev/null; then
     fi
   }
   alias kns='kubectl config set-context --current --namespace'
+  _kns_completions() {
+    COMPREPLY=($(compgen -W "$(kubectl get ns | awk 'NR>1 {print $1}')" -- "${COMP_WORDS[COMP_CWORD]}"))
+  }
+  complete -F _kns_completions kns
+fi
+
+if command -v kubectl &>/dev/null && command -v fzf &>/dev/null; then
+  _fzf_completions() {
+    local cur prev
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD - 1]}"
+    case "$prev" in
+    kctx)
+      COMPREPLY=($(compgen -W "$(kubectl config get-contexts | awk 'NR>1 {gsub(/^\*/, ""); print $1}')" -- "${COMP_WORDS[COMP_CWORD]}"))
+      ;;
+    kns)
+      COMPREPLY=($(compgen -W "$(kubectl get ns | awk 'NR>1 {print $1}')" -- "$cur"))
+      ;;
+    esac
+
+    if [[ ${#COMPREPLY[@]} -gt 1 ]]; then
+      COMPREPLY=($(printf "%s\n" "${COMPREPLY[@]}" | fzf))
+    fi
+  }
+  complete -F _fzf_completions kctx
+  complete -F _fzf_completions kns
 fi
 
 if command -v git &>/dev/null; then
@@ -66,16 +96,28 @@ if command -v fd &>/dev/null; then
   }
 fi
 
-if command -v fzf &>/dev/null && command -v fd &>/dev/null; then
+if command -v fzf &>/dev/null && command -v bfs &>/dev/null; then
   _fzf_compgen_path() {
-    fd --hidden --follow --exclude ".git" . "$1"
+    bfs -H "$1" -color -exclude \( -name .git \) 2>/dev/null
   }
-  _fzf_setup_completion path eza git kubectl
 
   _fzf_compgen_dir() {
-    fd --type d --hidden --follow --exclude ".git" . "$1"
+    bfs -H "$1" -color -exclude \( -name .git \) -type d 2>/dev/null
   }
+
+  export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --ansi"
+  export FZF_CTRL_T_COMMAND="bfs -color -mindepth 1 -exclude \( -name .git \) -printf '%P\n' 2>/dev/null"
+  export FZF_ALT_C_COMMAND="bfs -color -mindepth 1 -exclude \( -name .git \) -type d -printf '%P\n' 2>/dev/null"
+fi
+
+if command -v fzf &>/dev/null; then
+  _fzf_setup_completion path eza git kubectl
   _fzf_setup_completion dir tree z zoxide
+
+  _fzf_complete_ssh_notrigger() {
+    FZF_COMPLETION_TRIGGER='' _fzf_host_completion
+  }
+  complete -o bashdefault -o default -F _fzf_complete_ssh_notrigger ssh
 
   export FZF_COMPLETION_TRIGGER='~~'
 fi
