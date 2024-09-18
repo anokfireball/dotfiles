@@ -54,5 +54,6 @@
   "workbench.list.smoothScrolling": true,
   "workbench.sideBar.location": "right",
   "workbench.tips.enabled": false,
+  "workbench.tree.indent": 16,
   "zenMode.showTabs": "none"
 }
