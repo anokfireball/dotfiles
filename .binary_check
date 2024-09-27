@@ -15,10 +15,13 @@ while IFS= read -r binary; do
   fi
 done <"$EXPECTED_BINARIES_FILE"
 if [[ ${#missing_binaries[@]} -ne 0 ]]; then
-  echo "Warning: The following binaries are not installed. Please install them:"
+  echo "The following binaries are not installed:"
+  binaries=""
   for binary in "${missing_binaries[@]}"; do
-    echo "  - $binary"
+      binaries+="\n  - \e[31m$binary\e[0m"
   done
+  echo -e "$binaries"
+  echo -e "\nYour shell experience will probably differ from the intended one."
 fi
 
 if command -v fzf >/dev/null 2>&1; then
