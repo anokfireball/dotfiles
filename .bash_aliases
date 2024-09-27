@@ -1,3 +1,18 @@
+# ESC-ESC: toggle `sudo` before the previous command
+bind -x '"\e\e": sude'
+sude() {
+  if [ -z "$READLINE_LINE" ]; then
+    local last_command=$(fc -ln -0 | awk '{$1=$1;print}')
+    if [[ $last_command == sudo* ]]; then
+      last_command=${last_command#sudo }
+    else
+      last_command="sudo $last_command"
+    fi
+    READLINE_LINE="$last_command"
+    READLINE_POINT=${#READLINE_LINE}
+  fi
+}
+
 upgrade() {
   if command -v apt &>/dev/null; then
     sudo apt update -qq && sudo apt upgrade -y -qq
@@ -15,11 +30,13 @@ upgrade() {
 if command -v bat &>/dev/null; then
   alias cat='bat'
   export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+
+  export BAT_THEME="Dracula"
 fi
 
 if command -v eza &>/dev/null; then
   alias ls='eza --group-directories-first'
-  alias ll='ls -lb --color-scale=all --git --git-repos'
+  alias ll='eza --group-directories-first -lb --color-scale=all --git --git-repos'
   l.() {
     if [ "$#" -eq 0 ]; then
       # just assume CWD when no args is given
@@ -49,15 +66,10 @@ if command -v fd &>/dev/null; then
 fi
 
 if command -v fzf &>/dev/null; then
-  _fzf_setup_completion path eza git kubectl
-  _fzf_setup_completion dir tree z zoxide
+  _fzf_setup_completion path bat cat cp g git k kubectl mv rm
+  _fzf_setup_completion dir cd eza ls ll l. rmdir tree z zoxide
 
-  _fzf_complete_ssh_notrigger() {
-    FZF_COMPLETION_TRIGGER='' _fzf_host_completion
-  }
-  complete -o bashdefault -o default -F _fzf_complete_ssh_notrigger ssh
-
-  export FZF_COMPLETION_TRIGGER='~~'
+  export FZF_COMPLETION_TRIGGER="''"
 fi
 
 if command -v fzf &>/dev/null && command -v bfs &>/dev/null; then
