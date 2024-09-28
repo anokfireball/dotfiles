@@ -1,0 +1,14 @@
+[user]
+	signingkey = 9C22348D522489312EFB05E4F54F561EAA67AF30
+	email = github@kthxbye.cyou
+	name = Fabian Koller
+[commit]
+	gpgsign = true
+
+[merge]
+	conflictstyle = diff3
+[diff]
+	colorMoved = default
+
+[includeIf "gitdir:~/"]
+	path = ~/.gitconfig_delta_active

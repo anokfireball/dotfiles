@@ -5,6 +5,8 @@
 !.bash_ssh_agent
 !.binary_check
 !.expected_binaries
+!.gitconfig
+!.gitconfig_delta
 !.inputrc
 !.wezterm.lua
 !.vimrc
