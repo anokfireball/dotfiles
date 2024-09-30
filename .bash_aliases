@@ -164,6 +164,7 @@ if command -v kubectl &>/dev/null && command -v fzf &>/dev/null; then
 fi
 
 if command -v nvim &>/dev/null; then
+  mkdir -p ~/.local/bin
   ln -sf $(command -v nvim) ~/.local/bin/vi
   ln -sf $(command -v nvim) ~/.local/bin/vim
 
