@@ -27,6 +27,12 @@ upgrade() {
   elif command -v pacman &>/dev/null; then
     sudo pacman -Syu --noconfirm --quiet
   fi
+  if command -v flatpak &>/dev/null; then
+    sudo flatpak update -y -q
+  fi
+  if command -v snap &>/dev/null; then
+    sudo snap refresh
+  fi
   if command -v brew &>/dev/null; then
     brew update --quiet && brew upgrade --quiet
   fi
@@ -71,8 +77,9 @@ if command -v fd &>/dev/null; then
 fi
 
 if command -v fzf &>/dev/null; then
-  _fzf_setup_completion path bat cat cp g git k kubectl mv rm
-  _fzf_setup_completion dir cd eza ls ll l. rmdir tree z zoxide
+  # TODO https://github.com/lincheney/fzf-tab-completion/
+  _fzf_setup_completion dir cd eza fd find mkdir ls ll l. rmdir tree z zoxide
+  _fzf_setup_completion path bat cat cp g git k kubectl ln mv nvim rm v vi vim
 
   export FZF_COMPLETION_TRIGGER="''"
 fi
@@ -86,7 +93,10 @@ if command -v fzf &>/dev/null && command -v bfs &>/dev/null; then
     bfs -H "$1" -color -exclude \( -name .git \) -type d 2>/dev/null
   }
 
-  export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --ansi"
+  export FZF_DIR_COMMAND='bfs . -color -mindepth 1 -exclude \( -name .git \) -type d | sed \"s/\.\///g\" 2>/dev/null'
+  export FZF_FILE_COMMAND='bfs . -color -mindepth 1 -exclude \( -name .git \) -type f | sed \"s/\.\///g\" 2>/dev/null'
+
+  export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --ansi --bind 'alt-d:reload(eval \"$FZF_DIR_COMMAND\"),alt-f:reload(eval \"$FZF_FILE_COMMAND\")'"
   export FZF_CTRL_T_COMMAND="bfs -color -mindepth 1 -exclude \( -name .git \) -printf '%P\n' 2>/dev/null"
   export FZF_ALT_C_COMMAND="bfs -color -mindepth 1 -exclude \( -name .git \) -type d -printf '%P\n' 2>/dev/null"
 fi
@@ -151,6 +161,13 @@ if command -v kubectl &>/dev/null && command -v fzf &>/dev/null; then
   }
   complete -F _fzf_completions kctx
   complete -F _fzf_completions kns
+fi
+
+if command -v nvim &>/dev/null; then
+  ln -sf $(command -v nvim) ~/.local/bin/vi
+  ln -sf $(command -v nvim) ~/.local/bin/vim
+
+  alias v='nvim'
 fi
 
 if command -v rg &>/dev/null; then
