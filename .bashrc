@@ -6,6 +6,12 @@ case $- in
 *) return ;;
 esac
 
+# Guard variable to ensure the file is only sourced once
+if [ -n "${_BASHRC_SOURCED}" ]; then
+  return
+fi
+_BASHRC_SOURCED=1
+
 # Append to the history file, don't overwrite it
 shopt -s histappend
 
