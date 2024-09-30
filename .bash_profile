@@ -1,7 +1,7 @@
-if [ -f ~/.bashrc ]; then
-   source ~/.bashrc
+if [ -r ~/.profile ]; then
+    . ~/.profile;
 fi
 
-if [ -f ~/.profile ]; then
-   source ~/.profile
-fi
+case "$-" in
+*i*) if [ -r ~/.bashrc ]; then . ~/.bashrc; fi ;;
+esac
