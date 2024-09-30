@@ -3,6 +3,7 @@
 !.bashrc
 !.bash_aliases
 !.bash_ssh_agent
+!.bash_profile
 !.binary_check
 !.expected_binaries
 !.gitconfig
