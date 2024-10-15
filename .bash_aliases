@@ -20,21 +20,27 @@ sude() {
 
 upgrade() {
   if command -v apt &>/dev/null; then
-    sudo apt update -qq && sudo apt upgrade -y -qq
+      sudo apt update -qq && sudo apt upgrade -y -qq
+      sudo apt autoremove -y -qq && sudo apt clean -qq
   fi
   if command -v yay &>/dev/null; then
-    yay -Syu --noconfirm --quiet
+      yay -Syu --noconfirm --quiet
+      yay -Sc --noconfirm --quiet
   elif command -v pacman &>/dev/null; then
-    sudo pacman -Syu --noconfirm --quiet
+      sudo pacman -Syu --noconfirm --quiet
+      sudo pacman -Sc --noconfirm --quiet
   fi
   if command -v flatpak &>/dev/null; then
-    sudo flatpak update -y -q
+      sudo flatpak update -y -q
+      sudo flatpak uninstall --unused -y -q
   fi
   if command -v snap &>/dev/null; then
-    sudo snap refresh
+      sudo snap refresh
+      sudo snap remove --purge $(sudo snap list --all | awk '/disabled/{print $1, $3}')
   fi
   if command -v brew &>/dev/null; then
-    brew update --quiet && brew upgrade --quiet
+      brew update --quiet && brew upgrade --quiet
+      brew cleanup --prune=all --scrub --quiet
   fi
 }
 
@@ -142,7 +148,7 @@ if command -v kubectl &>/dev/null; then
 fi
 
 if command -v kubectl &>/dev/null && command -v fzf &>/dev/null; then
-  _fzf_completions() {
+  _fzf_k_completions() {
     local cur prev
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD - 1]}"
@@ -156,11 +162,11 @@ if command -v kubectl &>/dev/null && command -v fzf &>/dev/null; then
     esac
 
     if [[ ${#COMPREPLY[@]} -gt 1 ]]; then
-      COMPREPLY=($(printf "%s\n" "${COMPREPLY[@]}" | fzf))
+      COMPREPLY=($(printf "%s\n" "${COMPREPLY[@]}" | fzf --height=-2 --layout reverse --border --info inline-right))
     fi
   }
-  complete -F _fzf_completions kctx
-  complete -F _fzf_completions kns
+
+  complete -F _fzf_k_completions kctx kns
 fi
 
 if command -v nvim &>/dev/null; then
