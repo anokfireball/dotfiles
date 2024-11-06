@@ -19,27 +19,41 @@ sude() {
 }
 
 upgrade() {
-  if command -v apt &>/dev/null; then
-      sudo apt update -qq && sudo apt upgrade -y -qq
-      sudo apt autoremove -y -qq && sudo apt clean -qq
+  if command -v apt-get &>/dev/null; then
+      echo "Updating apt packages..."
+      sudo apt-get update -qq && sudo apt-get upgrade -y -qq
+      echo "Cleaning up apt packages..."
+      sudo apt-get autoremove -y -qq && sudo apt-get clean -qq
   fi
   if command -v yay &>/dev/null; then
+      echo "Updating yay packages..."
       yay -Syu --noconfirm --quiet
+      echo "Cleaning up yay packages..."
       yay -Sc --noconfirm --quiet
   elif command -v pacman &>/dev/null; then
+      echo "Updating pacman packages..."
       sudo pacman -Syu --noconfirm --quiet
+      echo "Cleaning up pacman packages..."
       sudo pacman -Sc --noconfirm --quiet
   fi
   if command -v flatpak &>/dev/null; then
+      echo "Updating flatpak packages..."
       sudo flatpak update -y -q
+      echo "Cleaning up flatpak packages..."
       sudo flatpak uninstall --unused -y -q
   fi
   if command -v snap &>/dev/null; then
+      echo "Updating snap packages..."
       sudo snap refresh
-      sudo snap remove --purge $(sudo snap list --all | awk '/disabled/{print $1, $3}')
+      echo "Cleaning up snap packages..."
+      sudo snap list --all | awk '/disabled/{print $1, $3}' | while read snapname revision; do
+          sudo snap remove "$snapname" --revision="$revision"
+      done
   fi
   if command -v brew &>/dev/null; then
+      echo "Updating brew packages..."
       brew update --quiet && brew upgrade --quiet
+      echo "Cleaning up brew packages..."
       brew cleanup --prune=all --scrub --quiet
   fi
 }

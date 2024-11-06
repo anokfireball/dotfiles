@@ -8,7 +8,7 @@ esac
 
 # Guard variable to ensure the file is only sourced once
 if [ -n "${_BASHRC_SOURCED}" ]; then
-  return
+    return
 fi
 _BASHRC_SOURCED=1
 
@@ -81,6 +81,7 @@ elif [ -f /usr/local/bin/brew ]; then
 fi
 if [ -n "$BREW_PREFIX" ]; then
     eval "$(${BREW_PREFIX}/bin/brew shellenv)"
+
     # brew completions
     if [[ -r "${BREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
         source "${BREW_PREFIX}/etc/profile.d/bash_completion.sh" 2>/dev/null
@@ -90,6 +91,12 @@ if [ -n "$BREW_PREFIX" ]; then
             source "${COMPLETION}" 2>/dev/null
         fi
     done
+
+    # nvm
+    if [ -s "${BREW_PREFIX}/opt/nvm/nvm.sh" ]; then
+        export NVM_DIR="$HOME/.nvm"
+        source "${BREW_PREFIX}/opt/nvm/nvm.sh"
+    fi
 
     export HOMEBREW_NO_INSTALL_CLEANUP=TRUE
 fi
