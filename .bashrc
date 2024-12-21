@@ -72,6 +72,10 @@ esac
 
 # нєяє вє ∂яαgσиѕ #
 
+if [ -f ~/.bash_ssh_agent ]; then
+    source ~/.bash_ssh_agent
+fi
+
 if [ -f /home/linuxbrew/.linuxbrew/bin/brew ]; then
     BREW_PREFIX=/home/linuxbrew/.linuxbrew
 elif [ -f /opt/homebrew/bin/brew ]; then

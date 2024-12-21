@@ -11,5 +11,7 @@
 !.inputrc
 !.wezterm.lua
 !.vimrc
-!.config/starship.toml
 !.config/Code/User/settings.json
+!.config/starship.toml
+!.ssh/config
+!.ssh/config.d/.gitkeep
