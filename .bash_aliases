@@ -18,43 +18,105 @@ sude() {
   READLINE_POINT=${#READLINE_LINE}
 }
 
+extract() {
+  if [ -z "$1" ] || [ -z "$2" ]; then
+    echo "Usage: extract <archive> <destination>"
+    return 1
+  fi
+
+  local src="$1"
+  local dest="$2"
+
+  case "$src" in
+  *.tar.bz2)
+    mkdir -p "$dest"
+    tar xjf "$src" -C "$dest"
+    ;;
+  *.tar.gz)
+    mkdir -p "$dest"
+    tar xzf "$src" -C "$dest"
+    ;;
+  *.tar.xz)
+    mkdir -p "$dest"
+    tar xJf "$src" -C "$dest"
+    ;;
+  *.bz2)
+    mkdir -p "$dest"
+    bunzip2 -c "$src" >"$dest"
+    ;;
+  *.rar)
+    mkdir -p "$dest"
+    unrar x "$src" "$dest"
+    ;;
+  *.gz)
+    mkdir -p "$dest"
+    gunzip -c "$src" >"$dest"
+    ;;
+  *.tar)
+    mkdir -p "$dest"
+    tar xf "$src" -C "$dest"
+    ;;
+  *.tbz2)
+    mkdir -p "$dest"
+    tar xjf "$src" -C "$dest"
+    ;;
+  *.tgz)
+    mkdir -p "$dest"
+    tar xzf "$src" -C "$dest"
+    ;;
+  *.zip)
+    mkdir -p "$dest"
+    unzip "$src" -d "$dest"
+    ;;
+  *.7z)
+    mkdir -p "$dest"
+    7z x "$src" -o"$dest"
+    ;;
+  *.xz)
+    mkdir -p "$dest"
+    unxz -c "$src" >"$dest"
+    ;;
+  *) echo "extract: '$src' - unknown archive format" ;;
+  esac
+}
+
 upgrade() {
   if command -v apt-get &>/dev/null; then
-      echo "Updating apt packages..."
-      sudo apt-get update -qq && sudo apt-get upgrade -y -qq
-      echo "Cleaning up apt packages..."
-      sudo apt-get autoremove -y -qq && sudo apt-get clean -qq
+    echo "Updating apt packages..."
+    sudo apt-get update -qq && sudo apt-get upgrade -y -qq
+    echo "Cleaning up apt packages..."
+    sudo apt-get autoremove -y -qq && sudo apt-get clean -qq
   fi
   if command -v yay &>/dev/null; then
-      echo "Updating yay packages..."
-      yay -Syu --noconfirm --quiet
-      echo "Cleaning up yay packages..."
-      yay -Sc --noconfirm --quiet
+    echo "Updating yay packages..."
+    yay -Syu --noconfirm --quiet
+    echo "Cleaning up yay packages..."
+    yay -Sc --noconfirm --quiet
   elif command -v pacman &>/dev/null; then
-      echo "Updating pacman packages..."
-      sudo pacman -Syu --noconfirm --quiet
-      echo "Cleaning up pacman packages..."
-      sudo pacman -Sc --noconfirm --quiet
+    echo "Updating pacman packages..."
+    sudo pacman -Syu --noconfirm --quiet
+    echo "Cleaning up pacman packages..."
+    sudo pacman -Sc --noconfirm --quiet
   fi
   if command -v flatpak &>/dev/null; then
-      echo "Updating flatpak packages..."
-      sudo flatpak update -y -q
-      echo "Cleaning up flatpak packages..."
-      sudo flatpak uninstall --unused -y -q
+    echo "Updating flatpak packages..."
+    sudo flatpak update -y -q
+    echo "Cleaning up flatpak packages..."
+    sudo flatpak uninstall --unused -y -q
   fi
   if command -v snap &>/dev/null; then
-      echo "Updating snap packages..."
-      sudo snap refresh
-      echo "Cleaning up snap packages..."
-      sudo snap list --all | awk '/disabled/{print $1, $3}' | while read snapname revision; do
-          sudo snap remove "$snapname" --revision="$revision"
-      done
+    echo "Updating snap packages..."
+    sudo snap refresh
+    echo "Cleaning up snap packages..."
+    sudo snap list --all | awk '/disabled/{print $1, $3}' | while read snapname revision; do
+      sudo snap remove "$snapname" --revision="$revision"
+    done
   fi
   if command -v brew &>/dev/null; then
-      echo "Updating brew packages..."
-      brew update --quiet && brew upgrade --quiet
-      echo "Cleaning up brew packages..."
-      brew cleanup --prune=all --scrub --quiet
+    echo "Updating brew packages..."
+    brew update --quiet && brew upgrade --quiet
+    echo "Cleaning up brew packages..."
+    brew cleanup --prune=all --scrub --quiet
   fi
 }
 
