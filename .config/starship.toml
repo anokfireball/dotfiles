@@ -146,14 +146,9 @@ format = "on [$symbol$context \\[$namespace\\]]($style) "
 symbol = ""
 
 [[kubernetes.contexts]]
-context_pattern = "oci-oke:\\w*:(?P<cluster>[\\w]+):[\\w+\\d+-]+"
+context_pattern = "(?P<identity>[\\w\\d-]+)@(?P<cluster>[\\w]+)"
 context_alias = "$cluster"
-style = "red bold"
-
-[[kubernetes.contexts]]
-context_pattern = "aws-eks:[\\w-]+:(?P<cluster>[\\w]+):[\\w+\\d+-]+"
-context_alias = "$cluster"
-style = "yellow bold"
+style = "orange bold"
 
 [lua]
 symbol = "lua "

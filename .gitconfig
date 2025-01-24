@@ -12,3 +12,5 @@
 
 [includeIf "gitdir:~/"]
 	path = ~/.gitconfig_delta_active
+[init]
+	defaultBranch = main
