@@ -190,8 +190,17 @@ if command -v git &>/dev/null; then
   fi
 fi
 
+if command -v helm &>/dev/null; then
+  alias h=helm
+  source <(helm completion bash)
+  if [ -n "$(type -t __start_helm)" ]; then
+    complete -F __start_helm h
+  fi
+fi
+
 if command -v kubectl &>/dev/null; then
   alias k=kubectl
+  source <(kubectl completion bash)
   if [ -n "$(type -t __start_kubectl)" ]; then
     complete -F __start_kubectl k
   fi

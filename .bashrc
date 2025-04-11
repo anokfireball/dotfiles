@@ -124,6 +124,10 @@ export VISUAL=vim
 export EDITOR=vim
 export GPG_TTY=$(tty)
 
+if [ -f ~/.work/.bashrc ]; then
+    source ~/.work/.bashrc
+fi
+
 if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+    source ~/.bash_aliases
 fi
