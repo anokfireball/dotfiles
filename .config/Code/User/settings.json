@@ -5,15 +5,6 @@
     "workbench.action.tasks.configureTaskRunner",
     "workbench.action.tasks.runTask"
   ],
-  "debug.javascript.terminalOptions": {
-    "skipFiles": [
-      "<node_internals>/**",
-      "node_modules/rxjs/**",
-      "**/node_modules/rxjs/**",
-      "node_modules/@getgo/micro-signals/**",
-      "**/node_modules/@getgo/micro-signals/**"
-    ]
-  },
   "diffEditor.experimental.useTrueInlineView": true,
   "diffEditor.ignoreTrimWhitespace": false,
   "diffEditor.maxComputationTime": 0,
@@ -42,6 +33,7 @@
   "terminal.integrated.defaultProfile.osx": "bash (2)",
   "terminal.integrated.hideOnStartup": "whenEmpty",
   "terminal.integrated.initialHint": false,
+  "terminal.integrated.shellIntegration.enabled": false,
   "terminal.integrated.smoothScrolling": true,
   "workbench.activityBar.location": "top",
   "workbench.colorTheme": "Dracula Theme",

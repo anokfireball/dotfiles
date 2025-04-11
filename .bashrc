@@ -116,6 +116,16 @@ if [ -f ~/.binary_check ]; then
     source ~/.binary_check
 fi
 
+if command -v delta &> /dev/null; then
+    eval "$(delta --generate-completion bash)"
+    ln -sf ~/.gitconfig_delta ~/.gitconfig_delta_active
+else
+    rm -f ~/.gitconfig_delta_active
+fi
+if command -v fzf >/dev/null 2>&1; then
+  FZF_ALT_C_COMMAND='' eval "$(fzf --bash)"
+fi
+
 if [[ "$OSTYPE" == "darwin"* ]]; then
     export BASH_SILENCE_DEPRECATION_WARNING=1
 fi
@@ -130,4 +140,11 @@ fi
 
 if [ -f ~/.bash_aliases ]; then
     source ~/.bash_aliases
+fi
+
+if command -v starship >/dev/null 2>&1; then
+  eval "$(starship init bash)"
+fi
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init bash --cmd cd)"
 fi
