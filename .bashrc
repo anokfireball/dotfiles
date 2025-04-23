@@ -72,6 +72,10 @@ esac
 
 # нєяє вє ∂яαgσиѕ #
 
+if [ ! -d ~/.local/bin ]; then
+    mkdir -p ~/.local/bin
+fi
+
 if [ -f ~/.bash_ssh_agent ]; then
     source ~/.bash_ssh_agent
 fi
@@ -124,6 +128,9 @@ else
 fi
 if command -v fzf >/dev/null 2>&1; then
   FZF_ALT_C_COMMAND='' eval "$(fzf --bash)"
+fi
+if command -v bat &>/dev/null; then
+    eval "$(bat --completion bash)"
 fi
 
 if [[ "$OSTYPE" == "darwin"* ]]; then

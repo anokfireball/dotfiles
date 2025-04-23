@@ -122,8 +122,9 @@ upgrade() {
 
 if command -v bat &>/dev/null; then
   alias cat='bat'
-  export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+  complete -F _bat bat cat
 
+  export MANPAGER="sh -c 'col -bx | bat -l man -p'"
   export BAT_THEME="Dracula"
 fi
 
@@ -188,6 +189,10 @@ if command -v git &>/dev/null; then
   if [ -n "$(type -t __git_complete)" ]; then
     __git_complete g __git_main
   fi
+fi
+
+if command -v gsed &>/dev/null; then
+  ln -sf $(command -v gsed) ~/.local/bin/sed
 fi
 
 if command -v helm &>/dev/null; then
@@ -255,7 +260,6 @@ if command -v kubectl &>/dev/null && command -v fzf &>/dev/null; then
 fi
 
 if command -v nvim &>/dev/null; then
-  mkdir -p ~/.local/bin
   ln -sf $(command -v nvim) ~/.local/bin/vi
   ln -sf $(command -v nvim) ~/.local/bin/vim
 
