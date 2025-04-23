@@ -11,6 +11,7 @@
 !.inputrc
 !.wezterm.lua
 !.vimrc
+!.config/borders/bordersrc
 !.config/Code/User/settings.json
 !.config/starship.toml
 !.ssh/config
