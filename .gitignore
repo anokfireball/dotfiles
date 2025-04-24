@@ -14,5 +14,6 @@
 !.config/borders/bordersrc
 !.config/Code/User/settings.json
 !.config/starship.toml
+!.config/sketchybar
 !.ssh/config
 !.ssh/config.d/.gitkeep

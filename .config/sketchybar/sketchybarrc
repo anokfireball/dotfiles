@@ -1,0 +1,63 @@
+source "$CONFIG_DIR/colors.sh"
+source "$CONFIG_DIR/icons.sh"
+
+FONT="Source Code Pro"
+
+PLUGIN_DIR="$CONFIG_DIR/plugins"
+ITEM_DIR="$CONFIG_DIR/items"
+
+bar=(
+  border_color=0x00000000
+  border_width=5
+  color=$BAR_COLOR
+  corner_radius=10
+  height=40
+  margin=4
+  padding_left=10
+  padding_right=10
+  position=top
+  shadow=off
+  sticky=on
+  topmost=window
+  y_offset=1
+)
+
+sketchybar --bar "${bar[@]}"
+
+default=(
+  scroll_texts=on
+  updates=when_shown
+  padding_left=5
+  padding_right=5
+  background.border_width=3
+  background.corner_radius=7
+  background.height=28
+  icon.color=0xffffffff
+  icon.font="$FONT:Heavy:16.0"
+  icon.padding_left=4
+  icon.padding_right=4
+  label.color=0xffffffff
+  label.font="$FONT:Semibold:13.0"
+  label.padding_left=4
+  label.padding_right=4
+  popup.background.border_color=$POPUP_BORDER_COLOR
+  popup.background.border_width=1
+  popup.background.color=$POPUP_BACKGROUND_COLOR
+  popup.background.corner_radius=15
+  popup.background.shadow.drawing=on
+  popup.blur_radius=20
+)
+sketchybar --default "${default[@]}"
+
+source $ITEM_DIR/apple.sh
+source $ITEM_DIR/spaces.sh
+source $ITEM_DIR/front_app.sh
+
+source $ITEM_DIR/calendar.sh
+source $ITEM_DIR/battery.sh
+source $ITEM_DIR/volume.sh
+source $ITEM_DIR/media.sh
+
+sketchybar --hotload on
+
+sketchybar --update
