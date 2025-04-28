@@ -4,16 +4,40 @@ if [[ ! -f "$EXPECTED_BINARIES_FILE" ]]; then
   exit 1
 fi
 
+OS_TYPE="$(uname -s)"
+case "$OS_TYPE" in
+  Darwin)
+    OS="osx"
+    ;;
+  Linux)
+    OS="linux"
+    ;;
+  *)
+    echo "Unsupported operating system: $OS_TYPE"
+    exit 1
+    ;;
+esac
+
 missing_binaries=()
 while IFS= read -r binary; do
   if [[ -z "$binary" || "$binary" =~ ^[[:space:]]*$ ]]; then
     continue
   fi
 
+  if [[ "$binary" =~ ^osx: && "$OS" != "osx" ]]; then
+    continue
+  elif [[ "$binary" =~ ^linux: && "$OS" != "linux" ]]; then
+    continue
+  fi
+
+  binary="${binary#osx:}"
+  binary="${binary#linux:}"
+
   if ! command -v "$binary" &>/dev/null; then
     missing_binaries+=("$binary")
   fi
 done <"$EXPECTED_BINARIES_FILE"
+
 if [[ ${#missing_binaries[@]} -ne 0 ]]; then
   echo "The following binaries are not installed:"
   binaries=""

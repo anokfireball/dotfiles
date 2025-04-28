@@ -160,11 +160,18 @@ if command -v fd &>/dev/null; then
 fi
 
 if command -v fzf &>/dev/null; then
-  # TODO https://github.com/lincheney/fzf-tab-completion/
   _fzf_setup_completion dir cd eza fd find mkdir ls ll l. rmdir tree z zoxide
   _fzf_setup_completion path bat cat cp g git k kubectl ln mv nvim rm v vi vim
 
+  if [ -f ~/.fzf-tab-completion/bash/fzf-bash-completion.sh ]; then
+    source ~/.fzf-tab-completion/bash/fzf-bash-completion.sh
+    bind -x '"\t": fzf_bash_completion'
+  fi
+
   export FZF_COMPLETION_TRIGGER="''"
+  export FZF_COMPLETION_AUTO_COMMON_PREFIX=true
+  export FZF_COMPLETION_AUTO_COMMON_PREFIX_PART=true
+  export FZF_TAB_COMPLETION_PROMPT='✨ '
 fi
 
 if command -v fzf &>/dev/null && command -v bfs &>/dev/null; then

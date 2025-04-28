@@ -4,10 +4,11 @@ delta
 eza
 fd
 fzf
-gsed
 jq
 nvim
 rg
 starship
 tmux
 zoxide
+
+osx:gsed
