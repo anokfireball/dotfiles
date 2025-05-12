@@ -18,20 +18,11 @@ red = "#ff5555"
 yellow = "#f1fa8c"
 
 # starship preset plain-text-symbols
-[aws]
-symbol = "aws "
-
-[azure]
-symbol = "az "
-
-[buf]
-symbol = "buf "
-
-[bun]
-symbol = "bun "
-
 [c]
 symbol = "C "
+
+[cpp]
+symbol = "C++ "
 
 [character]
 error_symbol = "[x](bold red)"
@@ -39,24 +30,6 @@ success_symbol = "[>](bold green)"
 
 [cmake]
 symbol = "cmake "
-
-[cobol]
-symbol = "cobol "
-
-[conda]
-symbol = "conda "
-
-[crystal]
-symbol = "cr "
-
-[daml]
-symbol = "daml "
-
-[dart]
-symbol = "dart "
-
-[deno]
-symbol = "deno "
 
 [directory]
 fish_style_pwd_dir_length = 1
@@ -66,34 +39,13 @@ read_only = " ro"
 [docker_context]
 symbol = "docker "
 
-[dotnet]
-symbol = ".NET "
-
-[elixir]
-symbol = "exs "
-
-[elm]
-symbol = "elm "
-
-[erlang]
-symbol = "erl "
-
-[fennel]
-symbol = "fnl "
-
-[fossil_branch]
-symbol = "fossil "
-
-[gcloud]
-symbol = "gcp "
-
 [git_branch]
 format = "at [$symbol$branch(:$remote_branch)]($style) "
 symbol = ""
 
 [git_commit]
 tag_disabled = false
-tag_symbol = " tag "
+tag_symbol = " @ "
 
 [git_status]
 ahead = ">"
@@ -102,168 +54,41 @@ deleted = "x"
 diverged = "<>"
 renamed = "r"
 
-[gleam]
-symbol = "gleam "
-
 [golang]
 symbol = "go "
 
-[guix_shell]
-symbol = "guix "
-
-[gradle]
-symbol = "gradle "
-
-[haskell]
-symbol = "hs "
-
-[haxe]
-symbol = "hx "
-
 [helm]
 symbol = "helm "
-
-[hg_branch]
-symbol = "hg "
 
 [hostname]
 format = "[$ssh_symbol$hostname]($style) "
 ssh_symbol = "@"
 trim_at = ""
 
-[java]
-symbol = "java "
-
-[julia]
-symbol = "jl "
-
-[kotlin]
-symbol = "kt "
-
 [kubernetes]
 disabled = false
-format = "on [$symbol$context \\[$namespace\\]]($style) "
+format = "on [$symbol$context( \\[$namespace\\])]($style) "
+style = "black bold"
 symbol = ""
 
 [[kubernetes.contexts]]
-context_pattern = "(?P<identity>[\\w\\d-]+)@(?P<cluster>[\\w]+)"
+context_pattern = "(?P<cluster>qa-\\w+-\\d+)"
 context_alias = "$cluster"
 style = "orange bold"
 
-[lua]
-symbol = "lua "
-
-[memory_usage]
-symbol = "memory "
-
-[meson]
-symbol = "meson "
-
-[nats]
-symbol = "nats "
-
-[nim]
-symbol = "nim "
-
-[nix_shell]
-symbol = "nix "
+[[kubernetes.contexts]]
+context_pattern = "(?P<cluster>\\w+-\\w+-\\d+)"
+context_alias = "$cluster"
+style = "red bold"
 
 [nodejs]
 symbol = "js "
 
-[ocaml]
-symbol = "ml "
-
-[odin]
-symbol = "odin "
-
-[opa]
-symbol = "opa "
-
-[openstack]
-symbol = "os "
-
-[os.symbols]
-AIX = "aix "
-AlmaLinux = "alma "
-Alpaquita = "alq "
-Alpine = "alp "
-Amazon = "amz "
-Android = "andr "
-Arch = "rch "
-Artix = "atx "
-CentOS = "cent "
-Debian = "deb "
-DragonFly = "dfbsd "
-Emscripten = "emsc "
-EndeavourOS = "ndev "
-Fedora = "fed "
-FreeBSD = "fbsd "
-Garuda = "garu "
-Gentoo = "gent "
-HardenedBSD = "hbsd "
-Illumos = "lum "
-Kali = "kali "
-Linux = "lnx "
-Mabox = "mbox "
-Macos = "mac "
-Manjaro = "mjo "
-Mariner = "mrn "
-MidnightBSD = "mid "
-Mint = "mint "
-NetBSD = "nbsd "
-NixOS = "nix "
-OpenBSD = "obsd "
-OpenCloudOS = "ocos "
-openEuler = "oeul "
-openSUSE = "osuse "
-OracleLinux = "orac "
-Pop = "pop "
-Raspbian = "rasp "
-RedHatEnterprise = "rhel "
-Redhat = "rhl "
-Redox = "redox "
-RockyLinux = "rky "
-SUSE = "suse "
-Solus = "sol "
-Ubuntu = "ubnt "
-Ultramarine = "ultm "
-Unknown = "unk "
-Void = "void "
-Windows = "win "
-
 [package]
 symbol = "pkg "
 
-[perl]
-symbol = "pl "
-
-[php]
-symbol = "php "
-
-[pijul_channel]
-symbol = "pijul "
-
-[pulumi]
-symbol = "pulumi "
-
-[purescript]
-symbol = "purs "
-
 [python]
 symbol = "py "
-
-[quarto]
-symbol = "quarto "
-
-[raku]
-symbol = "raku "
-
-[red]
-symbol = "red "
-
-[rlang]
-symbol = "r "
 
 [ruby]
 symbol = "rb "
@@ -271,40 +96,12 @@ symbol = "rb "
 [rust]
 symbol = "rs "
 
-[scala]
-symbol = "scala "
-
-[shlvl]
-repeat = true
-symbol = '>'
-
-[spack]
-symbol = "spack "
-
-[solidity]
-symbol = "solidity "
-
 [status]
 symbol = "[x](bold red) "
-
-[sudo]
-symbol = "sudo "
-
-[swift]
-symbol = "swift "
 
 [terraform]
 symbol = "terraform "
 
-[typst]
-symbol = "typst "
-
 [username]
 format = "[$user]($style) "
 show_always = true
-
-[vagrant]
-symbol = "vagrant "
-
-[zig]
-symbol = "zig "

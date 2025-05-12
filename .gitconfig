@@ -1,6 +1,8 @@
 [user]
 	email = github@kthxbye.cyou
 	name = Fabian Koller
+[init]
+	defaultBranch = main
 
 [merge]
 	conflictstyle = diff3
