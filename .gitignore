@@ -13,7 +13,8 @@
 !.vimrc
 !.config/borders/bordersrc
 !.config/Code/User/settings.json
-!.config/starship.toml
+!.config/karabiner/karabiner.json
 !.config/sketchybar
+!.config/starship.toml
 !.ssh/config
 !.ssh/config.d/.gitkeep

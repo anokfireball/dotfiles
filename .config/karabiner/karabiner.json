@@ -1,0 +1,256 @@
+{
+    "profiles": [
+        {
+            "complex_modifications": {
+                "rules": [
+                    {
+                        "description": "Space: Enable SpaceFN",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "spacebar",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    {
+                                        "set_variable": {
+                                            "name": "spacefn_mode",
+                                            "value": 1
+                                        }
+                                    }
+                                ],
+                                "to_after_key_up": [
+                                    {
+                                        "set_variable": {
+                                            "name": "spacefn_mode",
+                                            "value": 0
+                                        }
+                                    }
+                                ],
+                                "to_if_alone": [{ "key_code": "spacebar" }],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "SpaceFN: Umlauts",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "spacefn_mode",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": { "key_code": "a" },
+                                "to": [
+                                    {
+                                        "key_code": "u",
+                                        "modifiers": ["left_option"]
+                                    },
+                                    { "key_code": "a" },
+                                    { "key_code": "vk_none" }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "spacefn_mode",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "a",
+                                    "modifiers": { "mandatory": ["shift"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "u",
+                                        "modifiers": ["left_option"]
+                                    },
+                                    {
+                                        "key_code": "a",
+                                        "modifiers": ["left_shift"]
+                                    },
+                                    { "key_code": "vk_none" }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "spacefn_mode",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": { "key_code": "u" },
+                                "to": [
+                                    {
+                                        "key_code": "u",
+                                        "modifiers": ["left_option"]
+                                    },
+                                    { "key_code": "u" },
+                                    { "key_code": "vk_none" }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "spacefn_mode",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "u",
+                                    "modifiers": { "mandatory": ["shift"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "u",
+                                        "modifiers": ["left_option"]
+                                    },
+                                    {
+                                        "key_code": "u",
+                                        "modifiers": ["left_shift"]
+                                    },
+                                    { "key_code": "vk_none" }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "spacefn_mode",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": { "key_code": "o" },
+                                "to": [
+                                    {
+                                        "key_code": "u",
+                                        "modifiers": ["left_option"]
+                                    },
+                                    { "key_code": "o" },
+                                    { "key_code": "vk_none" }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "spacefn_mode",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "o",
+                                    "modifiers": { "mandatory": ["shift"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "u",
+                                        "modifiers": ["left_option"]
+                                    },
+                                    {
+                                        "key_code": "o",
+                                        "modifiers": ["left_shift"]
+                                    },
+                                    { "key_code": "vk_none" }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "spacefn_mode",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": { "key_code": "s" },
+                                "to": [
+                                    {
+                                        "key_code": "s",
+                                        "modifiers": ["left_option"]
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "rCMD: Mega (CTRL/OPT/CMD)",
+                        "manipulators": [
+                            {
+                                "from": { "key_code": "right_command" },
+                                "to": [
+                                    {
+                                        "key_code": "left_command",
+                                        "modifiers": ["left_control", "left_option"]
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Caps Lock: ESC on tap, CMD on hold",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "caps_lock",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_command",
+                                        "lazy": true
+                                    }
+                                ],
+                                "to_if_alone": [{ "key_code": "escape" }],
+                                "type": "basic"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "devices": [
+                {
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "product_id": 17746,
+                        "vendor_id": 20037
+                    },
+                    "ignore": true
+                },
+                {
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "product_id": 50504,
+                        "vendor_id": 1133
+                    },
+                    "ignore": true
+                },
+                {
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "product_id": 5,
+                        "vendor_id": 65534
+                    },
+                    "ignore": true
+                }
+            ],
+            "name": "Default profile",
+            "selected": true,
+            "virtual_hid_keyboard": { "keyboard_type_v2": "ansi" }
+        }
+    ]
+}
