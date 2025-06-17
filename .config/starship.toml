@@ -25,8 +25,12 @@ symbol = "C "
 symbol = "C++ "
 
 [character]
-error_symbol = "[x](bold red)"
+error_symbol = ""
 success_symbol = "[>](bold green)"
+
+[cmd_duration]
+style = "foreground bold"
+show_milliseconds = true
 
 [cmake]
 symbol = "cmake "
@@ -67,18 +71,28 @@ trim_at = ""
 
 [kubernetes]
 disabled = false
-format = "on [$symbol$context( \\[$namespace\\])]($style) "
+format = "on [$symbol$context(|$namespace)]($style) "
 style = "black bold"
 symbol = ""
 
 [[kubernetes.contexts]]
-context_pattern = "(?P<cluster>qa-\\w+-\\d+)"
+context_pattern = "(?P<cluster>(.+-)?qa-\\w+-\\d+)"
 context_alias = "$cluster"
 style = "orange bold"
 
 [[kubernetes.contexts]]
-context_pattern = "(?P<cluster>\\w+-\\w+-\\d+)"
+context_pattern = "(?P<cluster>(.+-)?\\w+-\\w+-\\d+)"
 context_alias = "$cluster"
+style = "red bold"
+
+[[kubernetes.contexts]]
+context_pattern = "admin@homelab"
+context_alias = "homelab"
+style = "green bold"
+
+[[kubernetes.contexts]]
+context_pattern = "admin@oci"
+context_alias = "oci"
 style = "red bold"
 
 [nodejs]
@@ -97,7 +111,9 @@ symbol = "rb "
 symbol = "rs "
 
 [status]
-symbol = "[x](bold red) "
+format = '[$symbol\[$status\]]($style) '
+disabled = false
+symbol = "x "
 
 [terraform]
 symbol = "terraform "
