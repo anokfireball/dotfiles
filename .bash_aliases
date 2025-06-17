@@ -244,6 +244,10 @@ if command -v kubectl &>/dev/null; then
   complete -F _kns_completions kns
 fi
 
+if command -v kubectl &>/dev/null && command -v dyff &>/dev/null; then
+  export KUBECTL_EXTERNAL_DIFF="dyff between --omit-header --set-exit-code"
+fi
+
 if command -v kubectl &>/dev/null && command -v fzf &>/dev/null; then
   _fzf_k_completions() {
     local cur prev
