@@ -6,6 +6,7 @@
 !.bash_profile
 !.binary_check
 !.expected_binaries
+!.gitalias
 !.gitconfig
 !.gitconfig_delta
 !.inputrc

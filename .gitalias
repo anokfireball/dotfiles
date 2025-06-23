@@ -1,0 +1,44 @@
+[alias]
+    a = add
+    aa = add --all
+    ap = add --patch
+
+    b = branch
+
+    c = commit
+    ca = commit --amend
+    ci = commit --interactive
+
+    cp = cherry-pick
+    cpa = cherry-pick --abort
+    cpc = cherry-pick --continue
+
+    d = diff
+    ds = diff --staged
+
+    f = fetch
+    fa = fetch --all
+
+    g = grep
+
+    l = log --graph --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%C(auto)%d %Creset%s' --date=short
+    lg = log --graph
+    lm = log --medium
+    lp = log --patch
+
+    m = merge
+    ma = merge --abort
+    mc = merge --continue
+
+    p = push
+    ps = push --set-upstream
+
+    r = rebase
+    ra = rebase --abort
+    rc = rebase --continue
+    rs = rebase --skip
+    ri = rebase --interactive
+
+    s = status --short --branch
+    sl = status --long
+    sv = status --verbose
