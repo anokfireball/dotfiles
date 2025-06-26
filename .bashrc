@@ -136,6 +136,9 @@ fi
 if [[ "$OSTYPE" == "darwin"* ]]; then
     export BASH_SILENCE_DEPRECATION_WARNING=1
 fi
+if [[ -d "$HOME/.krew" ]]; then
+    export PATH="$HOME/.krew/bin:$PATH"
+fi
 export PATH="$HOME/.local/bin:$PATH"
 export VISUAL=vim
 export EDITOR=vim
