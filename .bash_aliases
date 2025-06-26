@@ -166,6 +166,8 @@ if command -v fzf &>/dev/null; then
   if [ -f ~/.fzf-tab-completion/bash/fzf-bash-completion.sh ]; then
     source ~/.fzf-tab-completion/bash/fzf-bash-completion.sh
     bind -x '"\t": fzf_bash_completion'
+  else
+    echo "Warning: fzf installed, but https://github.com/lincheney/fzf-tab-completion not found."
   fi
 
   export FZF_COMPLETION_TRIGGER="''"
