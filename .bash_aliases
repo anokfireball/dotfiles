@@ -163,9 +163,7 @@ if command -v fd &>/dev/null; then
 fi
 
 if command -v fzf &>/dev/null; then
-  _fzf_setup_completion dir cd eza fd find mkdir ls ll l. rmdir tree z zoxide
-  _fzf_setup_completion path bat cat cp g git k kubectl ln mv nvim rm v vi vim
-
+  # TODO https://github.com/junegunn/fzf/issues/1804#issuecomment-574476419
   if [ -f ~/.fzf-tab-completion/bash/fzf-bash-completion.sh ]; then
     source ~/.fzf-tab-completion/bash/fzf-bash-completion.sh
     bind -x '"\t": fzf_bash_completion'
@@ -173,27 +171,40 @@ if command -v fzf &>/dev/null; then
     echo "Warning: fzf installed, but https://github.com/lincheney/fzf-tab-completion not found."
   fi
 
-  export FZF_COMPLETION_TRIGGER="''"
   export FZF_COMPLETION_AUTO_COMMON_PREFIX=true
   export FZF_COMPLETION_AUTO_COMMON_PREFIX_PART=true
   export FZF_TAB_COMPLETION_PROMPT='✨ '
 fi
 
 if command -v fzf &>/dev/null && command -v bfs &>/dev/null; then
-  _fzf_compgen_path() {
-    bfs -H "$1" -color -exclude \( -name .git \) 2>/dev/null
-  }
+  export FZF_COMMAND='bfs . -color -mindepth 1 -exclude \( -name .git \) | sed \"s|\./||g\" 2>/dev/null'
+  export FZF_DIR_COMMAND='bfs . -color -mindepth 1 -exclude \( -name .git \) -type d | sed \"s|\./||g\" 2>/dev/null'
+  export FZF_FILE_COMMAND='bfs . -color -mindepth 1 -exclude \( -name .git \) -type f | sed \"s|\./||g\" 2>/dev/null'
 
-  _fzf_compgen_dir() {
-    bfs -H "$1" -color -exclude \( -name .git \) -type d 2>/dev/null
-  }
-
-  export FZF_DIR_COMMAND='bfs . -color -mindepth 1 -exclude \( -name .git \) -type d | sed \"s/\.\///g\" 2>/dev/null'
-  export FZF_FILE_COMMAND='bfs . -color -mindepth 1 -exclude \( -name .git \) -type f | sed \"s/\.\///g\" 2>/dev/null'
-
-  export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --ansi --bind 'alt-d:reload(eval \"$FZF_DIR_COMMAND\"),alt-f:reload(eval \"$FZF_FILE_COMMAND\")'"
+  export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --ansi --bind 'ctrl-a:reload(eval \"$FZF_COMMAND\"),ctrl-s:reload(eval \"$FZF_DIR_COMMAND\"),ctrl-d:reload(eval \"$FZF_FILE_COMMAND\")'"
   export FZF_CTRL_T_COMMAND="bfs -color -mindepth 1 -exclude \( -name .git \) -printf '%P\n' 2>/dev/null"
   export FZF_ALT_C_COMMAND="bfs -color -mindepth 1 -exclude \( -name .git \) -type d -printf '%P\n' 2>/dev/null"
+fi
+
+if command -v fzf &>/dev/null && command -v bfs &>/dev/null && command -v vim &>/dev/null; then
+  vf() {
+    query="${1:-}"
+    files=$(bfs . -color -mindepth 1 | sed -e "s|^\./||g" 2>/dev/null | fzf --query="$query" --multi)
+    if [ -n "$files" ]; then
+      vim "$files"
+    fi
+  }
+fi
+
+if command -v fzf &>/dev/null && command -v rg &>/dev/null && command -v vim &>/dev/null; then
+  vg() {
+    query="${1:-}"
+    match=$(rg . --with-filename --line-number --color=always | fzf --query="$query" | cut -d ":" -f 1-2)
+    if [ -n "$match" ]; then
+      IFS=: read -r file line <<<"$match"
+      vim +"call cursor($line,1)" "$file"
+    fi
+  }
 fi
 
 if command -v git &>/dev/null; then
