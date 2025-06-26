@@ -1,6 +1,7 @@
 [alias]
     a = add
     aa = add --all
+    af = add --force
     ap = add --patch
 
     b = branch
