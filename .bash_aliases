@@ -80,6 +80,7 @@ extract() {
   *) echo "extract: '$src' - unknown archive format" ;;
   esac
 }
+alias x='extract'
 
 upgrade() {
   if command -v apt-get &>/dev/null; then
@@ -120,6 +121,7 @@ upgrade() {
     brew cleanup --prune=all --scrub --quiet
   fi
 }
+alias u='upgrade'
 
 if command -v bat &>/dev/null; then
   alias cat='bat'
