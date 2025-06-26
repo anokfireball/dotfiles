@@ -9,6 +9,12 @@
     ca = commit --amend
     ci = commit --interactive
 
+    cl = clean -d --force --dry-run
+    cln = clean -d --force
+
+    co = checkout
+    cob = checkout --branch
+
     cp = cherry-pick
     cpa = cherry-pick --abort
     cpc = cherry-pick --continue
@@ -31,14 +37,29 @@
     mc = merge --continue
 
     p = push
+    pd = push --delete
     ps = push --set-upstream
+    pt = push --tags
+
+    pu = pull
 
     r = rebase
     ra = rebase --abort
     rc = rebase --continue
-    rs = rebase --skip
     ri = rebase --interactive
+
+    rss = reset --soft
+    rsh = reset --hard
 
     s = status --short --branch
     sl = status --long
     sv = status --verbose
+
+    st = stash
+    std = stash drop
+    stl = stash list
+    stp = stash pop
+
+    t = tag
+    td = tag --delete
+    tl = tag --list
