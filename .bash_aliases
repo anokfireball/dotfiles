@@ -1,5 +1,6 @@
-# ESC-ESC: toggle `sudo` before the current or previous command
-bind -x '"\e\e": sude'
+# `-`: toggle `sudo` before the current or previous command
+bind -m vi-command '"``": "\ei``\C-["'
+bind -x '"``": sude'
 sude() {
   local command
   if [ -z "$READLINE_LINE" ]; then
