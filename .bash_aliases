@@ -132,20 +132,29 @@ if command -v bat &>/dev/null; then
 fi
 
 if command -v eza &>/dev/null; then
-  alias ls='eza --group-directories-first'
-  alias ll='eza --group-directories-first -lb --color-scale=all --git --git-repos'
-  l.() {
+  alias ls='eza --group-directories-first --color=always'
+  alias lsl='eza --group-directories-first --color=always --git --git-repos -bl'
+  alias lsa='eza --group-directories-first --color=always --git --git-repos -abl'
+  # Fahrradtag, Herr Hofmann?
+  alias lsd='eza --color=always --git-repos -bDl'
+  alias lsf='eza --color=always --git -blf'
+  ls.() {
     if [ "$#" -eq 0 ]; then
-      # just assume CWD when no args is given
       set -- "."
     fi
     for dir in "$@"; do
       [ "$#" -gt 1 ] && echo "$dir:"
-      (cd "$dir" && command eza --group-directories-first -lb --color-scale=all --git --git-repos -ad .*)
+      (cd "$dir" && command eza --group-directories-first --color=always --git --git-repos -abdl .*)
       if [ "$#" -gt 1 ] && [ "$dir" != "${@: -1}" ]; then
         echo ""
       fi
     done
+  }
+  tree() {
+    if [ "$#" -eq 0 ]; then
+      set -- "."
+    fi
+    eza "$@" --group-directories-first --color=always --git --git-repos -albT --color=always
   }
 fi
 
@@ -184,16 +193,6 @@ if command -v fzf &>/dev/null && command -v bfs &>/dev/null; then
   export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --ansi --bind 'ctrl-a:reload(eval \"$FZF_COMMAND\"),ctrl-s:reload(eval \"$FZF_DIR_COMMAND\"),ctrl-d:reload(eval \"$FZF_FILE_COMMAND\")'"
   export FZF_CTRL_T_COMMAND="bfs -color -mindepth 1 -exclude \( -name .git \) -printf '%P\n' 2>/dev/null"
   export FZF_ALT_C_COMMAND="bfs -color -mindepth 1 -exclude \( -name .git \) -type d -printf '%P\n' 2>/dev/null"
-fi
-
-if command -v fzf &>/dev/null && command -v bfs &>/dev/null && command -v vim &>/dev/null; then
-  vf() {
-    query="${1:-}"
-    files=$(bfs . -color -mindepth 1 | sed -e "s|^\./||g" 2>/dev/null | fzf --query="$query" --multi)
-    if [ -n "$files" ]; then
-      vim "$files"
-    fi
-  }
 fi
 
 if command -v fzf &>/dev/null && command -v rg &>/dev/null && command -v vim &>/dev/null; then
@@ -304,4 +303,11 @@ if command -v rg &>/dev/null; then
       command rg "$@"
     fi
   }
+fi
+
+if command -v tmux &>/dev/null; then
+  alias t=tmux
+  if [ -n "$(type -t __start_tmux)" ]; then
+    complete -F __start_tmux t
+  fi
 fi
