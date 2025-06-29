@@ -12,6 +12,7 @@ nvim
 rg
 starship
 tac
+stern
 tmux
 wget
 zoxide

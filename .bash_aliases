@@ -154,7 +154,7 @@ if command -v eza &>/dev/null; then
     if [ "$#" -eq 0 ]; then
       set -- "."
     fi
-    eza "$@" --group-directories-first --color=always --git --git-repos -albT --color=always
+    eza "$@" --group-directories-first --color=always --git --git-repos --ignore-glob ".git" -albT --color=always
   }
 fi
 
