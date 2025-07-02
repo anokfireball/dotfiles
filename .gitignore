@@ -13,7 +13,7 @@
 !.wezterm.lua
 !.config/borders/bordersrc
 !.config/Code/User/settings.json
-!.config/nvim/
+!.config/nvim/*
 !.config/karabiner/karabiner.json
 !.config/sketchybar
 !.config/starship.toml

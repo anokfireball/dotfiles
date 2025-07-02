@@ -6,10 +6,14 @@ eza
 fd
 fzf
 jq
+lua
+luarocks
 nvim
 rg
 starship
+tac
 tmux
+wget
 zoxide
 
 osx:gsed
