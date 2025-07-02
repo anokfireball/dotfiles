@@ -14,7 +14,7 @@
     cln = clean -d --force
 
     co = checkout
-    cob = checkout --branch
+    cob = checkout -b
 
     cp = cherry-pick
     cpa = cherry-pick --abort
