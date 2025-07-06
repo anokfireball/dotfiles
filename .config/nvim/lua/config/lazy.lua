@@ -18,12 +18,7 @@ require("lazy").setup({
 	spec = { {
 		import = "plugins",
 	} },
-	install = {
-		colorscheme = { "habamax" },
-	},
-	checker = {
-		enabled = true,
-	},
+	install = { colorscheme = { "dracula", "habamax" } },
 	ui = {
 		icons = vim.g.have_nerd_font and {} or {
 			cmd = "⌘",
@@ -41,4 +36,5 @@ require("lazy").setup({
 			lazy = "💤 ",
 		},
 	},
+	checker = { enabled = true },
 })
