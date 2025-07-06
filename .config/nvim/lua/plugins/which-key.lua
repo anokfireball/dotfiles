@@ -3,6 +3,7 @@ return {
 	dependencies = {
 		{ "nvim-tree/nvim-web-devicons" },
 	},
+	event = "VeryLazy",
 	config = function(ctx)
 		require("which-key").setup(ctx.opts)
 		vim.api.nvim_set_hl(0, "WhichKeyBorder", { link = "Normal" })
@@ -10,7 +11,7 @@ return {
 	end,
 	opts = {
 		preset = "helix",
-		delay = 1000,
+		delay = 1500,
 		spec = {
 			{ "<leader>", group = "leader" },
 			{ "<leader>f", group = "[f]ind" },
