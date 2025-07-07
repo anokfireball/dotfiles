@@ -6,7 +6,7 @@ return {
 	config = function(ctx)
 		local ts = require("nvim-treesitter")
 		ts.setup(ctx.opts)
-		languages = {
+		ts.install({
 			"bash",
 			"c",
 			"comment",
@@ -47,7 +47,6 @@ return {
 			"vimdoc",
 			"xml",
 			"yaml",
-		}
-		ts.install(languages)
+		})
 	end,
 }
