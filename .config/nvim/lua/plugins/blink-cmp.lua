@@ -3,32 +3,51 @@ return {
 	event = "VimEnter",
 	version = "1.*",
 	dependencies = {
-		{
-			"L3MON4D3/LuaSnip",
-			version = "2.*",
-			build = (function()
-				if vim.fn.has("win32") == 1 or vim.fn.executable("make") == 0 then
-					return
-				end
-				return "make install_jsregexp"
-			end)(),
-			dependencies = {},
-			opts = {},
-		},
 		"folke/lazydev.nvim",
+		"moyiz/blink-emoji.nvim",
+		"disrupted/blink-cmp-conventional-commits",
 	},
 	opts = {
-		keymap = { preset = "default" },
-		appearance = { nerd_font_variant = "mono" },
-		completion = { documentation = { auto_show = false, auto_show_delay_ms = 500 } },
-		sources = {
-			default = { "lsp", "path", "snippets", "lazydev" },
-			providers = {
-				lazydev = { module = "lazydev.integrations.blink", score_offset = 100 },
+		keymap = { preset = "super-tab" },
+		completion = {
+			documentation = { auto_show = true, auto_show_delay_ms = 1500 },
+		},
+		fuzzy = {
+			implementation = "prefer_rust_with_warning",
+			-- Always prioritize exact matches
+			sorts = {
+				"exact",
+				"score",
+				"sort_text",
 			},
 		},
-		snippets = { preset = "luasnip" },
-		fuzzy = { implementation = "lua" },
-		signature = { enabled = true },
+		sources = {
+			default = {
+				"lsp",
+				"buffer",
+				"snippets",
+				"path",
+				"emoji",
+			},
+			per_filetype = {
+				lua = { inherit_defaults = true, "lazydev" },
+				gitcommit = { "conventional_commits", "emoji" },
+			},
+			providers = {
+				lazydev = {
+					name = "LazyDev",
+					module = "lazydev.integrations.blink",
+					score_offset = 100,
+				},
+				emoji = {
+					name = "Emoji",
+					module = "blink-emoji",
+				},
+				conventional_commits = {
+					name = "Conventional Commits",
+					module = "blink-cmp-conventional-commits",
+				},
+			},
+		},
 	},
 }
