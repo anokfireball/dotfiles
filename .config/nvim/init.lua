@@ -180,6 +180,14 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 require("config.lazy")
 
+-- Prepend Mason's bin directory to PATH for proper LSP integration
+pcall(function()
+	local mason_settings = require("mason.settings")
+	local mason_bin = mason_settings.current.install_root_dir .. "/bin:"
+	if not vim.env.PATH:find(mason_bin, 1, true) then
+		vim.env.PATH = mason_bin .. vim.env.PATH
+	end
+end)
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
