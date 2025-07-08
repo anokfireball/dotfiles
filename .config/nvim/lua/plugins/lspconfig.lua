@@ -13,6 +13,9 @@ return {
 			"bashls",
 			"shellcheck",
 			"shfmt",
+			-- GitHub Actions
+			"gh-actions-language-server",
+			"actionlint",
 			-- lua
 			"lua_ls",
 			"luacheck",
