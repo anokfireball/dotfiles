@@ -37,12 +37,12 @@
     ma = merge --abort
     mc = merge --continue
 
-    p = push
-    pd = push --delete
-    ps = push --set-upstream
-    pt = push --tags
+    ps = push
+    psd = push --delete
+    pss = push --set-upstream
+    pst = push --tags
 
-    pu = pull
+    pl = pull
 
     r = rebase
     ra = rebase --abort
