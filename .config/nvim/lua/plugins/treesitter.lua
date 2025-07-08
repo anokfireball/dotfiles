@@ -6,7 +6,8 @@ return {
 	config = function(ctx)
 		local ts = require("nvim-treesitter")
 		ts.setup(ctx.opts)
-		ts.install({
+
+		local languages = {
 			"bash",
 			"c",
 			"comment",
@@ -47,6 +48,15 @@ return {
 			"vimdoc",
 			"xml",
 			"yaml",
+		}
+		ts.install(languages)
+
+		local filetypes = vim.fn.getcompletion("", "filetype")
+		vim.api.nvim_create_autocmd("FileType", {
+			pattern = filetypes,
+			callback = function()
+				vim.treesitter.start()
+			end,
 		})
 	end,
 }

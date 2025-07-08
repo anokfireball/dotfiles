@@ -14,6 +14,7 @@ return {
 	},
 	opts = {
 		formatters_by_ft = {
+			bash = { "shfmt" },
 			lua = { "stylua" },
 			python = {
 				"ruff_fix",
