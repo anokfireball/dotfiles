@@ -77,24 +77,9 @@ return {
 	},
 	lazy = false,
 	branch = "main",
-	config = function()
-		require("nvim-treesitter-textobjects").setup({
-			select = {
-				lookahead = true,
-			},
-		})
-
-		vim.keymap.set({ "x", "o" }, "af", function()
-			require("nvim-treesitter-textobjects.select").select_textobject("@function.outer", "textobjects")
-		end, { desc = "function" })
-		vim.keymap.set({ "x", "o" }, "if", function()
-			require("nvim-treesitter-textobjects.select").select_textobject("@function.inner", "textobjects")
-		end, { desc = "inner function" })
-		vim.keymap.set({ "x", "o" }, "ac", function()
-			require("nvim-treesitter-textobjects.select").select_textobject("@comment.outer", "textobjects")
-		end, { desc = "comment" })
-		vim.keymap.set({ "x", "o" }, "ic", function()
-			require("nvim-treesitter-textobjects.select").select_textobject("@comment.inner", "textobjects")
-		end, { desc = "inner comment" })
-	end,
+	opts = {
+		select = {
+			lookahead = true,
+		},
+	},
 }

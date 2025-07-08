@@ -19,22 +19,12 @@ require("lazy").setup({
 		import = "plugins",
 	} },
 	install = { colorscheme = { "dracula", "habamax" } },
-	ui = {
-		icons = vim.g.have_nerd_font and {} or {
-			cmd = "⌘",
-			config = "🛠",
-			event = "📅",
-			ft = "📂",
-			init = "⚙",
-			keys = "🗝",
-			plugin = "🔌",
-			runtime = "💻",
-			require = "🌙",
-			source = "📄",
-			start = "🚀",
-			task = "📌",
-			lazy = "💤 ",
-		},
-	},
 	checker = { enabled = true },
 })
+
+-- Prepend Mason's bin directory to PATH for proper LSP integration
+local mason_settings = require("mason.settings")
+local mason_bin = mason_settings.current.install_root_dir .. "/bin:"
+if not vim.env.PATH:find(mason_bin, 1, true) then
+	vim.env.PATH = mason_bin .. vim.env.PATH
+end
