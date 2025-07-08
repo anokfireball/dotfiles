@@ -78,3 +78,23 @@ vim.o.scrolloff = 10
 
 -- raise a dialog asking whether to save staged changes
 vim.o.confirm = true
+
+-- only show errors by default
+function Set_diagnostic_severity(sev)
+	vim.diagnostic.config({
+		virtual_text = {
+			severity = { min = sev },
+		},
+		signs = {
+			severity = { min = sev },
+		},
+		underline = {
+			severity = { min = sev },
+		},
+		float = {
+			severity = { min = sev },
+		},
+	})
+end
+vim.g.min_diagnostic_severity = vim.diagnostic.severity.ERROR
+Set_diagnostic_severity(vim.g.min_diagnostic_severity)

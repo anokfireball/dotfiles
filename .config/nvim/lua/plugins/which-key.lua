@@ -15,6 +15,7 @@ return {
 		spec = {
 			{ "<leader>", group = "leader" },
 			{ "<leader>f", group = "[f]ind" },
+			{ "<leader>t", group = "[t]oggle" },
 		},
 		plugins = {
 			spelling = { enabled = false },

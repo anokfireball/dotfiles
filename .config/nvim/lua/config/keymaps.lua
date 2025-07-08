@@ -54,3 +54,23 @@ vim.keymap.set("n", "<leader>fo", ts.live_grep, { desc = "[F]ind [O]pen Files" }
 vim.keymap.set("n", "<leader>fr", ts.oldfiles, { desc = "[F]ind [R]ecent Files" })
 vim.keymap.set("n", "<leader>ft", ts.builtin, { desc = "[F]ind [T]elescope Builtins" })
 vim.keymap.set("n", "<leader>fw", ts.grep_string, { desc = "[F]ind current [W]ord" })
+
+vim.keymap.set("n", "<leader>td", function()
+	if vim.g.min_diagnostic_severity == vim.diagnostic.severity.ERROR then
+		vim.g.min_diagnostic_severity = vim.diagnostic.severity.HINT
+    elseif vim.g.min_diagnostic_severity == vim.diagnostic.severity.HINT then
+		vim.g.min_diagnostic_severity = nil
+        vim.diagnostic.enable(false)
+    else
+		vim.g.min_diagnostic_severity = vim.diagnostic.severity.ERROR
+        vim.diagnostic.enable(true)
+	end
+	Set_diagnostic_severity(vim.g.min_diagnostic_severity)
+end, { desc = "[T]oggle [D]iagnostic Severity" })
+vim.api.nvim_create_autocmd("LspAttach", {
+	callback = function(event)
+		vim.keymap.set("n", "<leader>th", function()
+			vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+		end, { buffer = event.buf, desc = "[T]oggle Inlay [H]ints" })
+	end,
+})
