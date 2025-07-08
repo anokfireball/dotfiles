@@ -21,6 +21,11 @@ vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
 vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
 vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
 vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
+-- Unmap arrow keys
+vim.keymap.set("n", "<Up>", "<Nop>", { desc = "Disable Up Arrow" })
+vim.keymap.set("n", "<Down>", "<Nop>", { desc = "Disable Down Arrow" })
+vim.keymap.set("n", "<Left>", "<Nop>", { desc = "Disable Left Arrow" })
+vim.keymap.set("n", "<Right>", "<Nop>", { desc = "Disable Right Arrow" })
 
 -- Treesitter Keymaps
 local function map_textobject(lhs, query, desc)
@@ -49,4 +54,3 @@ vim.keymap.set("n", "<leader>fo", ts.live_grep, { desc = "[F]ind [O]pen Files" }
 vim.keymap.set("n", "<leader>fr", ts.oldfiles, { desc = "[F]ind [R]ecent Files" })
 vim.keymap.set("n", "<leader>ft", ts.builtin, { desc = "[F]ind [T]elescope Builtins" })
 vim.keymap.set("n", "<leader>fw", ts.grep_string, { desc = "[F]ind current [W]ord" })
-
