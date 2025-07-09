@@ -14,9 +14,10 @@ return {
 		delay = 1500,
 		spec = {
 			{ "<leader>", group = "leader" },
-			{ "<leader>f", group = "[f]ind" },
-			{ "<leader>t", group = "[t]oggle" },
-			{ "<leader>v", group = "[V]CS"}
+			{ "<leder>e", group = "[E]xplorer" },
+			{ "<leader>f", group = "[F]ind" },
+			{ "<leader>t", group = "[T]oggle" },
+			{ "<leader>v", group = "[V]CS" },
 		},
 		plugins = {
 			spelling = { enabled = false },

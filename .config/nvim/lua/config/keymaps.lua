@@ -27,6 +27,11 @@ vim.keymap.set("n", "<Down>", "<Nop>", { desc = "Disable Down Arrow" })
 vim.keymap.set("n", "<Left>", "<Nop>", { desc = "Disable Left Arrow" })
 vim.keymap.set("n", "<Right>", "<Nop>", { desc = "Disable Right Arrow" })
 
+vim.keymap.set("n", "<leader>e", "<Cmd>Neotree reveal<CR>", { desc = "[E]xplorer Tree" })
+vim.keymap.set("n", "<leader>E", function()
+	require("mini.files").open(vim.uv.cwd(), true)
+end, { desc = "[E]xplorer Panes" })
+
 -- Treesitter Keymaps
 local function map_textobject(lhs, textobject, desc)
 	vim.keymap.set({ "x", "o" }, lhs, function()
