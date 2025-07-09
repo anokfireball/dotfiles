@@ -16,6 +16,7 @@ return {
 			{ "<leader>", group = "leader" },
 			{ "<leader>f", group = "[f]ind" },
 			{ "<leader>t", group = "[t]oggle" },
+			{ "<leader>v", group = "[V]CS"}
 		},
 		plugins = {
 			spelling = { enabled = false },

@@ -11,7 +11,7 @@ vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", {
 	desc = "Exit terminal mode",
 })
 
--- Keybinds to make split navigation easier
+-- make split navigation easier
 vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
 vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
 vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
@@ -28,9 +28,9 @@ vim.keymap.set("n", "<Left>", "<Nop>", { desc = "Disable Left Arrow" })
 vim.keymap.set("n", "<Right>", "<Nop>", { desc = "Disable Right Arrow" })
 
 -- Treesitter Keymaps
-local function map_textobject(lhs, query, desc)
+local function map_textobject(lhs, textobject, desc)
 	vim.keymap.set({ "x", "o" }, lhs, function()
-		require("nvim-treesitter-textobjects.select").select_textobject(query, "textobjects")
+		require("nvim-treesitter-textobjects.select").select_textobject(textobject, "textobjects")
 	end, { desc = desc })
 end
 map_textobject("af", "@function.outer", "function")
@@ -39,31 +39,36 @@ map_textobject("ac", "@comment.outer", "comment")
 map_textobject("ic", "@comment.inner", "inner comment")
 
 -- Telescope Keymaps
-local ts = require("telescope.builtin")
-vim.keymap.set("n", "<leader>f.", ts.current_buffer_fuzzy_find, { desc = "[F]ind in Current Buffer" })
-vim.keymap.set("n", "<leader>fb", ts.buffers, { desc = "[F]ind [B]uffers" })
-vim.keymap.set("n", "<leader>fd", ts.diagnostics, { desc = "[F]ind [D]iagnostics" })
-vim.keymap.set("n", "<leader>ff", ts.find_files, { desc = "[F]ind [F]iles" })
-vim.keymap.set("n", "<leader>fg", ts.live_grep, { desc = "[F]ind by [G]rep" })
-vim.keymap.set("n", "<leader>fh", ts.help_tags, { desc = "[F]ind [H]elp" })
-vim.keymap.set("n", "<leader>fk", ts.keymaps, { desc = "[F]ind [K]eymaps" })
+local function map_telescope(lhs, func, desc)
+	vim.keymap.set("n", lhs, function()
+		require("telescope.builtin")[func]()
+	end, { desc = desc })
+end
+map_telescope("<leader>f.", "current_buffer_fuzzy_find", "[F]ind in Current Buffer")
+map_telescope("<leader>fb", "buffers", "[F]ind [B]uffers")
+map_telescope("<leader>fd", "diagnostics", "[F]ind [D]iagnostics")
+map_telescope("<leader>ff", "find_files", "[F]ind [F]iles")
+map_telescope("<leader>fg", "live_grep", "[F]ind by [G]rep")
+map_telescope("<leader>fh", "help_tags", "[F]ind [H]elp")
+map_telescope("<leader>fk", "keymaps", "[F]ind [K]eymaps")
 vim.keymap.set("n", "<leader>fn", function()
-	ts.find_files({ cwd = vim.fn.stdpath("config") })
+	require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config") })
 end, { desc = "[F]ind [N]eovim files" })
-vim.keymap.set("n", "<leader>fo", ts.live_grep, { desc = "[F]ind [O]pen Files" })
-vim.keymap.set("n", "<leader>fr", ts.oldfiles, { desc = "[F]ind [R]ecent Files" })
-vim.keymap.set("n", "<leader>ft", ts.builtin, { desc = "[F]ind [T]elescope Builtins" })
-vim.keymap.set("n", "<leader>fw", ts.grep_string, { desc = "[F]ind current [W]ord" })
+map_telescope("<leader>fo", "live_grep", "[F]ind [O]pen Files")
+map_telescope("<leader>fr", "oldfiles", "[F]ind [R]ecent Files")
+map_telescope("<leader>ft", "builtin", "[F]ind [T]elescope Builtins")
+map_telescope("<leader>fw", "grep_string", "[F]ind current [W]ord")
 
+-- Toggles
 vim.keymap.set("n", "<leader>td", function()
 	if vim.g.min_diagnostic_severity == vim.diagnostic.severity.ERROR then
 		vim.g.min_diagnostic_severity = vim.diagnostic.severity.HINT
-    elseif vim.g.min_diagnostic_severity == vim.diagnostic.severity.HINT then
+	elseif vim.g.min_diagnostic_severity == vim.diagnostic.severity.HINT then
 		vim.g.min_diagnostic_severity = nil
-        vim.diagnostic.enable(false)
-    else
+		vim.diagnostic.enable(false)
+	else
 		vim.g.min_diagnostic_severity = vim.diagnostic.severity.ERROR
-        vim.diagnostic.enable(true)
+		vim.diagnostic.enable(true)
 	end
 	Set_diagnostic_severity(vim.g.min_diagnostic_severity)
 end, { desc = "[T]oggle [D]iagnostic Severity" })
@@ -74,3 +79,73 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		end, { buffer = event.buf, desc = "[T]oggle Inlay [H]ints" })
 	end,
 })
+
+-- GitSigns
+GitSignsOnAttach = function(bufnr)
+	local gitsigns = require("gitsigns")
+	-- https://github.com/lewis6991/gitsigns.nvim/issues/255#issuecomment-2099420323
+	vim.api.nvim_set_hl(0, "Blame", {
+		fg = vim.api.nvim_get_hl_by_name("Comment", true).foreground,
+		bg = vim.api.nvim_get_hl_by_name("Comment", true).background,
+		italic = true,
+	})
+	vim.api.nvim_set_hl(0, "GitSignsCurrentLineBlame", { link = "Blame" })
+
+	local function map_gitsigns(mode, lhs, func, desc)
+		vim.keymap.set(mode, lhs, func, { desc = desc, buffer = bufnr })
+	end
+
+	-- Navigation
+	map_gitsigns("n", "]c", function()
+		if vim.wo.diff then
+			vim.cmd.normal({ "]c", bang = true })
+		else
+			gitsigns.nav_hunk("next")
+		end
+	end, "hunk")
+	map_gitsigns("n", "[c", function()
+		if vim.wo.diff then
+			vim.cmd.normal({ "[c", bang = true })
+		else
+			gitsigns.nav_hunk("prev")
+		end
+	end, "hunk")
+
+	-- Actions
+	map_gitsigns("n", "<leader>vs", gitsigns.stage_hunk, "[V]CS [S]tage Hunk")
+	map_gitsigns("n", "<leader>vr", gitsigns.reset_hunk, "[V]CS [R]eset Hunk")
+
+	map_gitsigns("v", "<leader>vs", function()
+		gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
+	end, "[V]CS [S]tage Hunk")
+	map_gitsigns("v", "<leader>vr", function()
+		gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
+	end, "[V]CS [R]eset Hunk")
+
+	map_gitsigns("n", "<leader>vS", gitsigns.stage_buffer, "[V]CS [S]tage Buffer")
+	map_gitsigns("n", "<leader>vR", gitsigns.reset_buffer, "[V]CS [R]eset Buffer")
+	map_gitsigns("n", "<leader>vp", gitsigns.preview_hunk, "[V]CS [P]review Hunk")
+	map_gitsigns("n", "<leader>vi", gitsigns.preview_hunk_inline, "[V]CS [I]nline Hunk")
+
+	map_gitsigns("n", "<leader>vb", function()
+		gitsigns.blame_line({ full = true })
+	end, "[V]CS [B]lame Line")
+
+	map_gitsigns("n", "<leader>vd", gitsigns.diffthis, "[V]CS [D]iff This")
+
+	map_gitsigns("n", "<leader>vD", function()
+		gitsigns.diffthis("~")
+	end, "[V]CS [D]iff Against HEAD")
+
+	map_gitsigns("n", "<leader>vQ", function()
+		gitsigns.setqflist("all")
+	end, "[V]CS [Q]uickfix List All")
+	map_gitsigns("n", "<leader>vq", gitsigns.setqflist, "[V]CS [Q]uickfix List")
+
+	-- Toggles
+	map_gitsigns("n", "<leader>tb", gitsigns.toggle_current_line_blame, "[T]oggle Current Line [B]lame")
+	map_gitsigns("n", "<leader>tw", gitsigns.toggle_word_diff, "[T]oggle [W]ord Diff")
+
+	-- Text object
+	map_gitsigns({ "o", "x" }, "ih", gitsigns.select_hunk, "[V]CS [I]nner Hunk")
+end

@@ -53,24 +53,6 @@ return {
 				}
 				ts.install(languages)
 
-				local filetypes = vim.fn.getcompletion("", "filetype")
-				local blacklist = {
-					"mason",
-					"qf",
-				}
-				local supported_filetypes = {}
-				for _, ft in ipairs(filetypes) do
-					if not vim.tbl_contains(blacklist, ft) then
-						table.insert(supported_filetypes, ft)
-					end
-				end
-				vim.api.nvim_create_autocmd("FileType", {
-					pattern = supported_filetypes,
-					callback = function()
-						vim.treesitter.start()
-					end,
-				})
-
 				vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 			end,
 		},
