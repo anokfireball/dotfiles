@@ -47,12 +47,21 @@ end
 map_telescope("<leader>f.", "current_buffer_fuzzy_find", "[F]ind in Current Buffer")
 map_telescope("<leader>fb", "buffers", "[F]ind [B]uffers")
 map_telescope("<leader>fd", "diagnostics", "[F]ind [D]iagnostics")
-map_telescope("<leader>ff", "find_files", "[F]ind [F]iles")
-map_telescope("<leader>fg", "live_grep", "[F]ind by [G]rep")
+vim.keymap.set("n", "<leader>ff", function()
+	require("telescope").extensions.frecency.frecency({})
+end, { desc = "[F]ind [N]eovim files" })
+vim.keymap.set("n", "<leader>fg", function()
+	local frecency = require("telescope").extensions.frecency
+	require("telescope.builtin").live_grep({
+		search_dirs = frecency.query({}),
+	})
+end, { desc = "[F]ind by [G]rep" })
 map_telescope("<leader>fh", "help_tags", "[F]ind [H]elp")
 map_telescope("<leader>fk", "keymaps", "[F]ind [K]eymaps")
 vim.keymap.set("n", "<leader>fn", function()
-	require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config") })
+	require("telescope").extensions.frecency.frecency({
+		workspace = "NVIM",
+	})
 end, { desc = "[F]ind [N]eovim files" })
 map_telescope("<leader>fo", "live_grep", "[F]ind [O]pen Files")
 map_telescope("<leader>fr", "oldfiles", "[F]ind [R]ecent Files")
