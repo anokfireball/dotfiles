@@ -49,8 +49,9 @@
     rc = rebase --continue
     ri = rebase --interactive
 
-    rss = reset --soft
     rsh = reset --hard
+    rsm = reset --mixed
+    rss = reset --soft
 
     s = status --short --branch
     sl = status --long

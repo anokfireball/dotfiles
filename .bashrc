@@ -102,7 +102,7 @@ if [ -n "$BREW_PREFIX" ]; then
 
     mkdir -p ~/.tmux/plugins/
     if [[ -d "${BREW_PREFIX}/opt/tpm/" && ! -d ~/.tmux/plugins/tpm/ ]]; then
-        ln -s "${BREW_PREFIX}/opt/tpm/share/tpm/" ~/.tmux/plugins/tpm/
+        ln -s "${BREW_PREFIX}/opt/tpm/share/tpm/" ~/.tmux/plugins/tpm
     fi
 
     export HOMEBREW_NO_INSTALL_CLEANUP=TRUE

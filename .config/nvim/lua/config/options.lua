@@ -79,6 +79,9 @@ vim.o.scrolloff = 10
 -- raise a dialog asking whether to save staged changes
 vim.o.confirm = true
 
+-- do not show cmd line by default
+vim.o.cmdheight = 0
+
 -- only show errors by default
 function Set_diagnostic_severity(sev)
 	vim.diagnostic.config({

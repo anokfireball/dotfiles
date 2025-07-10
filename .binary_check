@@ -5,18 +5,18 @@ if [[ ! -f "$EXPECTED_BINARIES_FILE" ]]; then
 fi
 
 OS_TYPE="$(uname -s)"
-case "$OS_TYPE" in
-  Darwin)
-    OS="osx"
-    ;;
-  Linux)
+if [[ "$OS_TYPE" == "Linux" ]]; then
+  if [[ -d /run/WSL ]]; then
+    OS="wsl2"
+  else
     OS="linux"
-    ;;
-  *)
-    echo "Unsupported operating system: $OS_TYPE"
-    exit 1
-    ;;
-esac
+  fi
+elif [[ "$OS_TYPE" == "Darwin" ]]; then
+  OS="osx"
+else
+  echo "Unsupported operating system: $OS_TYPE"
+  exit 1
+fi
 
 missing_binaries=()
 while IFS= read -r binary; do
@@ -28,10 +28,13 @@ while IFS= read -r binary; do
     continue
   elif [[ "$binary" =~ ^linux: && "$OS" != "linux" ]]; then
     continue
+  elif [[ "$binary" =~ ^wsl: && "$OS" != "wsl2" ]]; then
+    continue
   fi
 
   binary="${binary#osx:}"
   binary="${binary#linux:}"
+  binary="${binary#wsl:}"
 
   if ! command -v "$binary" &>/dev/null; then
     missing_binaries+=("$binary")

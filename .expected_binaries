@@ -18,3 +18,4 @@ wget
 zoxide
 
 osx:gsed
+wsl:win32yank.exe
