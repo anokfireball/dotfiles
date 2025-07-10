@@ -8,6 +8,7 @@ return {
 	},
 	lazy = false,
 	opts = {
+		close_if_last_window = true,
 		enable_diagnostics = false,
 		enable_cursor_hijack = true,
 		popup_border_style = "",
@@ -26,7 +27,7 @@ return {
 					-- Status type
 					untracked = "?",
 					ignored = "x",
-					unstaged = "○",
+					unstaged = "",
 					staged = "●",
 					conflict = "!",
 				},
@@ -34,6 +35,10 @@ return {
 		},
 		window = {
 			position = "right",
+		},
+		filesystem = {
+			hijack_netrw_behavior = "disabled",
+			use_libuv_file_watcher = true,
 		},
 		-- TOOD key mappings in window, filesyste, buffers, git_status, document_symbols, example
 	},

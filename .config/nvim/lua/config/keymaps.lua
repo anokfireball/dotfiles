@@ -27,9 +27,20 @@ vim.keymap.set("n", "<Down>", "<Nop>", { desc = "Disable Down Arrow" })
 vim.keymap.set("n", "<Left>", "<Nop>", { desc = "Disable Left Arrow" })
 vim.keymap.set("n", "<Right>", "<Nop>", { desc = "Disable Right Arrow" })
 
-vim.keymap.set("n", "<leader>e", "<Cmd>Neotree reveal<CR>", { desc = "[E]xplorer Tree" })
 vim.keymap.set("n", "<leader>E", function()
-	require("mini.files").open(vim.uv.cwd(), true)
+	vim.cmd("Neotree toggle")
+end, { desc = "[E]xplorer Tree" })
+
+vim.g.mini_files_reveladed = false
+vim.keymap.set("n", "<leader>e", function()
+	local MiniFiles = require("mini.files")
+	if vim.g.mini_files_reveladed then
+		MiniFiles.close()
+        vim.g.mini_files_reveladed = false
+	else
+		MiniFiles.open(vim.uv.cwd(), true)
+        vim.g.mini_files_reveladed = true
+	end
 end, { desc = "[E]xplorer Panes" })
 
 -- Treesitter Keymaps
