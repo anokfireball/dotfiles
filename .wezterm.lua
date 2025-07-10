@@ -28,4 +28,9 @@ config.color_scheme = "Dracula (Official)"
 config.hide_tab_bar_if_only_one_tab = true
 config.window_decorations = "RESIZE"
 
+config.keys = {
+	{ key = "c", mods = "SUPER", action = wezterm.action.DisableDefaultAssignment },
+	{ key = "v", mods = "SUPER", action = wezterm.action.DisableDefaultAssignment },
+}
+
 return config

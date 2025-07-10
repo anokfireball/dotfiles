@@ -10,6 +10,7 @@
 !.gitconfig
 !.gitconfig_delta
 !.inputrc
+!.tmux.conf
 !.wezterm.lua
 !.config/
 !.config/borders/bordersrc

@@ -1,8 +1,9 @@
 # Get editor completions based on the config schema
 "$schema" = 'https://starship.rs/config-schema.json'
-command_timeout = 5000
+add_newline = false
 palette = "dracula"
 scan_timeout = 300
+command_timeout = 5000
 
 [palettes.dracula]
 background = "#282a36"
@@ -52,11 +53,16 @@ tag_disabled = false
 tag_symbol = " @ "
 
 [git_status]
+conflicted = "!"
 ahead = ">"
 behind = "<"
-deleted = "x"
 diverged = "<>"
-renamed = "r"
+
+untracked = "?"
+modified = "~"
+staged = "●"
+renamed = "»"
+deleted = "x"
 
 [golang]
 symbol = "go "

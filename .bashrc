@@ -72,8 +72,8 @@ esac
 
 # нєяє вє ∂яαgσиѕ #
 
-if [ ! -d ~/.local/bin ]; then
-    mkdir -p ~/.local/bin
+if [ ! -d ~/.local/bin/ ]; then
+    mkdir -p ~/.local/bin/
 fi
 
 if [ -f ~/.bash_ssh_agent ]; then
@@ -100,10 +100,9 @@ if [ -n "$BREW_PREFIX" ]; then
         fi
     done
 
-    # nvm
-    if [ -s "${BREW_PREFIX}/opt/nvm/nvm.sh" ]; then
-        export NVM_DIR="$HOME/.nvm"
-        source "${BREW_PREFIX}/opt/nvm/nvm.sh"
+    mkdir -p ~/.tmux/plugins/
+    if [[ -d "${BREW_PREFIX}/opt/tpm/" && ! -d ~/.tmux/plugins/tpm/ ]]; then
+        ln -s "${BREW_PREFIX}/opt/tpm/share/tpm/" ~/.tmux/plugins/tpm/
     fi
 
     export HOMEBREW_NO_INSTALL_CLEANUP=TRUE
@@ -160,4 +159,15 @@ if command -v starship >/dev/null 2>&1; then
 fi
 if command -v zoxide >/dev/null 2>&1; then
     eval "$(zoxide init bash --cmd cd)"
+fi
+
+if [ -z "$TMUX" ]; then
+    if command -v tmux >/dev/null 2>&1; then
+        if tmux has-session -t main 2>/dev/null; then
+            tmux attach -t main
+        else
+            exec tmux new-session -s main
+            exit
+        fi
+    fi
 fi
