@@ -21,7 +21,11 @@ return {
 	},
 	{
 		"echasnovski/mini.files",
-		opts = {},
+		opts = {
+			options = {
+				use_as_default_explorer = false,
+			},
+		},
 		config = function(ctx)
 			require("mini.files").setup(ctx.opts)
 		end,
