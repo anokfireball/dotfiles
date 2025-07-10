@@ -66,7 +66,7 @@ map_telescope("<leader>fg", "live_grep", "[F]ind by [G]rep")
 map_telescope("<leader>fh", "help_tags", "[F]ind [H]elp")
 map_telescope("<leader>fk", "keymaps", "[F]ind [K]eymaps")
 vim.keymap.set("n", "<leader>fn", function()
-    require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config") })
+	require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config") })
 	-- require("telescope").extensions.frecency.frecency({
 	-- 	workspace = "NVIM",
 	-- })
@@ -96,14 +96,18 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		end, { buffer = event.buf, desc = "[T]oggle Inlay [H]ints" })
 	end,
 })
+vim.keymap.set("n", "<leader>tc", function()
+	require("treesitter-context").toggle()
+end, { desc = "[T]oggle [C]ontext" })
 
 -- GitSigns
 GitSignsOnAttach = function(bufnr)
 	local gitsigns = require("gitsigns")
 	-- https://github.com/lewis6991/gitsigns.nvim/issues/255#issuecomment-2099420323
+	local hl = vim.api.nvim_get_hl_by_name("Comment", true)
 	vim.api.nvim_set_hl(0, "Blame", {
-		fg = vim.api.nvim_get_hl_by_name("Comment", true).foreground,
-		bg = vim.api.nvim_get_hl_by_name("Comment", true).background,
+		fg = hl.foreground,
+		bg = hl.background,
 		italic = true,
 	})
 	vim.api.nvim_set_hl(0, "GitSignsCurrentLineBlame", { link = "Blame" })

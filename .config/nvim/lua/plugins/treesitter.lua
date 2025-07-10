@@ -56,6 +56,10 @@ return {
 				vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 			end,
 		},
+		{
+			"nvim-treesitter/nvim-treesitter-context",
+			opts = {},
+		},
 	},
 	lazy = false,
 	branch = "main",
