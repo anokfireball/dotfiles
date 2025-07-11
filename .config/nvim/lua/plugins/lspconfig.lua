@@ -29,6 +29,11 @@ return {
 	},
 	config = function(ctx)
 		require("mason-tool-installer").setup(ctx.opts)
+
+		-- Associate with custom filetype
+		require("lspconfig").gh_actions_ls.setup({
+			filetypes = { "ghaction" },
+		})
 		-- https://docs.basedpyright.com/dev/configuration/language-server-settings/
 		-- turn off some things that should be delegated to ruff
 		vim.lsp.config("basedpyright", {

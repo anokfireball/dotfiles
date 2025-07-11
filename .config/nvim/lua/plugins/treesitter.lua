@@ -53,6 +53,7 @@ return {
 				}
 				ts.install(languages)
 
+				vim.treesitter.language.register("yaml", "ghaction")
 				vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 			end,
 		},

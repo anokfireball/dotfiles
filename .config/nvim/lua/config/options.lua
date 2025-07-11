@@ -101,3 +101,10 @@ function Set_diagnostic_severity(sev)
 end
 vim.g.min_diagnostic_severity = vim.diagnostic.severity.ERROR
 Set_diagnostic_severity(vim.g.min_diagnostic_severity)
+
+-- Explicitly set some filetypes
+vim.filetype.add({
+    pattern = {
+        ['.*github/workflows/.*ya?ml'] = 'ghaction',
+    },
+})
