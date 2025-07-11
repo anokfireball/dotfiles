@@ -36,10 +36,10 @@ vim.keymap.set("n", "<leader>e", function()
 	local MiniFiles = require("mini.files")
 	if vim.g.mini_files_reveladed then
 		MiniFiles.close()
-        vim.g.mini_files_reveladed = false
+		vim.g.mini_files_reveladed = false
 	else
 		MiniFiles.open(vim.uv.cwd(), true)
-        vim.g.mini_files_reveladed = true
+		vim.g.mini_files_reveladed = true
 	end
 end, { desc = "[E]xplorer Panes" })
 
@@ -181,3 +181,11 @@ GitSignsOnAttach = function(bufnr)
 	-- Text object
 	map_gitsigns({ "o", "x" }, "ih", gitsigns.select_hunk, "[V]CS [I]nner Hunk")
 end
+
+-- CodeCompanion
+vim.keymap.set({ "n", "v" }, "<leader>ca", "<cmd>CodeCompanionActions<cr>", { desc = "[C]odeCompanion [A]ctions", noremap = true, silent = true })
+vim.keymap.set({ "n", "v" }, "<leader>cc", "<cmd>CodeCompanionChat Toggle<cr>", { desc = "[C]odeCompanion [C]hat", noremap = true, silent = true })
+vim.keymap.set({ "n", "v" }, "<leader>ce", "<cmd>CodeCompanion /explain<cr>", { desc = "[C]odeCompanion [E]xplain",  noremap = true, silent = true })
+vim.keymap.set({ "n", "v" }, "<leader>cf", "<cmd>CodeCompanion /fix<cr>", { desc = "[C]odeCompanion [F]ix",  noremap = true, silent = true })
+vim.keymap.set({ "n", "v" }, "<leader>cv", "<cmd>CodeCompanion /commit<cr>", { desc = "[C]odeCompanion [V]CS Commit Message", noremap = true, silent = true })
+vim.keymap.set("v", "ga", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })

@@ -14,6 +14,7 @@ return {
 		delay = 1500,
 		spec = {
 			{ "<leader>", group = "leader" },
+			{ "<leder>c", group = "[C]odeCompanion" },
 			{ "<leder>e", group = "[E]xplorer" },
 			{ "<leader>f", group = "[F]ind" },
 			{ "<leader>t", group = "[T]oggle" },
