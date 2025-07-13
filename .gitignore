@@ -16,10 +16,12 @@
 !.config/borders/
 !.config/borders/bordersrc
 !.config/Code/User/settings.json
-!.config/nvim/
-!.config/nvim/**/*
 !.config/karabiner/
 !.config/karabiner/karabiner.json
+!.config/nvim/
+!.config/nvim/**/*
+!.config/opencode/
+!.config/opencode/opencode.json
 !.config/sketchybar
 !.config/starship.toml
 !.ssh/config
