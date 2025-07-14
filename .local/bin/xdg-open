@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+url="$1"
+
+is_wsl2() {
+    [ -d "/mnt/wsl" ]
+}
+
+is_macos() {
+    [ "$(uname)" = "Darwin" ]
+}
+
+if is_wsl2; then
+    explorer.exe "$url"
+    # not sure why, but successfully opening a URL via explorer.exe returns 1
+    exit 0
+elif is_macos; then
+    open "$url"
+else
+    if command -v xdg-open >/dev/null 2>&1; then
+        xdg-open "$url"
+    else
+        echo "Error: xdg-open not found and not WSL2 or macOS." >&2
+        exit 1
+    fi
+fi
+
