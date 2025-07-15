@@ -31,7 +31,10 @@ elseif target_os:find("windows") then
 end
 config.animation_fps = 144
 config.color_scheme = "Dracula (Official)"
+
 config.hide_tab_bar_if_only_one_tab = true
 config.window_decorations = "RESIZE"
+config.scrollback_lines = 250  -- 4K @ 16 pixels per line = ~135 lines
+config.enable_scroll_bar = false
 
 return config
