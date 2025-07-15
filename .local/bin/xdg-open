@@ -3,7 +3,7 @@
 url="$1"
 
 is_wsl2() {
-    [ -d "/mnt/wsl" ]
+    [ "$(uname -s)" = "Linux" ] && command -v wsl.exe >/dev/null 2>&1
 }
 
 is_macos() {
