@@ -26,6 +26,7 @@
 !.config/starship.toml
 !.local/
 !.local/bin/
+!.local/bin/pathpicker
 !.local/bin/xdg-open
 !.ssh/
 !.ssh/config
