@@ -16,6 +16,7 @@ return {
 		formatters_by_ft = {
 			bash = { "shfmt" },
 			ghaction = { "yamlfmt" },
+			json = { "prettier" },
 			lua = { "stylua" },
 			python = {
 				"ruff_fix",

@@ -14,6 +14,10 @@ return {
 			-- GitHub Actions
 			"gh-actions-language-server",
 			"actionlint",
+			-- JSON
+			"jsonls",
+			"jsonlint",
+			"prettier",
 			-- lua
 			"lua_ls",
 			"luacheck",
