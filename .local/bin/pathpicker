@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# Read stdin, extract all possible file paths (absolute, relative, home, with/without extension), check existence, deduplicate
+# Inspired by facebook/pathpicker
+
+grep -oE '(~?/)?([.a-zA-Z0-9._+-]+/)*[.a-zA-Z0-9._+-]+(\.[a-zA-Z0-9]{1,10})?' | while IFS= read -r path; do
+    # Remove trailing :123 or :123:45 (line/col numbers) if present
+    clean_path="${path%%:[0-9]*}"
+    # Remove trailing colon if present
+    clean_path="${clean_path%%:}"
+    # Remove trailing comma or period
+    clean_path="${clean_path%%[,.]}"
+    # Remove surrounding quotes
+    clean_path="${clean_path%\"}"
+    clean_path="${clean_path#\"}"
+    clean_path="${clean_path%'"'}"
+    clean_path="${clean_path#'"'}"
+    # Only print if it exists and is not empty
+    [ -n "$clean_path" ] && [ -e "$clean_path" ] && [ "$clean_path" != "." ] && [ "$clean_path" != ".." ] && echo "$clean_path"
+done | sort -u
