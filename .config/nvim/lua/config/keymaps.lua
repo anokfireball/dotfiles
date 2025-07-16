@@ -34,15 +34,12 @@ vim.keymap.set("n", "<leader>E", function()
 	vim.cmd("Neotree toggle")
 end, { desc = "[E]xplorer Tree" })
 
-vim.g.mini_files_reveladed = false
 vim.keymap.set("n", "<leader>e", function()
 	local MiniFiles = require("mini.files")
-	if vim.g.mini_files_reveladed then
+	if MiniFiles.get_explorer_state() ~= nil then
 		MiniFiles.close()
-		vim.g.mini_files_reveladed = false
 	else
 		MiniFiles.open(vim.uv.cwd(), true)
-		vim.g.mini_files_reveladed = true
 	end
 end, { desc = "[E]xplorer Panes" })
 

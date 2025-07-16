@@ -2,7 +2,19 @@ return {
 	{
 		"echasnovski/mini.surround",
 		version = false,
-		opts = {},
+		opts = {
+			mappings = {
+				add = "gsa",
+				delete = "gsd",
+				find = "gsf",
+				find_left = "gsF",
+				highlight = "gsh",
+				replace = "gsr",
+				update_n_lines = "",
+				suffix_last = "",
+				suffix_next = "",
+			},
+		},
 		config = function(ctx)
 			require("mini.surround").setup(ctx.opts)
 		end,
