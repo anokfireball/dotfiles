@@ -41,9 +41,48 @@ return {
 	{
 		"echasnovski/mini.cursorword",
 		version = false,
-        config = function(ctx)
-            require("mini.cursorword").setup(ctx.opts)
-            vim.api.nvim_set_hl(0, 'MiniCursorwordCurrent', {})
-        end
+		config = function(ctx)
+			require("mini.cursorword").setup(ctx.opts)
+			vim.api.nvim_set_hl(0, "MiniCursorwordCurrent", {})
+		end,
+	},
+	{
+		"echasnovski/mini.pairs",
+		version = false,
+		config = function(ctx)
+			require("mini.pairs").setup(ctx.opts)
+		end,
+	},
+	{
+		"echasnovski/mini.splitjoin",
+		version = false,
+		opts = {
+			mappings = {
+				toggle = "",
+				split = "gS",
+				join = "gJ",
+			},
+		},
+		config = function(ctx)
+			require("mini.splitjoin").setup(ctx.opts)
+		end,
+	},
+	{
+		"echasnovski/mini.indentscope",
+		version = false,
+		opts = {
+			draw = {
+				delay = 0,
+				animation = function()
+					return 0
+				end,
+			},
+			options = {
+				try_as_border = true,
+			},
+		},
+		config = function(ctx)
+			require("mini.indentscope").setup(ctx.opts)
+		end,
 	},
 }
