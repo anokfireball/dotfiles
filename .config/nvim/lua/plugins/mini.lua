@@ -33,9 +33,17 @@ return {
 	},
 	{
 		"echasnovski/mini.files",
-		opts = {},
+		version = false,
 		config = function(ctx)
 			require("mini.files").setup(ctx.opts)
 		end,
+	},
+	{
+		"echasnovski/mini.cursorword",
+		version = false,
+        config = function(ctx)
+            require("mini.cursorword").setup(ctx.opts)
+            vim.api.nvim_set_hl(0, 'MiniCursorwordCurrent', {})
+        end
 	},
 }
