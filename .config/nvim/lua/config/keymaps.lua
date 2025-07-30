@@ -110,6 +110,14 @@ vim.api.nvim_create_autocmd("LspAttach", {
 vim.keymap.set("n", "<leader>tc", function()
 	require("treesitter-context").toggle()
 end, { desc = "[T]oggle [C]ontext" })
+vim.keymap.set("n", "<leader>ta", function()
+	local output = vim.api.nvim_exec("Copilot status", { output = true })
+	if output:match("Ready") then
+		vim.cmd("Copilot disable")
+	else
+		vim.cmd("Copilot enable")
+	end
+end, { desc = "[T]oggle Copilot [A]utocomplete" })
 
 -- GitSigns
 GitSignsOnAttach = function(bufnr)

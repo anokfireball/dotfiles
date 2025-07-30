@@ -9,7 +9,7 @@ return {
 		"disrupted/blink-cmp-conventional-commits",
 	},
 	opts = {
-		keymap = { preset = "super-tab" },
+		keymap = { preset = "default" },
 		completion = {
 			documentation = {
 				auto_show = true,
