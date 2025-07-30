@@ -5,10 +5,12 @@ dyff
 eza
 fd
 fzf
+gcc
 gh
 jq
 lua
 luarocks
+node
 nvim
 opencode
 rg

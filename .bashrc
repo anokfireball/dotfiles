@@ -161,7 +161,7 @@ if command -v zoxide >/dev/null 2>&1; then
     eval "$(zoxide init bash --cmd cd)"
 fi
 
-if [ -z "$TMUX" ]; then
+if [ -z "$TMUX" ] && [ -z "$SSH_CONNECTION" ] && [ -z "$SSH_TTY" ]; then
     if command -v tmux >/dev/null 2>&1; then
         if tmux has-session -t main 2>/dev/null; then
             tmux attach -t main
