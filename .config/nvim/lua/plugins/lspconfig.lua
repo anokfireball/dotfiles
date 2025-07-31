@@ -25,6 +25,9 @@ return {
 			--python
 			"basedpyright",
 			"ruff",
+			-- xml
+			"lemminx",
+			"xmlformatter",
 			--yaml
 			"yamlls",
 			"yamllint",

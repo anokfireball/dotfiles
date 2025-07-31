@@ -13,6 +13,12 @@ return {
 		},
 	},
 	opts = {
+		formatters = {
+			xmlfmt = {
+				command = "xmlformatter",
+				args = { "--indent", "4" },
+			},
+		},
 		formatters_by_ft = {
 			bash = { "shfmt" },
 			ghaction = { "yamlfmt" },
@@ -23,6 +29,7 @@ return {
 				"ruff_format",
 				"ruff_organize_imports",
 			},
+			xml = { "xmlfmt", },
 			yaml = { "yamlfmt" },
 		},
 	},
