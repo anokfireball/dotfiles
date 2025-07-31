@@ -72,7 +72,7 @@ return {
 		version = false,
 		opts = {
 			draw = {
-				delay = 0,
+				delay = 100,
 				animation = function()
 					return 0
 				end,
@@ -80,6 +80,7 @@ return {
 			options = {
 				try_as_border = true,
 			},
+			symbol = "┊",
 		},
 		config = function(ctx)
 			require("mini.indentscope").setup(ctx.opts)

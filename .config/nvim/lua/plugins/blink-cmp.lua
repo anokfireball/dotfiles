@@ -32,7 +32,7 @@ return {
 			},
 		},
 		signature = {
-			enabled = true
+			enabled = true,
 		},
 		fuzzy = {
 			implementation = "prefer_rust_with_warning",

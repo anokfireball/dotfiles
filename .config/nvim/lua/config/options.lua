@@ -83,6 +83,8 @@ vim.o.confirm = true
 -- do not show cmd line by default
 vim.o.cmdheight = 0
 
+vim.o.winborder = "rounded"
+
 -- only show errors by default
 function Set_diagnostic_severity(sev)
 	vim.diagnostic.config({

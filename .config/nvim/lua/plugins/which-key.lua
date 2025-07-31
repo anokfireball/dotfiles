@@ -32,8 +32,8 @@ return {
 		},
 		win = {
 			title = false,
-			padding = { 1, 2 },
-			wo = { winblend = 0 },
 		},
+		show_help = false,
+		show_keys = false,
 	},
 }
