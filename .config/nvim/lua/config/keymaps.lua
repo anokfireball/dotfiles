@@ -24,6 +24,11 @@ vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
 vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
 vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
 vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
+-- window resizing analogous to tmux
+vim.keymap.set("n", "<C-Up>", "<cmd>resize +1<CR>", { desc = "Increase window height by 1" })
+vim.keymap.set("n", "<C-Down>", "<cmd>resize -1<CR>", { desc = "Decrease window height by 1" })
+vim.keymap.set("n", "<C-Left>", "<cmd>vertical resize -1<CR>", { desc = "Decrease window width by 1" })
+vim.keymap.set("n", "<C-Right>", "<cmd>vertical resize +1<CR>", { desc = "Increase window width by 1" })
 -- Unmap arrow keys
 vim.keymap.set("n", "<Up>", "<Nop>", { desc = "Disable Up Arrow" })
 vim.keymap.set("n", "<Down>", "<Nop>", { desc = "Disable Down Arrow" })
