@@ -76,16 +76,19 @@ map_telescope("<leader>fg", "live_grep", "[F]ind by [G]rep")
 -- end, { desc = "[F]ind by [G]rep" })
 map_telescope("<leader>fh", "help_tags", "[F]ind [H]elp")
 map_telescope("<leader>fk", "keymaps", "[F]ind [K]eymaps")
-vim.keymap.set("n", "<leader>fn", function()
+vim.keymap.set("n", "<leader>fc", function()
 	require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config") })
 	-- require("telescope").extensions.frecency.frecency({
 	-- 	workspace = "NVIM",
 	-- })
-end, { desc = "[F]ind [N]eovim files" })
+end, { desc = "[F]ind Neovim [C]onfigs" })
 map_telescope("<leader>fo", "live_grep", "[F]ind [O]pen Files")
 map_telescope("<leader>fr", "oldfiles", "[F]ind [R]ecent Files")
 map_telescope("<leader>ft", "builtin", "[F]ind [T]elescope Builtins")
 map_telescope("<leader>fw", "grep_string", "[F]ind current [W]ord")
+vim.keymap.set("n", "<leader>fn", function()
+	vim.cmd("Telescope notify")
+end, { desc = "[F]ind [N]otifications" })
 
 -- Toggles
 vim.keymap.set("n", "<leader>td", function()
@@ -118,6 +121,9 @@ vim.keymap.set("n", "<leader>ta", function()
 		vim.cmd("Copilot enable")
 	end
 end, { desc = "[T]oggle Copilot [A]utocomplete" })
+vim.keymap.set("n", "<leader>tf", function()
+	vim.cmd("VimadeFocus")
+end, { desc = "[T]oggle [F]ocus" })
 
 -- GitSigns
 GitSignsOnAttach = function(bufnr)
@@ -171,12 +177,6 @@ GitSignsOnAttach = function(bufnr)
 		gitsigns.blame_line({ full = true })
 	end, "[V]CS [B]lame Line")
 
-	map_gitsigns("n", "<leader>vd", gitsigns.diffthis, "[V]CS [D]iff This")
-
-	map_gitsigns("n", "<leader>vD", function()
-		gitsigns.diffthis("~")
-	end, "[V]CS [D]iff Against HEAD")
-
 	map_gitsigns("n", "<leader>vQ", function()
 		gitsigns.setqflist("all")
 	end, "[V]CS [Q]uickfix List All")
@@ -189,11 +189,112 @@ GitSignsOnAttach = function(bufnr)
 	-- Text object
 	map_gitsigns({ "o", "x" }, "ih", gitsigns.select_hunk, "[V]CS [I]nner Hunk")
 end
+vim.keymap.set("n", "<leader>vd", function()
+	vim.cmd("DiffviewOpen")
+end, { desc = "[V]CS [D]iffview" })
+
+local function open_diffview(selection)
+	if selection then
+		vim.cmd("DiffviewOpen " .. (selection.value or selection[1]))
+	end
+end
+
+local function telescope_git_tags(opts)
+	local pickers = require("telescope.pickers")
+	local finders = require("telescope.finders")
+	local conf = require("telescope.config").values
+	local actions = require("telescope.actions")
+	local action_state = require("telescope.actions.state")
+
+	opts = opts or {}
+
+	local tags = {}
+	for tag in io.popen("git tag --sort=-creatordate"):lines() do
+		table.insert(tags, tag)
+	end
+
+	pickers
+		.new(opts, {
+			prompt_title = "Git Tags",
+			finder = finders.new_table({ results = tags }),
+			sorter = conf.generic_sorter(opts),
+			attach_mappings = function(_, map)
+				local function on_select(prompt_bufnr)
+					local selection = action_state.get_selected_entry(prompt_bufnr)
+					actions.close(prompt_bufnr)
+					open_diffview(selection)
+				end
+				map({ "i", "n" }, "<CR>", on_select)
+				return true
+			end,
+		})
+		:find()
+end
+
+vim.keymap.set("n", "<leader>vD", function()
+	local actions = require("telescope.actions")
+	local action_state = require("telescope.actions.state")
+	local builtin = require("telescope.builtin")
+	local notify = vim.notify or print
+
+	local function open_picker(picker_func, picker_name)
+		if type(picker_func) ~= "function" then
+			notify("Telescope picker '" .. (picker_name or "unknown") .. "' is not available.", vim.log.levels.ERROR)
+			return
+		end
+		picker_func({
+			attach_mappings = function(_, map)
+				local function switch_picker(target_func, name)
+					return function(prompt_bufnr)
+						actions.close(prompt_bufnr)
+						open_picker(target_func, name)
+					end
+				end
+				local function on_select(prompt_bufnr)
+					local selection = action_state.get_selected_entry(prompt_bufnr)
+					actions.close(prompt_bufnr)
+					open_diffview(selection)
+				end
+				map({ "i", "n" }, "<C-b>", switch_picker(builtin.git_branches, "git_branches"))
+				map({ "i", "n" }, "<C-c>", switch_picker(builtin.git_commits, "git_commits"))
+				map({ "i", "n" }, "<C-t>", switch_picker(telescope_git_tags, "git_tags"))
+				map({ "i", "n" }, "<CR>", on_select)
+				return true
+			end,
+		})
+	end
+	open_picker(builtin.git_branches, "git_branches")
+end, { desc = "[V]CS [D]iffview Interactive (Switchable)" })
 
 -- CodeCompanion
-vim.keymap.set({ "n", "v" }, "<leader>ca", "<cmd>CodeCompanionActions<cr>", { desc = "[C]odeCompanion [A]ctions", noremap = true, silent = true })
-vim.keymap.set({ "n", "v" }, "<leader>cc", "<cmd>CodeCompanionChat Toggle<cr>", { desc = "[C]odeCompanion [C]hat", noremap = true, silent = true })
-vim.keymap.set({ "n", "v" }, "<leader>ce", "<cmd>CodeCompanion /explain<cr>", { desc = "[C]odeCompanion [E]xplain",  noremap = true, silent = true })
-vim.keymap.set({ "n", "v" }, "<leader>cf", "<cmd>CodeCompanion /fix<cr>", { desc = "[C]odeCompanion [F]ix",  noremap = true, silent = true })
-vim.keymap.set({ "n", "v" }, "<leader>cv", "<cmd>CodeCompanion /commit<cr>", { desc = "[C]odeCompanion [V]CS Commit Message", noremap = true, silent = true })
+vim.keymap.set(
+	{ "n", "v" },
+	"<leader>ca",
+	"<cmd>CodeCompanionActions<cr>",
+	{ desc = "[C]odeCompanion [A]ctions", noremap = true, silent = true }
+)
+vim.keymap.set(
+	{ "n", "v" },
+	"<leader>cc",
+	"<cmd>CodeCompanionChat Toggle<cr>",
+	{ desc = "[C]odeCompanion [C]hat", noremap = true, silent = true }
+)
+vim.keymap.set(
+	{ "n", "v" },
+	"<leader>ce",
+	"<cmd>CodeCompanion /explain<cr>",
+	{ desc = "[C]odeCompanion [E]xplain", noremap = true, silent = true }
+)
+vim.keymap.set(
+	{ "n", "v" },
+	"<leader>cf",
+	"<cmd>CodeCompanion /fix<cr>",
+	{ desc = "[C]odeCompanion [F]ix", noremap = true, silent = true }
+)
+vim.keymap.set(
+	{ "n", "v" },
+	"<leader>cv",
+	"<cmd>CodeCompanion /commit<cr>",
+	{ desc = "[C]odeCompanion [V]CS Commit Message", noremap = true, silent = true }
+)
 vim.keymap.set("v", "ga", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
