@@ -22,6 +22,7 @@ return {
 		formatters_by_ft = {
 			bash = { "shfmt" },
 			ghaction = { "yamlfmt" },
+			go = { "goimports" },
 			json = { "prettier" },
 			lua = { "stylua" },
 			python = {
@@ -29,7 +30,7 @@ return {
 				"ruff_format",
 				"ruff_organize_imports",
 			},
-			xml = { "xmlfmt", },
+			xml = { "xmlfmt" },
 			yaml = { "yamlfmt" },
 		},
 	},

@@ -14,6 +14,10 @@ return {
 			-- GitHub Actions
 			"gh-actions-language-server",
 			"actionlint",
+			-- Go
+			"gopls",
+			"golangci-lint",
+			"goimports",
 			-- JSON
 			"jsonls",
 			"jsonlint",
