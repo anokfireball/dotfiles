@@ -3,14 +3,12 @@
     "theme": "dracula",
     "share": "manual",
     "autoupdate": false,
-    "model": "github-copilot/gpt-4.1",
-    "small_model": "github-copilot/gpt-4o",
     "mode": {
         "build": {
-            "model": "github-copilot/gpt-4.1"
+            "model": "{env:OPENCODE_MODEL_BUILD}"
         },
         "plan": {
-            "model": "github-copilot/gpt-4o"
+            "model": "{env:OPENCODE_MODEL_PLAN}"
         }
     }
 }
