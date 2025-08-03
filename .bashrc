@@ -119,6 +119,14 @@ if [ -f ~/.binary_check ]; then
     source ~/.binary_check
 fi
 
+# Auto-build pathpicker if binary doesn't exist
+if [ ! -f ~/.local/bin/pathpicker ] && [ -f ~/.local/src/pathpicker.go ]; then
+    if command -v go >/dev/null 2>&1; then
+        echo "Building pathpicker..."
+        go build -o ~/.local/bin/pathpicker ~/.local/src/pathpicker.go
+    fi
+fi
+
 if command -v delta &>/dev/null; then
     eval "$(delta --generate-completion bash)"
     ln -sf ~/.gitconfig_delta ~/.gitconfig_delta_active
