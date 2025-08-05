@@ -153,8 +153,8 @@ export PATH="$HOME/.local/bin:$PATH"
 export VISUAL=vim
 export EDITOR=vim
 export GPG_TTY=$(tty)
-export OPENCODE_MODEL_BUILD="github-copilot/claude-sonnet-4"
-export OPENCODE_MODEL_PLAN="github-copilot/gemini-2.5-pro"
+export OPENCODE_MODEL_BUILD="github-copilot/claude-3.7-sonnet"
+export OPENCODE_MODEL_PLAN="github-copilot/claude-3.7-sonnet-thought"
 
 if [ -f ~/.work/.bashrc ]; then
     source ~/.work/.bashrc
