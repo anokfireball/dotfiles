@@ -32,8 +32,9 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
 })
 
 -- Copilot Completion off by default
-vim.api.nvim_create_autocmd("VimEnter", {
-	callback = function()
-		vim.cmd("Copilot disable")
-	end,
-})
+-- TODO Does not work when LazyLoaded
+-- vim.api.nvim_create_autocmd("VimEnter", {
+-- 	callback = function()
+-- 		vim.cmd("Copilot disable")
+-- 	end,
+-- })

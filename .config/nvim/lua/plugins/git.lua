@@ -2,6 +2,7 @@ return {
 	-- Git signs in the gutter
 	{
 		"lewis6991/gitsigns.nvim",
+		event = "BufReadPre",
 		opts = {
 			current_line_blame = true,
 			current_line_blame_opts = {
@@ -22,6 +23,7 @@ return {
 	-- Git diff view
 	{
 		"sindrets/diffview.nvim",
+		cmd = "DiffviewOpen",
 		opts = {},
 	},
 }

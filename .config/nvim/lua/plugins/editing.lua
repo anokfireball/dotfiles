@@ -2,12 +2,14 @@ return {
 	-- PCRE Regexes
 	{
 		"othree/eregex.vim",
+		event = "CmdlineEnter",
 	},
 
 	-- Auto-pairs
 	{
 		"echasnovski/mini.pairs",
 		version = false,
+		event = "InsertEnter",
 		config = function(ctx)
 			require("mini.pairs").setup(ctx.opts)
 		end,
@@ -17,6 +19,7 @@ return {
 	{
 		"echasnovski/mini.splitjoin",
 		version = false,
+		event = "BufReadPre",
 		opts = {
 			mappings = {
 				toggle = "",
@@ -33,6 +36,7 @@ return {
 	{
 		"echasnovski/mini.surround",
 		version = false,
+		event = "BufReadPre",
 		opts = {
 			mappings = {
 				add = "gsa",
@@ -54,6 +58,7 @@ return {
 	-- AI coding assistant
 	{
 		"olimorris/codecompanion.nvim",
+		event = "VeryLazy",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-treesitter/nvim-treesitter",
@@ -74,4 +79,3 @@ return {
 		},
 	},
 }
-

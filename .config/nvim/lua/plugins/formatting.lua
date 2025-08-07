@@ -2,6 +2,7 @@ return {
 	-- Auto-detect indentation
 	{
 		"NMAC427/guess-indent.nvim",
+		event = "BufReadPre",
 	},
 
 	-- Code formatting

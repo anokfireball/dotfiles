@@ -14,6 +14,7 @@ return {
 	{
 		"echasnovski/mini.cursorword",
 		version = false,
+		event = "BufReadPre",
 		config = function(ctx)
 			require("mini.cursorword").setup(ctx.opts)
 			vim.api.nvim_set_hl(0, "MiniCursorwordCurrent", {})
@@ -24,6 +25,7 @@ return {
 	{
 		"echasnovski/mini.indentscope",
 		version = false,
+		event = "BufReadPre",
 		opts = {
 			draw = {
 				delay = 100,
@@ -45,6 +47,7 @@ return {
 	{
 		"echasnovski/mini.statusline",
 		version = false,
+		event = "VimEnter",
 		opts = { use_icons = vim.g.have_nerd_font },
 		config = function(ctx)
 			local statusline = require("mini.statusline")
@@ -58,7 +61,7 @@ return {
 	-- Comment highlighting
 	{
 		"folke/todo-comments.nvim",
-		event = "VimEnter",
+		event = "BufReadPre",
 		dependencies = { "nvim-lua/plenary.nvim" },
 		opts = { signs = false },
 	},
@@ -104,6 +107,7 @@ return {
 	-- Notifications
 	{
 		"rcarriga/nvim-notify",
+		event = "VimEnter",
 		opts = {
 			fps = 144,
 			minimum_width = 1,
@@ -121,6 +125,7 @@ return {
 	-- Dim inactive windows
 	{
 		"tadaa/vimade",
+		event = "VimEnter",
 		opts = {
 			recipe = { "default", { animate = true } },
 			ncmode = "windows",
