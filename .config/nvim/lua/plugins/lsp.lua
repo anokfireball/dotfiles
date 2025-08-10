@@ -25,6 +25,7 @@ return {
 	-- LSP servers installation and configuration
 	{
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
+		event = "VeryLazy",
 		dependencies = {
 			{ "mason-org/mason-lspconfig.nvim", opts = {} },
 			{ "mason-org/mason.nvim", opts = {} },

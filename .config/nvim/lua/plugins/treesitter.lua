@@ -63,7 +63,67 @@ return {
 				opts = {},
 			},
 		},
-		lazy = false,
+		event = "BufReadPre",
+		init = function()
+			-- Define filetypes to exclude from treesitter
+			vim.api.nvim_create_autocmd("FileType", {
+				callback = function(args)
+					local ft = vim.bo[args.buf].filetype
+					local buftype = vim.bo[args.buf].buftype
+
+					-- Skip special buffer types
+					if buftype ~= "" then
+						return
+					end
+
+					local blacklist = {
+						-- Plain text
+						"txt",
+						"text",
+						"plaintex",
+
+						-- Special UI buffers from plugins
+						"neo-tree",
+						"minifiles",
+						"starter",
+						"WhichKey",
+						"notify",
+						"TelescopePrompt",
+						"TelescopeResults",
+						"TelescopePreview",
+
+						-- Documentation (unless editing)
+						"help",
+						"man",
+						"info",
+
+						-- Git interfaces
+						"git",
+						"fugitive",
+						"gitcommit",
+						"gitrebase",
+						"gitconfig",
+
+						-- Simple configs
+						"dosini",
+						"properties",
+						"conf",
+					}
+
+					if vim.tbl_contains(blacklist, ft) then
+						-- Disable treesitter for this buffer
+						-- Only try to disable if treesitter module is available
+						pcall(function()
+							require("nvim-treesitter.configs").setup({
+								highlight = {
+									enable = false,
+								},
+							})
+						end)
+					end
+				end,
+			})
+		end,
 		branch = "main",
 		opts = {
 			select = {
@@ -72,4 +132,3 @@ return {
 		},
 	},
 }
-
