@@ -109,7 +109,7 @@ Set_diagnostic_severity(vim.g.min_diagnostic_severity)
 
 -- Explicitly set some filetypes
 vim.filetype.add({
-    pattern = {
-        ['.*github/workflows/.*ya?ml'] = 'ghaction',
-    },
+	pattern = {
+		[".*github/workflows/.*ya?ml"] = "ghaction",
+	},
 })

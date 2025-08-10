@@ -35,17 +35,6 @@ vim.keymap.set("n", "<Down>", "<Nop>", { desc = "Disable Down Arrow" })
 vim.keymap.set("n", "<Left>", "<Nop>", { desc = "Disable Left Arrow" })
 vim.keymap.set("n", "<Right>", "<Nop>", { desc = "Disable Right Arrow" })
 
-vim.keymap.set("n", "<leader>E", function()
-	vim.cmd("Neotree toggle")
-end, { desc = "[E]xplorer Tree" })
-
-vim.keymap.set("n", "<leader>e", function()
-	local MiniFiles = require("mini.files")
-	if not MiniFiles.close() then
-		MiniFiles.open(vim.uv.cwd(), true)
-	end
-end, { desc = "[E]xplorer Panes" })
-
 -- Treesitter Keymaps
 local function map_textobject(lhs, textobject, desc)
 	vim.keymap.set({ "x", "o" }, lhs, function()
@@ -257,39 +246,6 @@ vim.keymap.set("n", "<leader>vD", function()
 	open_picker(builtin.git_branches, "git_branches")
 end, { desc = "[V]CS [D]iffview Interactive (Switchable)" })
 
--- CodeCompanion
-vim.keymap.set(
-	{ "n", "v" },
-	"<leader>ca",
-	"<cmd>CodeCompanionActions<cr>",
-	{ desc = "[C]odeCompanion [A]ctions", noremap = true, silent = true }
-)
-vim.keymap.set(
-	{ "n", "v" },
-	"<leader>cc",
-	"<cmd>CodeCompanionChat Toggle<cr>",
-	{ desc = "[C]odeCompanion [C]hat", noremap = true, silent = true }
-)
-vim.keymap.set(
-	{ "n", "v" },
-	"<leader>ce",
-	"<cmd>CodeCompanion /explain<cr>",
-	{ desc = "[C]odeCompanion [E]xplain", noremap = true, silent = true }
-)
-vim.keymap.set(
-	{ "n", "v" },
-	"<leader>cf",
-	"<cmd>CodeCompanion /fix<cr>",
-	{ desc = "[C]odeCompanion [F]ix", noremap = true, silent = true }
-)
-vim.keymap.set(
-	{ "n", "v" },
-	"<leader>cv",
-	"<cmd>CodeCompanion /commit<cr>",
-	{ desc = "[C]odeCompanion [V]CS Commit Message", noremap = true, silent = true }
-)
-vim.keymap.set("v", "ga", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
-
 -- Sessions keymaps (mini.sessions)
 -- Extracted helper functions for better maintainability
 
@@ -353,18 +309,20 @@ local function create_session_picker(action, title)
 			return
 		end
 
-		require("telescope.pickers").new({}, {
-			prompt_title = title,
-			finder = require("telescope.finders").new_table({
-				results = session_list,
-				entry_maker = session_entry_maker,
-			}),
-			sorter = require("telescope.sorters").get_generic_fuzzy_sorter(),
-			attach_mappings = function(prompt_bufnr, _)
-				require("telescope.actions").select_default:replace(handle_session_selection(action))
-				return true
-			end,
-		}):find()
+		require("telescope.pickers")
+			.new({}, {
+				prompt_title = title,
+				finder = require("telescope.finders").new_table({
+					results = session_list,
+					entry_maker = session_entry_maker,
+				}),
+				sorter = require("telescope.sorters").get_generic_fuzzy_sorter(),
+				attach_mappings = function(prompt_bufnr, _)
+					require("telescope.actions").select_default:replace(handle_session_selection(action))
+					return true
+				end,
+			})
+			:find()
 	end
 end
 

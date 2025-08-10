@@ -55,14 +55,38 @@ return {
 		end,
 	},
 
+	-- GitHub Copilot
+	{
+		"github/copilot.vim",
+		event = "InsertEnter",
+	},
+
 	-- AI coding assistant
 	{
 		"olimorris/codecompanion.nvim",
-		event = "VeryLazy",
+		cmd = { "CodeCompanion", "CodeCompanionActions", "CodeCompanionChat" },
+		keys = {
+			{ "<leader>ca", "<cmd>CodeCompanionActions<cr>", mode = { "n", "v" }, desc = "[C]odeCompanion [A]ctions" },
+			{ "<leader>cc", "<cmd>CodeCompanionChat Toggle<cr>", mode = { "n", "v" }, desc = "[C]odeCompanion [C]hat" },
+			{
+				"<leader>ce",
+				"<cmd>CodeCompanion /explain<cr>",
+				mode = { "n", "v" },
+				desc = "[C]odeCompanion [E]xplain",
+			},
+			{ "<leader>cf", "<cmd>CodeCompanion /fix<cr>", mode = { "n", "v" }, desc = "[C]odeCompanion [F]ix" },
+			{
+				"<leader>cv",
+				"<cmd>CodeCompanion /commit<cr>",
+				mode = { "n", "v" },
+				desc = "[C]odeCompanion [V]CS Commit Message",
+			},
+			{ "ga", "<cmd>CodeCompanionChat Add<cr>", mode = "v", desc = "Add to CodeCompanion" },
+		},
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-treesitter/nvim-treesitter",
-			"github/copilot.vim", -- run ":Copilot setup" to get the required token
+			"github/copilot.vim",
 		},
 		opts = {
 			strategies = {

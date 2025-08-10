@@ -3,6 +3,25 @@ return {
 	{
 		"echasnovski/mini.files",
 		version = false,
+		event = function()
+			-- Load when opening a directory
+			if vim.fn.argc() == 1 and vim.fn.isdirectory(vim.fn.argv(0)) == 1 then
+				return "VimEnter"
+			end
+			return false
+		end,
+		keys = {
+			{
+				"<leader>e",
+				function()
+					local MiniFiles = require("mini.files")
+					if not MiniFiles.close() then
+						MiniFiles.open(vim.uv.cwd(), true)
+					end
+				end,
+				desc = "[E]xplorer Panes",
+			},
+		},
 		opts = {
 			options = {
 				use_as_default_explorer = true,
@@ -75,7 +94,17 @@ return {
 			"nvim-tree/nvim-web-devicons",
 			"MunifTanjim/nui.nvim",
 		},
-		lazy = false,
+		event = function()
+			-- Load when opening a directory
+			if vim.fn.argc() == 1 and vim.fn.isdirectory(vim.fn.argv(0)) == 1 then
+				return "VimEnter"
+			end
+			return false
+		end,
+		cmd = { "Neotree" },
+		keys = {
+			{ "<leader>E", "<cmd>Neotree toggle<cr>", desc = "[E]xplorer Tree" },
+		},
 		opts = {
 			close_if_last_window = true,
 			enable_diagnostics = false,
