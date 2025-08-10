@@ -289,3 +289,93 @@ vim.keymap.set(
 	{ desc = "[C]odeCompanion [V]CS Commit Message", noremap = true, silent = true }
 )
 vim.keymap.set("v", "ga", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
+
+-- Sessions keymaps (mini.sessions)
+-- Extracted helper functions for better maintainability
+
+local function get_session_list()
+	local sessions = require("mini.sessions").detected
+	local session_list = {}
+
+	for name, data in pairs(sessions) do
+		table.insert(session_list, {
+			name = name,
+			path = data.path,
+			type = data.type,
+			modify_time = data.modify_time,
+		})
+	end
+
+	-- Sort by most recently modified
+	table.sort(session_list, function(a, b)
+		return a.modify_time > b.modify_time
+	end)
+
+	return session_list
+end
+
+local function session_entry_maker(entry)
+	return {
+		value = entry,
+		display = entry.name .. " (" .. entry.type .. ")",
+		ordinal = entry.name,
+	}
+end
+
+local function handle_session_selection(action)
+	return function()
+		local selection = require("telescope.actions.state").get_selected_entry()
+		require("telescope.actions").close()
+
+		if not selection then
+			return
+		end
+
+		local session_name = selection.value.name
+
+		if action == "read" then
+			require("mini.sessions").read(session_name)
+		elseif action == "delete" then
+			local confirm = vim.fn.input("Delete session '" .. session_name .. "'? (y/N): ")
+			if confirm:lower() == "y" or confirm:lower() == "yes" then
+				require("mini.sessions").delete(session_name)
+			end
+		end
+	end
+end
+
+local function create_session_picker(action, title)
+	return function()
+		local session_list = get_session_list()
+
+		if #session_list == 0 then
+			vim.notify("No sessions found", vim.log.levels.INFO)
+			return
+		end
+
+		require("telescope.pickers").new({}, {
+			prompt_title = title,
+			finder = require("telescope.finders").new_table({
+				results = session_list,
+				entry_maker = session_entry_maker,
+			}),
+			sorter = require("telescope.sorters").get_generic_fuzzy_sorter(),
+			attach_mappings = function(prompt_bufnr, _)
+				require("telescope.actions").select_default:replace(handle_session_selection(action))
+				return true
+			end,
+		}):find()
+	end
+end
+
+local function save_session_with_prompt()
+	local name = vim.fn.input("Save session as: ")
+	if name and name ~= "" then
+		require("mini.sessions").write(name, { force = true })
+	end
+end
+
+-- Session keymaps
+vim.keymap.set("n", "<leader>ss", save_session_with_prompt, { desc = "[S]ession [S]ave" })
+vim.keymap.set("n", "<leader>sl", create_session_picker("read", "Load Session"), { desc = "[S]ession [L]oad" })
+vim.keymap.set("n", "<leader>sd", create_session_picker("delete", "Delete Session"), { desc = "[S]ession [D]elete" })

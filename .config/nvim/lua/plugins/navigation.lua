@@ -3,8 +3,66 @@ return {
 	{
 		"echasnovski/mini.files",
 		version = false,
+		opts = {
+			options = {
+				use_as_default_explorer = true,
+			},
+		},
 		config = function(ctx)
 			require("mini.files").setup(ctx.opts)
+		end,
+	},
+
+	-- Session Management
+	{
+		"echasnovski/mini.sessions",
+		version = false,
+		event = "VeryLazy",
+		opts = {
+			file = "",
+		},
+		config = function(ctx)
+			require("mini.sessions").setup(ctx.opts)
+		end,
+	},
+
+	-- Dashboard
+	{
+		"echasnovski/mini.starter",
+		dependencies = { "echasnovski/mini.sessions" },
+		version = false,
+		event = function()
+			if vim.fn.argc() == 0 then
+				return "VimEnter"
+			end
+		end,
+		config = function(ctx)
+			starter = require("mini.starter")
+			starter.setup({
+				evaluate_single = true,
+				header = "",
+				items = {
+					starter.sections.sessions(),
+					starter.sections.recent_files(nil, nil, false),
+					{ name = "New Buffer", action = "enew", section = "Builtin actions" },
+					{ name = "File Explorer", action = "Neotree", section = "Builtin actions" },
+				},
+				content_hooks = {
+					starter.gen_hook.adding_bullet(),
+					starter.gen_hook.aligning("center", "center"),
+				},
+				footer = "",
+			})
+			vim.cmd("highlight! link MiniStarterCurrent DraculaFgBold")
+			vim.cmd("highlight! link MiniStarterFooter DraculaComment")
+			vim.cmd("highlight! link MiniStarterHeader DraculaCyan")
+			vim.cmd("highlight! link MiniStarterInactive DraculaSubtle")
+			vim.cmd("highlight! link MiniStarterItem DraculaComment")
+			vim.cmd("highlight! link MiniStarterItemBullet DraculaComment")
+			vim.cmd("highlight! link MiniStarterItemPrefix DraculaPink")
+			vim.cmd("highlight! link MiniStarterSection DraculaPurpleBold")
+			vim.cmd("highlight DraculaPinkInverse guifg=#282A36 guibg=#FF79C6 ctermfg=236 ctermbg=212")
+			vim.cmd("highlight! link MiniStarterQuery DraculaPinkInverse")
 		end,
 	},
 
@@ -76,4 +134,3 @@ return {
 		end,
 	},
 }
-
