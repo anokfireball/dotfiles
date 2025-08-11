@@ -12,6 +12,7 @@
 !.inputrc
 !.tmux.conf
 !.wezterm.lua
+!.zshrc
 !.config/
 !.config/borders/
 !.config/borders/bordersrc
@@ -24,6 +25,9 @@
 !.config/opencode/opencode.json
 !.config/sketchybar
 !.config/starship.toml
+!.config/zsh/
+!.config/zsh/modules/
+!.config/zsh/modules/*.zsh
 !.local/
 !.local/bin/
 !.local/bin/xdg-open
