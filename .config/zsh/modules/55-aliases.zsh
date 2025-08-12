@@ -6,7 +6,6 @@ extract() {
     fi
 
     local src="$1" dest="$2"
-    
     case "$src" in
         *.tar.bz2) mkdir -p "$dest"; tar xjf "$src" -C "$dest" ;;
         *.tar.gz)  mkdir -p "$dest"; tar xzf "$src" -C "$dest" ;;
@@ -123,19 +122,39 @@ if command -v rg &>/dev/null; then
 fi
 
 if command -v fzf &>/dev/null && command -v bfs &>/dev/null; then
-    export FZF_COMMAND='bfs . -color -mindepth 1 -exclude ( -name .git ) | sed "s|\./||g" 2>/dev/null'
-    export FZF_DIR_COMMAND='bfs . -color -mindepth 1 -exclude ( -name .git ) -type d | sed "s|\./||g" 2>/dev/null'
-    export FZF_FILE_COMMAND='bfs . -color -mindepth 1 -exclude ( -name .git ) -type f | sed "s|\./||g" 2>/dev/null'
-    export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --ansi --bind 'ctrl-a:reload(eval \"$FZF_COMMAND\"),ctrl-s:reload(eval \"$FZF_DIR_COMMAND\"),ctrl-d:reload(eval \"$FZF_FILE_COMMAND\")'"
-    export FZF_CTRL_T_COMMAND='bfs -color -mindepth 1 -exclude ( -name .git ) -printf %P\n 2>/dev/null'
-    export FZF_ALT_C_COMMAND='bfs -color -mindepth 1 -exclude ( -name .git ) -type d -printf %P\n 2>/dev/null'
+    export FZF_DEFAULT_COMMAND='bfs . -color -mindepth 1 -printf "%P\n" 2>/dev/null'
+    export FZF_RELOAD_DIR_COMMAND='bfs . -color -mindepth 1 -type d -printf "%P\n" 2>/dev/null'
+    export FZF_RELOAD_FILE_COMMAND='bfs . -color -mindepth 1 -type f -printf "%P\n" 2>/dev/null'
+
+    export FZF_LAYOUT="--layout reverse --border"
+    export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
+        --ansi \
+        --prompt 'A> ' \
+        --bind 'ctrl-a:reload(eval \$FZF_DEFAULT_COMMAND)+change-prompt(A> )' \
+        --bind 'ctrl-d:reload(eval \$FZF_RELOAD_DIR_COMMAND)+change-prompt(D> )' \
+        --bind 'ctrl-f:reload(eval \$FZF_RELOAD_FILE_COMMAND)+change-prompt(F> )' \
+        $FZF_LAYOUT"
+    export FZF_CTRL_T_OPTS="--walker file,dir,follow,hidden --walker-skip .git"
+    export FZF_ALT_C_COMMAND=""
 fi
 
-if command -v fzf &>/dev/null && command -v rg &>/dev/null && command -v vim &>/dev/null; then
+if command -v fzf &>/dev/null && command -v rg &>/dev/null && command -v vim &>/dev/null && command -v bat &>/dev/null; then
     vg() {
         local query match file line
         query=${1:-}
-        match=$(rg . --with-filename --line-number --color=always | fzf --query="$query" | cut -d : -f 1-2)
+        match=$(rg . --with-filename --line-number --color=always | \
+            fzf --query="$query" \
+                --layout=reverse-list \
+                --delimiter ':' \
+                --preview '
+                    bat --plain \
+                        --color=always \
+                        --highlight-line={2} \
+                        --paging=never \
+                        {1} 2>/dev/null || cat {1}
+                ' \
+                --preview-window 'right:50%:~3:+{2}-/2' | \
+            cut -d : -f 1-2)
         if [[ -n $match ]]; then
             IFS=: read -r file line <<<"$match"
             vim +"call cursor($line,1)" "$file"

@@ -13,6 +13,9 @@ zcomet load romkatv/powerlevel10k
 zcomet load zsh-users/zsh-completions
 # Replace Menu Selection With fzf Interface
 zcomet load Aloxaf/fzf-tab
+zstyle ':completion:*' menu no
+zstyle ':completion:*:git-checkout:*' sort false
+zstyle ':fzf-tab:*' fzf-flags --layout reverse --border
 # Ghosted Suggestions From History
 zcomet load zsh-users/zsh-autosuggestions
 # Syntax Highlight After Suggestions (Must Load Last)
