@@ -141,20 +141,46 @@ fi
 if command -v fzf &>/dev/null && command -v rg &>/dev/null && command -v vim &>/dev/null && command -v bat &>/dev/null; then
     vg() {
         local query match file line
+        local temp_rg temp_fzf
+
+        temp_rg="/tmp/vg-rg-$$"
+        temp_fzf="/tmp/vg-fzf-$$"
+
+        # Clean up any existing temp files and create fresh ones
+        rm -f "$temp_rg" "$temp_fzf"
+
+        # Initial query setup
         query=${1:-}
-        match=$(rg . --with-filename --line-number --color=always | \
-            fzf --query="$query" \
-                --layout=reverse-list \
-                --delimiter ':' \
-                --preview '
-                    bat --plain \
-                        --color=always \
-                        --highlight-line={2} \
-                        --paging=never \
-                        {1} 2>/dev/null || cat {1}
-                ' \
-                --preview-window 'right:50%:~3:+{2}-/2' | \
+
+        # Save initial query to rg temp file for mode switching
+        echo "$query" > "$temp_rg"
+        echo "" > "$temp_fzf"
+
+        trap 'rm -f "$temp_rg" "$temp_fzf"' EXIT
+
+        RG_PREFIX="rg --column --line-number --no-heading --color=always --smart-case "
+
+        match=$(fzf --ansi --disabled \
+            --bind "start:reload:$RG_PREFIX '$query' 2>/dev/null || true" \
+            --bind "ctrl-r:execute(echo {q} > '$temp_fzf')+transform-query(cat '$temp_rg')+change-prompt(rg> )+disable-search+rebind(change)" \
+            --bind "change:reload:sleep 0.1; $RG_PREFIX {q} 2>/dev/null || true" \
+            --bind "ctrl-f:execute(echo {q} > '$temp_rg')+transform-query(cat '$temp_fzf')+change-prompt(fzf> )+enable-search+unbind(change)" \
+            --prompt 'fzf> ' \
+            --header 'CTRL-R: rg mode / CTRL-F: fzf mode' \
+            --layout=reverse-list \
+            --delimiter ':' \
+            --bind 'ctrl-a:ignore,ctrl-d:ignore' \
+            --color "hl:-1:underline,hl+:-1:underline:reverse" \
+            --preview '
+                bat --plain \
+                    --color=always \
+                    --highlight-line={2} \
+                    --paging=never \
+                    {1} 2>/dev/null || cat {1} 2>/dev/null || echo "Cannot preview file"
+            ' \
+            --preview-window 'right:50%:~3:+{2}-/2' | \
             cut -d : -f 1-2)
+
         if [[ -n $match ]]; then
             IFS=: read -r file line <<<"$match"
             vim +"call cursor($line,1)" "$file"
