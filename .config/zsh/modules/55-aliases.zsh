@@ -125,6 +125,7 @@ if command -v fzf &>/dev/null && command -v bfs &>/dev/null; then
     export FZF_DEFAULT_COMMAND='bfs . -color -mindepth 1 -printf "%P\n" 2>/dev/null'
     export FZF_RELOAD_DIR_COMMAND='bfs . -color -mindepth 1 -type d -printf "%P\n" 2>/dev/null'
     export FZF_RELOAD_FILE_COMMAND='bfs . -color -mindepth 1 -type f -printf "%P\n" 2>/dev/null'
+    export FZF_RELOAD_PARENT_COMMAND='pwd | awk -F/ "{print \"/\"; for(i=2; i<=NF; i++) {path=\"\"; for(j=2; j<=i; j++) path=path\"/\"\$j; print path}}"'
 
     export FZF_LAYOUT="--layout reverse --border"
     export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
@@ -133,6 +134,7 @@ if command -v fzf &>/dev/null && command -v bfs &>/dev/null; then
         --bind 'ctrl-a:reload(eval \$FZF_DEFAULT_COMMAND)+change-prompt(A> )' \
         --bind 'ctrl-d:reload(eval \$FZF_RELOAD_DIR_COMMAND)+change-prompt(D> )' \
         --bind 'ctrl-f:reload(eval \$FZF_RELOAD_FILE_COMMAND)+change-prompt(F> )' \
+        --bind 'ctrl-u:reload(eval \$FZF_RELOAD_PARENT_COMMAND)+change-prompt(U> )' \
         $FZF_LAYOUT"
     export FZF_CTRL_T_OPTS="--walker file,dir,follow,hidden --walker-skip .git"
     export FZF_ALT_C_COMMAND=""
