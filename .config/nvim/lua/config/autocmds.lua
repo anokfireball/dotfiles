@@ -38,3 +38,74 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
 -- 		vim.cmd("Copilot disable")
 -- 	end,
 -- })
+
+-- Remove trailing whitespace and multiple empty lines at EOF on save
+vim.api.nvim_create_autocmd("BufWritePre", {
+	pattern = "*",
+	callback = function()
+		local exclude_ft = {
+			-- Documentation formats where whitespace is meaningful
+			"markdown",
+			"md",
+			"rst",
+			"asciidoc",
+			"adoc",
+			"tex",
+			"latex",
+
+			-- Version control and diffs
+			"diff",
+			"patch",
+			"gitcommit",
+			"gitrebase",
+			"gitconfig",
+			"fugitive",
+			"fugitiveblame",
+
+			-- Special text formats
+			"mail",
+			"eml",
+			"csv",
+			"tsv",
+			"log",
+			"text",
+			"txt",
+
+			-- Binary-ish or special formats
+			"binary",
+			"xxd",
+			"terminal",
+			"toggleterm",
+
+			-- Plugin-specific buffers
+			"TelescopePrompt",
+			"TelescopeResults",
+			"NvimTree",
+			"neo-tree",
+			"help",
+			"man",
+			"qf",
+			"quickfix",
+			"oil",
+
+			-- Language-specific cases
+			"make",
+			"makefile",
+		}
+
+		if vim.tbl_contains(exclude_ft, vim.bo.filetype) then
+			return
+		end
+
+		local save_cursor = vim.fn.getpos(".")
+
+		-- Remove trailing whitespace
+		vim.cmd([[%s/\s\+$//e]])
+
+		-- Reduce multiple empty lines at EOF to at most one
+		vim.cmd([[%s/\n\n\+\%$/\r/e]])
+
+		vim.fn.setpos(".", save_cursor)
+	end,
+	desc = "Remove trailing whitespace and multiple empty lines at EOF",
+})
