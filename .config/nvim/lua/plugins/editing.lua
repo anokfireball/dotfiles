@@ -87,6 +87,7 @@ return {
 			"nvim-lua/plenary.nvim",
 			"nvim-treesitter/nvim-treesitter",
 			"github/copilot.vim",
+			"MeanderingProgrammer/render-markdown.nvim",
 		},
 		opts = {
 			strategies = {

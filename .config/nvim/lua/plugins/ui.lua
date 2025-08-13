@@ -1,5 +1,4 @@
-return {
-	-- Colorscheme
+return { -- Colorscheme
 	{
 		"dracula/vim",
 		name = "dracula",
@@ -7,7 +6,77 @@ return {
 		priority = 1000,
 		config = function()
 			vim.cmd.colorscheme("dracula")
+
+			local heading_colors = {
+				"#FF79C6",
+				"#BD93F9",
+				"#8BE9FD",
+				"#50FA7B",
+				"#FFB86C",
+				"#F1FA8C",
+			}
+
+			for i, color in ipairs(heading_colors) do
+				vim.api.nvim_set_hl(0, "RenderMarkdownH" .. i, { fg = color, bold = true })
+				vim.api.nvim_set_hl(0, "markdownH" .. i, { fg = color, bold = true })
+				vim.api.nvim_set_hl(0, "@markup.heading." .. i .. ".markdown", { fg = color, bold = true })
+			end
+
+			vim.api.nvim_set_hl(0, "RenderMarkdownH1Bg", { bg = "#4A2F3A" })
+			vim.api.nvim_set_hl(0, "RenderMarkdownH2Bg", { bg = "#3A2F4A" })
+			vim.api.nvim_set_hl(0, "RenderMarkdownH3Bg", { bg = "#2F4A4A" })
+			vim.api.nvim_set_hl(0, "RenderMarkdownH4Bg", { bg = "#2F4A2F" })
+			vim.api.nvim_set_hl(0, "RenderMarkdownH5Bg", { bg = "#4A3A2F" })
+			vim.api.nvim_set_hl(0, "RenderMarkdownH6Bg", { bg = "#4A4A2F" })
 		end,
+	},
+
+	-- Rendered markdown in TUI
+	{
+		"MeanderingProgrammer/render-markdown.nvim",
+		dependencies = {
+			"nvim-tree/nvim-web-devicons",
+		},
+		ft = { "markdown", "codecompanion" },
+		opts = {
+			heading = {
+				sign = false,
+				border = true,
+				border_virtual = true,
+			},
+			code = {
+				sign = false,
+			},
+			pipe_table = {
+				cell = "trimmed",
+			},
+			checkbox = {
+				checked = {
+					scope_highlight = "@markup.strikethrough",
+				},
+			},
+			completions = {
+				lsp = {
+					enabled = true,
+				},
+			},
+			html = {
+				enabled = true,
+				tag = {
+					buf = { icon = " ", highlight = "CodeCompanionChatVariable" },
+					file = { icon = " ", highlight = "CodeCompanionChatVariable" },
+					help = { icon = "󰘥 ", highlight = "CodeCompanionChatVariable" },
+					image = { icon = " ", highlight = "CodeCompanionChatVariable" },
+					symbols = { icon = " ", highlight = "CodeCompanionChatVariable" },
+					url = { icon = "󰖟 ", highlight = "CodeCompanionChatVariable" },
+					var = { icon = " ", highlight = "CodeCompanionChatVariable" },
+					tool = { icon = " ", highlight = "CodeCompanionChatTool" },
+					user_prompt = { icon = " ", highlight = "CodeCompanionChatTool" },
+					user = { icon = " ", highlight = "CodeCompanionChatTool" },
+					group = { icon = " ", highlight = "CodeCompanionChatToolGroup" },
+				},
+			},
+		},
 	},
 
 	-- Highlight word under cursor
