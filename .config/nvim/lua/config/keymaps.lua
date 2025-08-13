@@ -71,6 +71,9 @@ vim.keymap.set("n", "<leader>fn", function()
 end, { desc = "[F]ind [N]otifications" })
 
 -- Toggles
+ vim.keymap.set("n", "<leader>nd", function()
+ 	require("notify").dismiss()
+ end, { desc = "[N]otification [D]ismiss" })
 vim.keymap.set("n", "<leader>td", function()
 	if vim.g.min_diagnostic_severity == vim.diagnostic.severity.ERROR then
 		vim.g.min_diagnostic_severity = vim.diagnostic.severity.HINT

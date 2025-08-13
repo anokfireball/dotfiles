@@ -151,7 +151,9 @@ return { -- Colorscheme
 				{ "<leader>", group = "leader" },
 				{ "<leader>c", mode = { "n", "v" }, group = "[C]odeCompanion" },
 				{ "<leader>f", group = "[F]ind" },
+				{ "<leader>n", group = "[N]otifications" },
 				{ "<leader>t", group = "[T]oggle" },
+				{ "<leader>s", group = "[S]ession" },
 				{ "<leader>v", group = "[V]CS" },
 
 				{ "gs", mode = { "n", "v" }, group = "[S]urround" },
