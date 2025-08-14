@@ -23,6 +23,8 @@
 !.config/nvim/**/*
 !.config/opencode/
 !.config/opencode/opencode.json
+!.config/opencode/prompts/
+!.config/opencode/prompts/*.txt
 !.config/sketchybar
 !.config/starship.toml
 !.config/zsh/

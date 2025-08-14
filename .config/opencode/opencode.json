@@ -1,14 +1,63 @@
 {
-    "$schema": "https://opencode.ai/config.json",
-    "theme": "dracula",
-    "share": "manual",
-    "autoupdate": false,
-    "mode": {
-        "build": {
-            "model": "{env:OPENCODE_MODEL_BUILD}"
-        },
-        "plan": {
-            "model": "{env:OPENCODE_MODEL_PLAN}"
-        }
+  "$schema": "https://opencode.ai/config.json",
+  "theme": "dracula",
+  "share": "manual",
+  "autoupdate": false,
+  "mode": {
+    "build": {
+      "model": "{env:OPENCODE_MODEL_BUILD}"
+    },
+    "plan": {
+      "model": "{env:OPENCODE_MODEL_PLAN}"
+    },
+    "review": {
+      "model": "{env:OPENCODE_MODEL_REVIEW}"
     }
+  },
+  "agent": {
+    "review": {
+      "description": "Performs in-depth code reviews focusing on correctness, security, maintainability, and architecture",
+      "mode": "primary",
+      "temperature": 0.1,
+      "tools": {
+        "bash": true,
+        "edit": false,
+        "write": false,
+        "read": true,
+        "grep": true,
+        "glob": true,
+        "list": true,
+        "patch": false,
+        "todowrite": true,
+        "todoread": true,
+        "webfetch": true
+      },
+      "permission": {
+        "edit": "deny"
+      },
+      "prompt": "{file:./prompts/code-review.txt}"
+    }
+  },
+  "permission": {
+    "edit": "ask",
+    "bash": {
+      "cat": "allow",
+      "diff": "allow",
+      "echo": "allow",
+      "find": "allow",
+      "grep": "allow",
+      "head": "allow",
+      "ls": "allow",
+      "pwd": "allow",
+      "tail": "allow",
+      "git diff": "allow",
+      "git log": "allow",
+      "git show": "allow",
+      "git status": "allow",
+      "git add": "deny",
+      "git commit": "deny",
+      "*": "ask"
+    },
+    "webfetch": "ask"
+  }
 }

@@ -10,3 +10,4 @@ export GPG_TTY=$(tty)
 
 export OPENCODE_MODEL_BUILD="github-copilot/claude-sonnet-4"
 export OPENCODE_MODEL_PLAN="github-copilot/claude-3.7-sonnet"
+export OPENCODE_MODEL_REVIEW="github-copilot/gemini-2.5-pro"
