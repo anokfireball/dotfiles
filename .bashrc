@@ -119,11 +119,14 @@ if [ -f ~/.binary_check ]; then
     source ~/.binary_check
 fi
 
-# Auto-build pathpicker if binary doesn't exist
-if [ ! -f ~/.local/bin/pathpicker ] && [ -f ~/.local/src/pathpicker.go ]; then
+if [ ! -f ~/.local/bin/pathpicker ] && [ -f ~/.local/src/pathpicker/main.go ]; then
     if command -v go >/dev/null 2>&1; then
-        echo "Building pathpicker..."
-        go build -o ~/.local/bin/pathpicker ~/.local/src/pathpicker.go
+        go build -o ~/.local/bin/pathpicker ~/.local/src/pathpicker
+    fi
+fi
+if [ ! -f ~/.local/bin/urlpicker ] && [ -d ~/.local/src/urlpicker ]; then
+    if command -v go >/dev/null 2>&1; then
+        cd ~/.local/src/urlpicker && go build -o ~/.local/bin/urlpicker .
     fi
 fi
 

@@ -61,7 +61,7 @@
         "bash": {
           "mkdir": "allow",
           "*": "ask"
-        },
+        }
       },
       "prompt": "{file:./prompts/ticket.txt}"
     }

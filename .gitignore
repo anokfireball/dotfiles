@@ -34,7 +34,7 @@
 !.local/bin/
 !.local/bin/xdg-open
 !.local/src/
-!.local/src/pathpicker.go
+!.local/src/**/*.go
 !.ssh/
 !.ssh/config
 !.ssh/config.d/.gitkeep
