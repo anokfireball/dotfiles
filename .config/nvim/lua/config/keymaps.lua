@@ -71,9 +71,9 @@ vim.keymap.set("n", "<leader>fn", function()
 end, { desc = "[F]ind [N]otifications" })
 
 -- Toggles
- vim.keymap.set("n", "<leader>nd", function()
- 	require("notify").dismiss()
- end, { desc = "[N]otification [D]ismiss" })
+vim.keymap.set("n", "<leader>nd", function()
+	require("notify").dismiss()
+end, { desc = "[N]otification [D]ismiss" })
 vim.keymap.set("n", "<leader>td", function()
 	if vim.g.min_diagnostic_severity == vim.diagnostic.severity.ERROR then
 		vim.g.min_diagnostic_severity = vim.diagnostic.severity.HINT
@@ -172,6 +172,9 @@ GitSignsOnAttach = function(bufnr)
 	-- Text object
 	map_gitsigns({ "o", "x" }, "ih", gitsigns.select_hunk, "[V]CS [I]nner Hunk")
 end
+vim.keymap.set({ "n", "v" }, "<leader>vl", function()
+	vim.cmd("GitPortal copy_link_to_clipboard")
+end, { desc = "[V]CS Copy [L]ink To Clipboard" })
 vim.keymap.set("n", "<leader>vd", function()
 	vim.cmd("DiffviewOpen")
 end, { desc = "[V]CS [D]iffview" })
@@ -248,9 +251,6 @@ vim.keymap.set("n", "<leader>vD", function()
 	end
 	open_picker(builtin.git_branches, "git_branches")
 end, { desc = "[V]CS [D]iffview Interactive (Switchable)" })
-
--- Sessions keymaps (mini.sessions)
--- Extracted helper functions for better maintainability
 
 local function get_session_list()
 	local sessions = require("mini.sessions").detected

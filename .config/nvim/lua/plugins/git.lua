@@ -24,6 +24,15 @@ return {
 	{
 		"sindrets/diffview.nvim",
 		cmd = "DiffviewOpen",
-		opts = {},
 	},
+
+    -- Create shareable permalinks to code locations
+    {
+        'trevorhauter/gitportal.nvim',
+        cmd = "GitPortal",
+        opts = {
+            always_include_current_line = true,
+            switch_branch_or_commit_upon_ingestion = "ask",
+        }
+    }
 }
