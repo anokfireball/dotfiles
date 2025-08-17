@@ -1,4 +1,5 @@
-return { -- Colorscheme
+return {
+	-- Colorscheme
 	{
 		"dracula/vim",
 		name = "dracula",
@@ -117,7 +118,9 @@ return { -- Colorscheme
 		"echasnovski/mini.statusline",
 		version = false,
 		event = "VimEnter",
-		opts = { use_icons = vim.g.have_nerd_font },
+		opts = {
+			use_icons = vim.g.have_nerd_font,
+		},
 		config = function(ctx)
 			local statusline = require("mini.statusline")
 			statusline.setup(ctx.opts)
@@ -130,9 +133,11 @@ return { -- Colorscheme
 	-- Comment highlighting
 	{
 		"folke/todo-comments.nvim",
-		event = "BufReadPre",
 		dependencies = { "nvim-lua/plenary.nvim" },
-		opts = { signs = false },
+		event = "BufReadPre",
+		opts = {
+			signs = false,
+		},
 	},
 
 	-- Keybinding display
@@ -175,6 +180,30 @@ return { -- Colorscheme
 		},
 	},
 
+	-- Hightlight whitespace in visual selections
+	{
+		"mcauley-penney/visual-whitespace.nvim",
+		event = "ModeChanged *:[vV\22]",
+		opts = {
+			list_chars = {
+				space = vim.opt.listchars:get().space,
+				tab = vim.opt.listchars:get().tab,
+				nbsp = vim.opt.listchars:get().nbsp,
+			},
+			ignore = {
+				filetypes = {
+					"minifiles",
+					"neo-tree",
+					"codecompanion",
+				},
+			},
+		},
+		config = function(ctx)
+			require("visual-whitespace").setup(ctx.opts)
+			vim.api.nvim_set_hl(0, "VisualNonText", { fg = "#6272a4", bg = "#44475a" })
+		end,
+	},
+
 	-- Notifications
 	{
 		"rcarriga/nvim-notify",
@@ -186,6 +215,7 @@ return { -- Colorscheme
 			stages = "fade",
 			timeout = 5000,
 			top_down = true,
+			background_colour = "Normal",
 		},
 		config = function(ctx)
 			require("notify").setup(ctx.opts)
@@ -193,14 +223,32 @@ return { -- Colorscheme
 		end,
 	},
 
+	-- Display relative line numbers only in modes where it makes sense
+	{
+		"sitiom/nvim-numbertoggle",
+		event = {
+			"BufEnter",
+			"FocusGained",
+			"InsertLeave",
+			"CmdlineLeave",
+			"WinEnter",
+			"BufLeave",
+			"FocusLost",
+			"InsertEnter",
+			"CmdlineEnter",
+			"WinLeave",
+		},
+	},
+
 	-- Dim inactive windows
 	{
 		"tadaa/vimade",
-		event = "VimEnter",
+		event = "VeryLazy",
 		opts = {
 			recipe = { "default", { animate = true } },
 			ncmode = "windows",
 			fadelevel = 0.5,
+			enablefocusfading = true,
 		},
 	},
 }

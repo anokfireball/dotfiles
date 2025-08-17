@@ -121,10 +121,10 @@ fi
 
 if [ ! -f ~/.local/bin/pathpicker ] && [ -f ~/.local/src/pathpicker/main.go ]; then
     if command -v go >/dev/null 2>&1; then
-        go build -o ~/.local/bin/pathpicker ~/.local/src/pathpicker
+        cd ~/.local/src/pathpicker && go build -o ~/.local/bin/pathpicker .
     fi
 fi
-if [ ! -f ~/.local/bin/urlpicker ] && [ -d ~/.local/src/urlpicker ]; then
+if [ ! -f ~/.local/bin/urlpicker ] && [ -f ~/.local/src/urlpicker/main.go ]; then
     if command -v go >/dev/null 2>&1; then
         cd ~/.local/src/urlpicker && go build -o ~/.local/bin/urlpicker .
     fi
