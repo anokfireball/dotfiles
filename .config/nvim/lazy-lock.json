@@ -5,7 +5,7 @@
   "codecompanion.nvim": { "branch": "main", "commit": "bc5ec92b5f4b8542150a6ae2e77422ec50f440a1" },
   "colorful-menu.nvim": { "branch": "master", "commit": "bc3e82609f2fcf7dad7ca87c20e65e51d5d9d87c" },
   "conform.nvim": { "branch": "master", "commit": "973f3cb73887d510321653044791d7937c7ec0fa" },
-  "copilot.vim": { "branch": "release", "commit": "f3d66c148aa60ad04c0a21d3e0a776459de09eb2" },
+  "copilot.lua": { "branch": "master", "commit": "3fd7b50810ae4cccf8b38e4c509b1608f141a9e9" },
   "diffview.nvim": { "branch": "main", "commit": "4516612fe98ff56ae0415a259ff6361a89419b0a" },
   "dracula": { "branch": "master", "commit": "d4b0823100c702af127cba8dd5595a8f599041ec" },
   "eregex.vim": { "branch": "master", "commit": "950027d5942c7dc5f4cbcfdea7df360da9360697" },

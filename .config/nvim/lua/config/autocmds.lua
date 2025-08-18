@@ -31,13 +31,20 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
 	end,
 })
 
--- Copilot Completion off by default
--- TODO Does not work when LazyLoaded
--- vim.api.nvim_create_autocmd("VimEnter", {
--- 	callback = function()
--- 		vim.cmd("Copilot disable")
--- 	end,
--- })
+-- Proper interactiion between Copilot and Blink
+vim.api.nvim_create_autocmd("User", {
+	pattern = "BlinkCmpMenuOpen",
+	callback = function()
+		vim.b.copilot_suggestion_hidden = true
+		require("copilot.suggestion").dismiss()
+	end,
+})
+vim.api.nvim_create_autocmd("User", {
+	pattern = "BlinkCmpMenuClose",
+	callback = function()
+		vim.b.copilot_suggestion_hidden = false
+	end,
+})
 
 -- Remove trailing whitespace and multiple empty lines at EOF on save
 vim.api.nvim_create_autocmd("BufWritePre", {

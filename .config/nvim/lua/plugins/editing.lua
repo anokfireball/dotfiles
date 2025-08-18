@@ -57,8 +57,25 @@ return {
 
 	-- GitHub Copilot
 	{
-		"github/copilot.vim",
+		"zbirenbaum/copilot.lua",
+		cmd = "Copilot",
 		event = "InsertEnter",
+		opts = {
+			panel = {
+				enabled = false,
+			},
+			suggestion = {
+				enabled = not vim.g.ai_cmp,
+				auto_trigger = true,
+				hide_during_completion = vim.g.ai_cmp,
+				keymap = {
+					accept = false,
+					accept_word = "<S-Right>",
+					next = "<C-n>",
+					prev = "<C-p>",
+				},
+			},
+		},
 	},
 
 	-- AI coding assistant
@@ -86,7 +103,7 @@ return {
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-treesitter/nvim-treesitter",
-			"github/copilot.vim",
+			"zbirenbaum/copilot.lua",
 			"MeanderingProgrammer/render-markdown.nvim",
 		},
 		opts = {

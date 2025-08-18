@@ -29,6 +29,29 @@ vim.keymap.set("n", "<C-Up>", "<cmd>resize +1<CR>", { desc = "Increase window he
 vim.keymap.set("n", "<C-Down>", "<cmd>resize -1<CR>", { desc = "Decrease window height by 1" })
 vim.keymap.set("n", "<C-Left>", "<cmd>vertical resize -1<CR>", { desc = "Decrease window width by 1" })
 vim.keymap.set("n", "<C-Right>", "<cmd>vertical resize +1<CR>", { desc = "Increase window width by 1" })
+-- Smart Right key for insert mode (Blink vs Copilot)
+vim.keymap.set("i", "<Right>", function()
+	if require("blink.cmp").is_visible() then
+		return require("blink.cmp").accept()
+	else
+		return require("copilot.suggestion").accept()
+	end
+end, { expr = true, desc = "Accept completion/suggestion" })
+vim.keymap.set("i", "<Down>", function()
+	if require("blink.cmp").is_visible() then
+		return require("blink.cmp").select_next()
+	else
+		return require("copilot.suggestion").next()
+	end
+end, { expr = true, desc = "Next completion/suggestion" })
+vim.keymap.set("i", "<Up>", function()
+	if require("blink.cmp").is_visible() then
+		return require("blink.cmp").select_prev()
+	else
+		return require("copilot.suggestion").prev()
+	end
+end, { expr = true, desc = "Previous completion/suggestion" })
+
 -- Unmap arrow keys
 vim.keymap.set("n", "<Up>", "<Nop>", { desc = "Disable Up Arrow" })
 vim.keymap.set("n", "<Down>", "<Nop>", { desc = "Disable Down Arrow" })
