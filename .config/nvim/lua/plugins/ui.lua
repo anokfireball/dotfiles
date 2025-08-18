@@ -243,12 +243,60 @@ return {
 	-- Dim inactive windows
 	{
 		"tadaa/vimade",
-		event = "VeryLazy",
+		event = "VimEnter",
 		opts = {
 			recipe = { "default", { animate = true } },
 			ncmode = "windows",
 			fadelevel = 0.5,
 			enablefocusfading = true,
 		},
+	},
+
+    -- Smarter folding
+	{
+		"kevinhwang91/nvim-ufo",
+		dependencies = "kevinhwang91/promise-async",
+		config = function()
+			require("ufo").setup({
+				provider_selector = function(bufnr, filetype, buftype)
+					if buftype ~= "" then
+						return ""
+					end
+
+					if not filetype or filetype == "" then
+						return ""
+					end
+
+					local has_lsp_folding = false
+					for _, client in pairs(vim.lsp.get_active_clients({ bufnr = bufnr })) do
+						if client.server_capabilities and client.server_capabilities.foldingRangeProvider then
+							has_lsp_folding = true
+							break
+						end
+					end
+
+					local has_treesitter = false
+					local ok, parsers = pcall(require, "nvim-treesitter.parsers")
+					if ok and parsers then
+						if type(parsers.has_parser) == "function" then
+							has_treesitter = parsers.has_parser(filetype)
+						else
+							local parser_ok = pcall(vim.treesitter.get_parser, bufnr)
+							has_treesitter = parser_ok
+						end
+					end
+
+					if has_lsp_folding and has_treesitter then
+						return { "lsp", "treesitter" }
+					elseif has_lsp_folding then
+						return { "lsp", "indent" }
+					elseif has_treesitter then
+						return { "treesitter", "indent" }
+					else
+						return ""
+					end
+				end,
+			})
+		end,
 	},
 }
