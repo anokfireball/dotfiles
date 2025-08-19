@@ -1,0 +1,63 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jesseduffield/lazygit/master/schema/config.json
+gui:
+  theme:
+    activeBorderColor:
+      - "#bd93f9"
+      - bold
+    inactiveBorderColor:
+      - "#6272a4"
+    searchingActiveBorderColor:
+      - "#8be9fd"
+      - bold
+    optionsTextColor:
+      - "#8be9fd"
+    selectedLineBgColor:
+      - "#44475a"
+    inactiveViewSelectedLineBgColor:
+      - "#3c3f51"
+    cherryPickedCommitFgColor:
+      - "#8be9fd"
+    cherryPickedCommitBgColor:
+      - "#44475a"
+    markedBaseCommitFgColor:
+      - "#ffb86c"
+    markedBaseCommitBgColor:
+      - "#44475a"
+    unstagedChangesColor:
+      - "#ff5555"
+    defaultFgColor:
+      - "#f8f8f2"
+  showNumstatInFilesView: true
+  nerdFontsVersion: "3"
+  showBranchCommitHash: true
+  showDivergenceFromBaseBranch: arrowAndNumber
+  filterMode: fuzzy
+
+git:
+  paging:
+    pager: "delta --dark --paging=never --features=Dracula"
+  merging:
+    args: "--no-ff"
+  mainBranches:
+    - master
+    - main
+    - develop
+    - stable/*
+  autoForwardBranches: allBranches
+  parseEmoji: true
+  localBranchSortOrder: recency
+
+update:
+  method: never
+
+os:
+  editPreset: "nvim"
+  editInTerminal: true
+  open: "xdg-open {{filename}}"
+  openLink: "xdg-open {{link}}"
+  copyToClipboardCmd: >
+    if [[ "$TERM" =~ ^(screen|tmux) ]]; then
+      printf "\033Ptmux;\033\033]52;c;$(printf {{text}} | base64 -w 0)\a\033\\" > /dev/tty
+    else
+      printf "\033]52;c;$(printf {{text}} | base64 -w 0)\a" > /dev/tty
+    fi

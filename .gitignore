@@ -19,6 +19,8 @@
 !.config/Code/User/settings.json
 !.config/karabiner/
 !.config/karabiner/karabiner.json
+!.config/lazygit/
+!.config/lazygit/config.yml
 !.config/nvim/
 !.config/nvim/**/*
 !.config/opencode/
