@@ -224,6 +224,7 @@ fi
 
 if command -v nvim &>/dev/null; then
     alias v='nvim'
+    alias vimdiff='nvim -d'
 
     ln -sf "$(command -v nvim)" "$HOME/.local/bin/vi"
     ln -sf "$(command -v nvim)" "$HOME/.local/bin/vim"

@@ -290,6 +290,7 @@ if command -v nvim &>/dev/null; then
   ln -sf $(command -v nvim) ~/.local/bin/vim
 
   alias v='nvim'
+  alias vimdiff='nvim -d'
 fi
 
 if command -v rg &>/dev/null; then
