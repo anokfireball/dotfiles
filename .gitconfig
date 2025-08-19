@@ -1,18 +1,45 @@
 [user]
 	email = github@kthxbye.cyou
 	name = Fabian Koller
+[core]
+	compression = 9
+
 [init]
 	defaultBranch = main
+
+[branch]
+	sort = -committerdate
+[tag]
+	sort = -version:refname
+
 [pull]
 	rebase = true
+[push]
+	default = simple
+	autoSetupRemote = true
+	followTags = true
+
 [rebase]
 	autoStash = true
 	autoSquash = true
 	updateRefs = true
 [merge]
-	conflictstyle = diff3
+	conflictstyle = zdiff3
+
 [diff]
 	colorMoved = default
+	algorithm = histogram
+	mnemonicPrefix = true
+	renames = true
+[column]
+	ui = auto
+
+[rerere]
+	enabled = true
+	autoupdate = true
+[maintenance]
+	auto = true
+	strategy = incremental
 
 [includeIf "gitdir:~/"]
 	path = ~/.gitalias
@@ -20,3 +47,4 @@
 
 [includeIf "gitdir:~/.work/"]
 	path = ~/.work/.gitconfig
+
