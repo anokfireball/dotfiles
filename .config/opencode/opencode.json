@@ -10,6 +10,9 @@
     "plan": {
       "model": "{env:OPENCODE_MODEL_PLAN}"
     },
+    "research": {
+      "model": "{env:OPENCODE_MODEL_RESEARCH}"
+    },
     "review": {
       "model": "{env:OPENCODE_MODEL_REVIEW}"
     },
@@ -18,6 +21,29 @@
     }
   },
   "agent": {
+    "research": {
+      "description": "Performs comprehensive research and analysis to answer questions about code, tools, frameworks, and project structure",
+      "mode": "primary",
+      "temperature": 0.0,
+      "tools": {
+        "bash": true,
+        "edit": false,
+        "write": false,
+        "read": true,
+        "grep": true,
+        "glob": true,
+        "list": true,
+        "patch": false,
+        "todowrite": true,
+        "todoread": true,
+        "webfetch": true
+      },
+      "permission": {
+        "edit": "deny",
+        "webfetch": "allow"
+      },
+      "prompt": "{file:./prompts/research.txt}"
+    },
     "review": {
       "description": "Performs in-depth code reviews focusing on correctness, security, maintainability, and architecture",
       "mode": "primary",
@@ -59,7 +85,7 @@
       },
       "permission": {
         "bash": {
-          "mkdir": "allow",
+          "mkdir *": "allow",
           "*": "ask"
         }
       },
@@ -67,25 +93,25 @@
     }
   },
   "permission": {
-    "edit": "ask",
     "bash": {
-      "cat": "allow",
-      "diff": "allow",
-      "echo": "allow",
-      "find": "allow",
-      "grep": "allow",
-      "head": "allow",
-      "ls": "allow",
+      "cat *": "allow",
+      "diff *": "allow",
+      "echo *": "allow",
+      "find *": "allow",
+      "grep *": "allow",
+      "head *": "allow",
+      "ls *": "allow",
       "pwd": "allow",
-      "tail": "allow",
-      "git diff": "allow",
-      "git log": "allow",
-      "git show": "allow",
-      "git status": "allow",
-      "git add": "deny",
+      "tail *": "allow",
+      "git diff *": "allow",
+      "git log *": "allow",
+      "git show *": "allow",
+      "git status *": "allow",
+      "git add *": "deny",
       "git commit": "deny",
       "*": "ask"
     },
+    "edit": "ask",
     "webfetch": "ask"
   }
 }
