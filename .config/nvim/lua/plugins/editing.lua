@@ -10,6 +10,17 @@ return {
 		"echasnovski/mini.pairs",
 		version = false,
 		event = "InsertEnter",
+		opts = {
+			mappings = {
+				["("] = { action = "open", pair = "()", neigh_pattern = "[^\\][%p%s]" },
+				["["] = { action = "open", pair = "[]", neigh_pattern = "[^\\][%p%s]" },
+				["{"] = { action = "open", pair = "{}", neigh_pattern = "[^\\][%p%s]" },
+
+				['"'] = { action = "closeopen", pair = '""', neigh_pattern = "[^\\][%p%s]", register = { cr = false } },
+				["'"] = { action = "closeopen", pair = "''", neigh_pattern = "[^%a\\][%p%s]", register = { cr = false } },
+				["`"] = { action = "closeopen", pair = "``", neigh_pattern = "[^\\][%p%s]", register = { cr = false } },
+			},
+		},
 		config = function(ctx)
 			require("mini.pairs").setup(ctx.opts)
 		end,
