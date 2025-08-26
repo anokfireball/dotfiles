@@ -15,9 +15,6 @@
     },
     "review": {
       "model": "{env:OPENCODE_MODEL_REVIEW}"
-    },
-    "ticket": {
-      "model": "{env:OPENCODE_MODEL_TICKET}"
     }
   },
   "agent": {
@@ -68,7 +65,8 @@
     },
     "ticket": {
       "description": "Generates well-structured ticket files from epic descriptions and tasks",
-      "mode": "primary",
+      "model": "{env:OPENCODE_MODEL_TICKET}",
+      "mode": "subagent",
       "temperature": 0.2,
       "tools": {
         "bash": true,
@@ -93,8 +91,8 @@
     },
     "docs": {
       "description": "Creates comprehensive documentation including inline code comments, API docs, and architectural overviews",
-      "mode": "primary",
       "model": "{env:OPENCODE_MODEL_DOCS}",
+      "mode": "subagent",
       "temperature": 0.2,
       "tools": {
         "bash": true,
@@ -119,9 +117,35 @@
           "cp *.md *": "allow",
           "mv *.md *": "allow",
           "*": "ask"
-        },
+        }
       },
       "prompt": "{file:./prompts/docs.txt}"
+    },
+    "test": {
+      "description": "Analyzes codebases to design appropriate test strategies, reasons about test necessity and type selection, and implements comprehensive test suites following language-specific best practices",
+      "model": "{env:OPENCODE_MODEL_TEST}",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "tools": {
+        "bash": true,
+        "edit": true,
+        "write": true,
+        "read": true,
+        "grep": true,
+        "glob": true,
+        "list": true,
+        "patch": true,
+        "todowrite": true,
+        "todoread": true,
+        "webfetch": true
+      },
+      "permission": {
+        "bash": {
+          "mkdir *": "allow",
+          "*": "ask"
+        }
+      },
+      "prompt": "{file:./prompts/test.txt}"
     }
   },
   "permission": {
