@@ -90,6 +90,38 @@
         }
       },
       "prompt": "{file:./prompts/ticket.txt}"
+    },
+    "docs": {
+      "description": "Creates comprehensive documentation including inline code comments, API docs, and architectural overviews",
+      "mode": "primary",
+      "model": "{env:OPENCODE_MODEL_DOCS}",
+      "temperature": 0.2,
+      "tools": {
+        "bash": true,
+        "edit": true,
+        "write": true,
+        "read": true,
+        "grep": true,
+        "glob": true,
+        "list": true,
+        "patch": true,
+        "todowrite": true,
+        "todoread": true,
+        "webfetch": true
+      },
+      "permission": {
+        "bash": {
+          "mkdir docs": "allow",
+          "mkdir docs/*": "allow",
+          "touch *.md": "allow",
+          "touch docs/*.md": "allow",
+          "touch *.rst": "allow",
+          "cp *.md *": "allow",
+          "mv *.md *": "allow",
+          "*": "ask"
+        },
+      },
+      "prompt": "{file:./prompts/docs.txt}"
     }
   },
   "permission": {
