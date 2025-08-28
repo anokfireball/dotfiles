@@ -1,4 +1,310 @@
 return {
+	-- Buffer line (with tabpage integration)
+	{
+		"akinsho/bufferline.nvim",
+		dependencies = "nvim-tree/nvim-web-devicons",
+		event = "BufReadPre",
+		opts = {
+			options = {
+				numbers = function(opts)
+					return string.format(' %s', opts.ordinal)
+				end,
+				indicator = {
+					icon = "",
+					style = "none",
+				},
+				show_buffer_icons = true,
+				show_buffer_close_icons = false,
+				show_close_icon = false,
+				persist_buffer_sort = true,
+				enforce_regular_tabs = false,
+				separator_style = { '', '' },
+				tab_size = 1,
+				show_duplicate_prefix = true,
+				custom_areas = {
+					left = function()
+						local buf_count = 0
+
+						local ok, buffers = pcall(function()
+							return vim.tbl_filter(function(buf)
+								return vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].buflisted
+							end, vim.api.nvim_list_bufs())
+						end)
+
+						if ok then
+							buf_count = #buffers
+						else
+							buf_count = math.max(1, #vim.fn.getbufinfo({buflisted = 1}))
+						end
+
+						local screen_width = vim.o.columns
+                        -- TODO should get actual content width instead of guesstimating
+						local avg_tab_width = 20
+						local total_content_width = math.min(buf_count * avg_tab_width, screen_width * 0.7)
+
+						local padding_size = math.max(0, math.floor((screen_width - total_content_width) / 2))
+
+						return {
+							{ text = string.rep(" ", padding_size), link = "BufferLineFill" }
+						}
+					end,
+				},
+			},
+			highlights = {
+				fill = {
+					bg = "#343746",
+				},
+				background = {
+					fg = "#6272a4",
+					bg = "#343746",
+				},
+				tab = {
+					fg = "#6272a4",
+					bg = "#343746",
+				},
+				tab_selected = {
+					fg = "#f8f8f2",
+					bg = "#6272a4",
+					bold = true,
+				},
+				tab_close = {
+					fg = "#6272a4",
+					bg = "#343746",
+				},
+				close_button = {
+					fg = "#6272a4",
+					bg = "#343746",
+				},
+				close_button_visible = {
+					fg = "#6272a4",
+					bg = "#343746",
+				},
+				close_button_selected = {
+					fg = "#f8f8f2",
+					bg = "#6272a4",
+				},
+				buffer_visible = {
+					fg = "#6272a4",
+					bg = "#343746",
+				},
+				buffer_selected = {
+					fg = "#f8f8f2",
+					bg = "#6272a4",
+					bold = true,
+					italic = false,
+				},
+				numbers = {
+					fg = "#6272a4",
+					bg = "#343746",
+					bold = true,
+					italic = false,
+				},
+				numbers_visible = {
+					fg = "#6272a4",
+					bg = "#343746",
+					bold = true,
+					italic = false,
+				},
+				numbers_selected = {
+					fg = "#f8f8f2",
+					bg = "#6272a4",
+					bold = true,
+					italic = false,
+				},
+				diagnostic = {
+					fg = "#6272a4",
+					bg = "#343746",
+				},
+				diagnostic_visible = {
+					fg = "#6272a4",
+					bg = "#343746",
+				},
+				diagnostic_selected = {
+					fg = "#f8f8f2",
+					bg = "#6272a4",
+					bold = true,
+				},
+				hint = {
+					fg = "#50fa7b",
+					bg = "#343746",
+				},
+				hint_visible = {
+					fg = "#50fa7b",
+					bg = "#343746",
+				},
+				hint_selected = {
+					fg = "#50fa7b",
+					bg = "#6272a4",
+					bold = true,
+				},
+				hint_diagnostic = {
+					fg = "#50fa7b",
+					bg = "#343746",
+				},
+				hint_diagnostic_visible = {
+					fg = "#50fa7b",
+					bg = "#343746",
+				},
+				hint_diagnostic_selected = {
+					fg = "#50fa7b",
+					bg = "#6272a4",
+					bold = true,
+				},
+				info = {
+					fg = "#8be9fd",
+					bg = "#343746",
+				},
+				info_visible = {
+					fg = "#8be9fd",
+					bg = "#343746",
+				},
+				info_selected = {
+					fg = "#8be9fd",
+					bg = "#6272a4",
+					bold = true,
+				},
+				info_diagnostic = {
+					fg = "#8be9fd",
+					bg = "#343746",
+				},
+				info_diagnostic_visible = {
+					fg = "#8be9fd",
+					bg = "#343746",
+				},
+				info_diagnostic_selected = {
+					fg = "#8be9fd",
+					bg = "#6272a4",
+					bold = true,
+				},
+				warning = {
+					fg = "#ffb86c",
+					bg = "#343746",
+				},
+				warning_visible = {
+					fg = "#ffb86c",
+					bg = "#343746",
+				},
+				warning_selected = {
+					fg = "#ffb86c",
+					bg = "#6272a4",
+					bold = true,
+				},
+				warning_diagnostic = {
+					fg = "#ffb86c",
+					bg = "#343746",
+				},
+				warning_diagnostic_visible = {
+					fg = "#ffb86c",
+					bg = "#343746",
+				},
+				warning_diagnostic_selected = {
+					fg = "#ffb86c",
+					bg = "#6272a4",
+					bold = true,
+				},
+				error = {
+					fg = "#ff5555",
+					bg = "#343746",
+				},
+				error_visible = {
+					fg = "#ff5555",
+					bg = "#343746",
+				},
+				error_selected = {
+					fg = "#ff5555",
+					bg = "#6272a4",
+					bold = true,
+				},
+				error_diagnostic = {
+					fg = "#ff5555",
+					bg = "#343746",
+				},
+				error_diagnostic_visible = {
+					fg = "#ff5555",
+					bg = "#343746",
+				},
+				error_diagnostic_selected = {
+					fg = "#ff5555",
+					bg = "#6272a4",
+					bold = true,
+				},
+				modified = {
+					fg = "#bd93f9",
+					bg = "#343746",
+				},
+				modified_visible = {
+					fg = "#bd93f9",
+					bg = "#343746",
+				},
+				modified_selected = {
+					fg = "#bd93f9",
+					bg = "#6272a4",
+				},
+				duplicate_selected = {
+					fg = "#f8f8f2",
+					bg = "#6272a4",
+				},
+				duplicate_visible = {
+					fg = "#6272a4",
+					bg = "#343746",
+				},
+				duplicate = {
+					fg = "#6272a4",
+					bg = "#343746",
+				},
+				separator_selected = {
+					fg = "#343746",
+					bg = "#343746",
+				},
+				separator_visible = {
+					fg = "#343746",
+					bg = "#343746",
+				},
+				separator = {
+					fg = "#343746",
+					bg = "#343746",
+				},
+				indicator_selected = {
+					fg = "#bd93f9",
+					bg = "#6272a4",
+				},
+				indicator_visible = {
+					fg = "#343746",
+					bg = "#343746",
+				},
+				pick_selected = {
+					fg = "#ff79c6",
+					bg = "#6272a4",
+					bold = true,
+				},
+				pick_visible = {
+					fg = "#ff79c6",
+					bg = "#343746",
+					bold = true,
+				},
+				pick = {
+					fg = "#ff79c6",
+					bg = "#343746",
+					bold = true,
+				},
+				offset_separator = {
+					fg = "#343746",
+					bg = "#282a36",
+				},
+				trunc_marker = {
+					fg = "#6272a4",
+					bg = "#343746",
+				},
+			},
+		},
+		config = function(ctx)
+			require("bufferline").setup(ctx.opts)
+			for i = 1, 9 do
+				vim.keymap.set("n", "<leader>" .. i, "<Cmd>BufferLineGoToBuffer " .. i .. "<CR>", { silent = true })
+			end
+		end,
+	},
+
 	-- Colorscheme
 	{
 		"dracula/vim",
@@ -252,10 +558,11 @@ return {
 		},
 	},
 
-    -- Smarter folding
+	-- Smarter folding
 	{
 		"kevinhwang91/nvim-ufo",
 		dependencies = "kevinhwang91/promise-async",
+		event = "BufReadPre",
 		config = function()
 			require("ufo").setup({
 				provider_selector = function(bufnr, filetype, buftype)
