@@ -1,8 +1,15 @@
 return {
-	-- PCRE Regexes
+	-- Clipboard manager
 	{
-		"othree/eregex.vim",
-		event = "CmdlineEnter",
+		"AckslD/nvim-neoclip.lua",
+		dependencies = { "nvim-telescope/telescope.nvim" },
+		cmd = { "Telescope neoclip" },
+		keys = {
+			{ "<leader>fc", "<cmd>Telescope neoclip<cr>", desc = "[F]ind in [C]lipboard History" },
+		},
+		config = function(ctx)
+			require("neoclip").setup(ctx.opts)
+		end,
 	},
 
 	-- Auto-pairs
@@ -17,7 +24,12 @@ return {
 				["{"] = { action = "open", pair = "{}", neigh_pattern = "[^\\][%p%s]" },
 
 				['"'] = { action = "closeopen", pair = '""', neigh_pattern = "[^\\][%p%s]", register = { cr = false } },
-				["'"] = { action = "closeopen", pair = "''", neigh_pattern = "[^%a\\][%p%s]", register = { cr = false } },
+				["'"] = {
+					action = "closeopen",
+					pair = "''",
+					neigh_pattern = "[^%a\\][%p%s]",
+					register = { cr = false },
+				},
 				["`"] = { action = "closeopen", pair = "``", neigh_pattern = "[^\\][%p%s]", register = { cr = false } },
 			},
 		},
@@ -66,29 +78,6 @@ return {
 		end,
 	},
 
-	-- GitHub Copilot
-	{
-		"zbirenbaum/copilot.lua",
-		cmd = "Copilot",
-		event = "InsertEnter",
-		opts = {
-			panel = {
-				enabled = false,
-			},
-			suggestion = {
-				enabled = not vim.g.ai_cmp,
-				auto_trigger = true,
-				hide_during_completion = vim.g.ai_cmp,
-				keymap = {
-					accept = false,
-					accept_word = "<S-Right>",
-					next = "<C-n>",
-					prev = "<C-p>",
-				},
-			},
-		},
-	},
-
 	-- AI coding assistant
 	{
 		"olimorris/codecompanion.nvim",
@@ -127,6 +116,35 @@ return {
 				},
 				cmd = {
 					adapter = "copilot",
+				},
+			},
+		},
+	},
+
+	-- PCRE Regexes
+	{
+		"othree/eregex.vim",
+		event = "CmdlineEnter",
+	},
+
+	-- GitHub Copilot
+	{
+		"zbirenbaum/copilot.lua",
+		cmd = "Copilot",
+		event = "InsertEnter",
+		opts = {
+			panel = {
+				enabled = false,
+			},
+			suggestion = {
+				enabled = not vim.g.ai_cmp,
+				auto_trigger = true,
+				hide_during_completion = vim.g.ai_cmp,
+				keymap = {
+					accept = false,
+					accept_word = "<S-Right>",
+					next = "<C-n>",
+					prev = "<C-p>",
 				},
 			},
 		},
