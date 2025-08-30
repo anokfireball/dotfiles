@@ -1,3 +1,4 @@
+--
 -- Clear search highlights
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
@@ -75,6 +76,7 @@ local function map_telescope(lhs, func, desc, opts)
 		require("telescope.builtin")[func](opts)
 	end, { desc = desc })
 end
+map_telescope("<leader><Space>", "keymaps", "[F]ind Keymaps")
 map_telescope("<leader>f/", "current_buffer_fuzzy_find", "[F]ind in Current Buffer", { skip_empty_lines = true })
 map_telescope("<leader>f;", "resume", "[F]ind Resume")
 map_telescope("<leader>fb", "buffers", "[F]ind [B]uffers", { ignore_current_buffer = true, sort_mru = true })
@@ -84,7 +86,6 @@ map_telescope("<leader>fF", "find_files", "[F]ind [F]iles (/w ignored)", { no_ig
 map_telescope("<leader>fg", "live_grep", "[F]ind by [G]rep (cwd)")
 map_telescope("<leader>fG", "live_grep", "[F]ind by [G]rep (open files)", { grep_open_files = true })
 map_telescope("<leader>fh", "help_tags", "[F]ind [H]elp")
-map_telescope("<leader>fk", "keymaps", "[F]ind [K]eymaps")
 vim.keymap.set("n", "<leader>fn", function()
 	vim.cmd("Telescope notify")
 end, { desc = "[F]ind [N]otifications" })
