@@ -80,7 +80,18 @@ map_telescope("<leader><Space>", "keymaps", "[F]ind Keymaps")
 map_telescope("<leader>f/", "current_buffer_fuzzy_find", "[F]ind in Current Buffer", { skip_empty_lines = true })
 map_telescope("<leader>f;", "resume", "[F]ind Resume")
 map_telescope("<leader>fb", "buffers", "[F]ind [B]uffers", { ignore_current_buffer = true, sort_mru = true })
-map_telescope("<leader>fd", "git_files", "[F]ind [D]otfiles", { cwd = "~" })
+vim.keymap.set("n", "<leader>fd", function()
+	require("telescope.builtin").find_files({
+		prompt_title = "Dotfiles (tracked)",
+		cwd = vim.env.HOME,
+		find_command = {
+			"git",
+			"--git-dir=" .. vim.env.HOME .. "/.dotfiles.git",
+			"--work-tree=" .. vim.env.HOME,
+			"ls-files",
+		},
+	})
+end, { desc = "[F]ind [D]otfiles (tracked)" })
 map_telescope("<leader>ff", "find_files", "[F]ind [F]iles")
 map_telescope("<leader>fF", "find_files", "[F]ind [F]iles (/w ignored)", { no_ignore = true, hidden = true })
 map_telescope("<leader>fg", "live_grep", "[F]ind by [G]rep (cwd)")
