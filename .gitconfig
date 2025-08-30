@@ -3,6 +3,7 @@
 	name = Fabian Koller
 [core]
 	compression = 9
+	excludesfile = /home/ntauthority/.gitignore_global
 
 [init]
 	defaultBranch = main

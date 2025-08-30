@@ -1,0 +1,29 @@
+# OS files
+.DS_Store
+Thumbs.db
+*~
+
+# Vim
+*.swp
+*.swo
+.netrwhist
+Session.vim
+
+# VSCode
+.vscode/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.env
+
+# Go
+*.test
+*.out
+
+# Logs & temp
+*.log
+*.tmp
