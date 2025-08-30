@@ -312,3 +312,6 @@ if command -v tmux &>/dev/null; then
     complete -F __start_tmux t
   fi
 fi
+
+alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
+

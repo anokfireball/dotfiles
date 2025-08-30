@@ -234,3 +234,6 @@ if command -v tmux &>/dev/null; then
     alias t='tmux'
     compdef _tmux t 2>/dev/null || true
 fi
+
+alias dotfiles='git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
+
