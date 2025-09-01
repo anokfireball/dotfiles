@@ -236,4 +236,5 @@ if command -v tmux &>/dev/null; then
 fi
 
 alias dotfiles='git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
+alias d='dotfiles'
 
