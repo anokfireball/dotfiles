@@ -1,65 +1,98 @@
---
--- Clear search highlights
-vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
+local function map(mode, lhs, rhs, desc, opts)
+	opts = opts or {}
+	opts.desc = desc
+	vim.keymap.set(mode, lhs, rhs, opts)
+end
 
--- Diagnostics
-vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, {
-	desc = "Open diagnostic [Q]uickfix list",
+-- ========================================================================
+-- Native Vim Keymaps
+-- ========================================================================
+
+-- Navigation and motions
+map("n", "<Esc>", "<cmd>nohlsearch<CR>", "Clear search highlights")
+map("t", "<Esc><Esc>", "<C-\\><C-n>", "Exit terminal mode")
+map("n", "<C-d>", "<C-d>zz", "Half page down and center")
+map("n", "<C-u>", "<C-u>zz", "Half page up and center")
+map("n", "n", "nzzzv", "Next search result and center")
+map("n", "N", "Nzzzv", "Previous search result and center")
+
+-- Editing ergonomics
+map("v", "<", "<gv", "Indent left and keep selection")
+map("v", ">", ">gv", "Indent right and keep selection")
+map("v", "=", "=gv", "Reindent and keep selection")
+map("x", "p", [["_dP]], "Paste without clobbering register")
+map("n", "Y", "y$", "Yank to end of line")
+
+-- Search and replace
+map("v", "*", [[y/\V<C-r>=escape(@", '/\')<CR><CR>]], "Search visual selection")
+
+-- Window and split management
+map("n", "<C-w>-", "<cmd>split<CR>", "Horizontal Split")
+map("n", "<C-w>|", "<cmd>vsplit<CR>", "Vertical Split")
+map("n", "<C-h>", "<C-w><C-h>", "Move focus to the left window")
+map("n", "<C-l>", "<C-w><C-l>", "Move focus to the right window")
+map("n", "<C-j>", "<C-w><C-j>", "Move focus to the lower window")
+map("n", "<C-k>", "<C-w><C-k>", "Move focus to the upper window")
+map("n", "<C-S-h>", "<C-w>H", "Move window to the left")
+map("n", "<C-S-l>", "<C-w>L", "Move window to the right")
+map("n", "<C-S-j>", "<C-w>J", "Move window to the lower")
+map("n", "<C-S-k>", "<C-w>K", "Move window to the upper")
+map("n", "<C-Up>", "<cmd>resize +1<CR>", "Increase window height by 1")
+map("n", "<C-Down>", "<cmd>resize -1<CR>", "Decrease window height by 1")
+map("n", "<C-Left>", "<cmd>vertical resize -1<CR>", "Decrease window width by 1")
+map("n", "<C-Right>", "<cmd>vertical resize +1<CR>", "Increase window width by 1")
+
+-- Arrow key disabling
+map("n", "<Up>", "<Nop>", "Disable Up Arrow")
+map("n", "<Down>", "<Nop>", "Disable Down Arrow")
+map("n", "<Left>", "<Nop>", "Disable Left Arrow")
+map("n", "<Right>", "<Nop>", "Disable Right Arrow")
+
+-- ========================================================================
+-- LSP and Diagnostics
+-- ========================================================================
+
+map("n", "<leader>q", vim.diagnostic.setloclist, "Open diagnostic [Q]uickfix list")
+
+-- Inlay hints toggle (attached to LSP)
+vim.api.nvim_create_autocmd("LspAttach", {
+	callback = function(event)
+		map("n", "<leader>th", function()
+			vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+		end, "Toggle Inlay Hints", { buffer = event.buf })
+	end,
 })
 
--- Exit terminal mode
-vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", {
-	desc = "Exit terminal mode",
-})
+-- ========================================================================
+-- Plugin Keymaps
+-- ========================================================================
 
--- split creation consistent with tmux
-vim.keymap.set("n", "<C-w>-", "<cmd>split<CR>", { desc = "Horizontal Split" })
-vim.keymap.set("n", "<C-w>|", "<cmd>vsplit<CR>", { desc = "Vertical Split" })
--- make split navigation easier
-vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
-vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
-vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
-vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
--- ... also split manipulation
-vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
-vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
-vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
-vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
--- window resizing analogous to tmux
-vim.keymap.set("n", "<C-Up>", "<cmd>resize +1<CR>", { desc = "Increase window height by 1" })
-vim.keymap.set("n", "<C-Down>", "<cmd>resize -1<CR>", { desc = "Decrease window height by 1" })
-vim.keymap.set("n", "<C-Left>", "<cmd>vertical resize -1<CR>", { desc = "Decrease window width by 1" })
-vim.keymap.set("n", "<C-Right>", "<cmd>vertical resize +1<CR>", { desc = "Increase window width by 1" })
--- Smart Right key for insert mode (Blink vs Copilot)
-vim.keymap.set("i", "<Right>", function()
+-- Completion and AI (Blink + Copilot)
+map("i", "<Right>", function()
 	if require("blink.cmp").is_visible() then
 		return require("blink.cmp").accept()
 	else
 		return require("copilot.suggestion").accept()
 	end
-end, { expr = true, desc = "Accept completion/suggestion" })
-vim.keymap.set("i", "<Down>", function()
+end, "Accept completion/suggestion", { expr = true })
+
+map("i", "<Down>", function()
 	if require("blink.cmp").is_visible() then
 		return require("blink.cmp").select_next()
 	else
 		return require("copilot.suggestion").next()
 	end
-end, { expr = true, desc = "Next completion/suggestion" })
-vim.keymap.set("i", "<Up>", function()
+end, "Next completion/suggestion", { expr = true })
+
+map("i", "<Up>", function()
 	if require("blink.cmp").is_visible() then
 		return require("blink.cmp").select_prev()
 	else
 		return require("copilot.suggestion").prev()
 	end
-end, { expr = true, desc = "Previous completion/suggestion" })
+end, "Previous completion/suggestion", { expr = true })
 
--- Unmap arrow keys
-vim.keymap.set("n", "<Up>", "<Nop>", { desc = "Disable Up Arrow" })
-vim.keymap.set("n", "<Down>", "<Nop>", { desc = "Disable Down Arrow" })
-vim.keymap.set("n", "<Left>", "<Nop>", { desc = "Disable Left Arrow" })
-vim.keymap.set("n", "<Right>", "<Nop>", { desc = "Disable Right Arrow" })
-
--- Treesitter Keymaps
+-- Treesitter text objects
 local function map_textobject(lhs, textobject, desc)
 	vim.keymap.set({ "x", "o" }, lhs, function()
 		require("nvim-treesitter-textobjects.select").select_textobject(textobject, "textobjects")
@@ -70,17 +103,29 @@ map_textobject("if", "@function.inner", "inner function")
 map_textobject("ac", "@comment.outer", "comment")
 map_textobject("ic", "@comment.inner", "inner comment")
 
--- Telescope Keymaps
+-- Telescope
 local function map_telescope(lhs, func, desc, opts)
 	vim.keymap.set("n", lhs, function()
 		require("telescope.builtin")[func](opts)
 	end, { desc = desc })
 end
+
 map_telescope("<leader><Space>", "keymaps", "[F]ind Keymaps")
 map_telescope("<leader>f/", "current_buffer_fuzzy_find", "[F]ind in Current Buffer", { skip_empty_lines = true })
 map_telescope("<leader>f;", "resume", "[F]ind Resume")
 map_telescope("<leader>fb", "buffers", "[F]ind [B]uffers", { ignore_current_buffer = true, sort_mru = true })
-vim.keymap.set("n", "<leader>fd", function()
+map_telescope("<leader>ff", "find_files", "[F]ind [F]iles")
+map_telescope("<leader>fF", "find_files", "[F]ind [F]iles (/w ignored)", { no_ignore = true, hidden = true })
+map_telescope("<leader>fg", "live_grep", "[F]ind by [G]rep (cwd)")
+map_telescope("<leader>fG", "live_grep", "[F]ind by [G]rep (open files)", { grep_open_files = true })
+map_telescope("<leader>fh", "help_tags", "[F]ind [H]elp")
+map_telescope("<leader>fr", "oldfiles", "[F]ind [R]ecent Files")
+map_telescope("<leader>ft", "builtin", "[F]ind [T]elescope Builtins")
+map_telescope("<leader>fw", "grep_string", "[F]ind current [W]ord (cwd)")
+map_telescope("<leader>fW", "grep_string", "[F]ind current [W]ord (open files)", { grep_open_files = true })
+
+-- Telescope special finders
+map("n", "<leader>fd", function()
 	require("telescope.builtin").find_files({
 		prompt_title = "Dotfiles (tracked)",
 		cwd = vim.env.HOME,
@@ -91,25 +136,19 @@ vim.keymap.set("n", "<leader>fd", function()
 			"ls-files",
 		},
 	})
-end, { desc = "[F]ind [D]otfiles (tracked)" })
-map_telescope("<leader>ff", "find_files", "[F]ind [F]iles")
-map_telescope("<leader>fF", "find_files", "[F]ind [F]iles (/w ignored)", { no_ignore = true, hidden = true })
-map_telescope("<leader>fg", "live_grep", "[F]ind by [G]rep (cwd)")
-map_telescope("<leader>fG", "live_grep", "[F]ind by [G]rep (open files)", { grep_open_files = true })
-map_telescope("<leader>fh", "help_tags", "[F]ind [H]elp")
-vim.keymap.set("n", "<leader>fn", function()
+end, "[F]ind [D]otfiles (tracked)")
+
+map("n", "<leader>fn", function()
 	vim.cmd("Telescope notify")
-end, { desc = "[F]ind [N]otifications" })
-map_telescope("<leader>fr", "oldfiles", "[F]ind [R]ecent Files")
-map_telescope("<leader>ft", "builtin", "[F]ind [T]elescope Builtins")
-map_telescope("<leader>fw", "grep_string", "[F]ind current [W]ord (cwd)")
-map_telescope("<leader>fW", "grep_string", "[F]ind current [W]ord (open files)", { grep_open_files = true })
+end, "[F]ind [N]otifications")
+
+-- Notifications
+map("n", "<leader>nd", function()
+	require("notify").dismiss()
+end, "[N]otification [D]ismiss")
 
 -- Toggles
-vim.keymap.set("n", "<leader>nd", function()
-	require("notify").dismiss()
-end, { desc = "[N]otification [D]ismiss" })
-vim.keymap.set("n", "<leader>td", function()
+map("n", "<leader>td", function()
 	if vim.g.min_diagnostic_severity == vim.diagnostic.severity.ERROR then
 		vim.g.min_diagnostic_severity = vim.diagnostic.severity.HINT
 	elseif vim.g.min_diagnostic_severity == vim.diagnostic.severity.HINT then
@@ -120,18 +159,13 @@ vim.keymap.set("n", "<leader>td", function()
 		vim.diagnostic.enable(true)
 	end
 	Set_diagnostic_severity(vim.g.min_diagnostic_severity)
-end, { desc = "[T]oggle [D]iagnostic Severity" })
-vim.api.nvim_create_autocmd("LspAttach", {
-	callback = function(event)
-		vim.keymap.set("n", "<leader>th", function()
-			vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
-		end, { buffer = event.buf, desc = "[T]oggle Inlay [H]ints" })
-	end,
-})
-vim.keymap.set("n", "<leader>tc", function()
+end, "[T]oggle [D]iagnostic Severity")
+
+map("n", "<leader>tc", function()
 	require("treesitter-context").toggle()
-end, { desc = "[T]oggle [C]ontext" })
-vim.keymap.set("n", "<leader>ta", function()
+end, "[T]oggle [C]ontext")
+
+map("n", "<leader>ta", function()
 	require("copilot")
 	local output = vim.api.nvim_exec("Copilot status", { output = true })
 	if output:match("Ready") then
@@ -139,12 +173,13 @@ vim.keymap.set("n", "<leader>ta", function()
 	else
 		vim.cmd("Copilot enable")
 	end
-end, { desc = "[T]oggle Copilot [A]utocomplete" })
-vim.keymap.set("n", "<leader>tf", function()
-	vim.cmd("VimadeFocus")
-end, { desc = "[T]oggle [F]ocus" })
+end, "[T]oggle Copilot [A]utocomplete")
 
--- GitSigns
+map("n", "<leader>tf", function()
+	vim.cmd("VimadeFocus")
+end, "[T]oggle [F]ocus")
+
+-- GitSigns (with on_attach pattern)
 GitSignsOnAttach = function(bufnr)
 	local gitsigns = require("gitsigns")
 	-- https://github.com/lewis6991/gitsigns.nvim/issues/255#issuecomment-2099420323
@@ -208,13 +243,17 @@ GitSignsOnAttach = function(bufnr)
 	-- Text object
 	map_gitsigns({ "o", "x" }, "ih", gitsigns.select_hunk, "[V]CS [I]nner Hunk")
 end
-vim.keymap.set({ "n", "v" }, "<leader>vl", function()
-	vim.cmd("GitPortal copy_link_to_clipboard")
-end, { desc = "[V]CS Copy [L]ink To Clipboard" })
-vim.keymap.set("n", "<leader>vd", function()
-	vim.cmd("DiffviewOpen")
-end, { desc = "[V]CS [D]iffview" })
 
+-- Git workflow (GitPortal + Diffview)
+map({ "n", "v" }, "<leader>vl", function()
+	vim.cmd("GitPortal copy_link_to_clipboard")
+end, "[V]CS Copy [L]ink To Clipboard")
+
+map("n", "<leader>vd", function()
+	vim.cmd("DiffviewOpen")
+end, "[V]CS [D]iffview")
+
+-- Diffview interactive picker
 local function open_diffview(selection)
 	if selection then
 		vim.cmd("DiffviewOpen " .. (selection.value or selection[1]))
@@ -253,7 +292,7 @@ local function telescope_git_tags(opts)
 		:find()
 end
 
-vim.keymap.set("n", "<leader>vD", function()
+map("n", "<leader>vD", function()
 	local actions = require("telescope.actions")
 	local action_state = require("telescope.actions.state")
 	local builtin = require("telescope.builtin")
@@ -286,8 +325,9 @@ vim.keymap.set("n", "<leader>vD", function()
 		})
 	end
 	open_picker(builtin.git_branches, "git_branches")
-end, { desc = "[V]CS [D]iffview Interactive (Switchable)" })
+end, "[V]CS [D]iffview Interactive (Switchable)")
 
+-- Session management (mini.sessions)
 local function get_session_list()
 	local sessions = require("mini.sessions").detected
 	local session_list = {}
@@ -372,21 +412,28 @@ local function save_session_with_prompt()
 	end
 end
 
--- Session keymaps
-vim.keymap.set("n", "<leader>ss", save_session_with_prompt, { desc = "[S]ession [S]ave" })
-vim.keymap.set("n", "<leader>sl", create_session_picker("read", "Load Session"), { desc = "[S]ession [L]oad" })
-vim.keymap.set("n", "<leader>sd", create_session_picker("delete", "Delete Session"), { desc = "[S]ession [D]elete" })
+map("n", "<leader>sl", create_session_picker("read", "Load Session"), "[S]ession [L]oad")
+map("n", "<leader>sd", create_session_picker("delete", "Delete Session"), "[S]ession [D]elete")
+map("n", "<leader>ss", save_session_with_prompt, "[S]ession [S]ave")
 
--- Folding keymaps (nvim-ufo)
-vim.keymap.set("n", "zR", function()
-	require("ufo").openAllFolds()
-end, { desc = "Open all folds" })
-vim.keymap.set("n", "zM", function()
+-- Folding (nvim-ufo)
+map("n", "zM", function()
 	require("ufo").closeAllFolds()
-end, { desc = "Close all folds" })
-vim.keymap.set("n", "zr", function()
-	require("ufo").openFoldsExceptKinds()
-end, { desc = "Open folds except kinds" })
-vim.keymap.set("n", "zm", function()
+end, "Close all folds")
+
+map("n", "zR", function()
+	require("ufo").openAllFolds()
+end, "Open all folds")
+
+map("n", "zm", function()
 	require("ufo").closeFoldsWith()
-end, { desc = "Close folds with kind" })
+end, "Close folds with kind")
+
+map("n", "zr", function()
+	require("ufo").openFoldsExceptKinds()
+end, "Open folds except kinds")
+
+map("n", "zp", function()
+	require("ufo").peekFoldedLinesUnderCursor()
+end, "Peek fold")
+
