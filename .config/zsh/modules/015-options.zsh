@@ -17,35 +17,29 @@ setopt hist_ignore_all_dups
 setopt hist_ignore_space
 # Share history across all sessions in real-time
 setopt share_history
-# Append rather than overwrite history file on shell exit
-setopt append_history
+# Write commands immediately
+setopt inc_append_history
 # Save timestamp + duration in history file
 setopt extended_history
 # Reduce Redundant Whitespace in Saved Commands
 setopt hist_reduce_blanks
 # Use File Control Locking to Avoid History Corruption with Concurrent Shells (Ignore if Unsupported)
-setopt hist_fcntl_lock 2>/dev/null || true
+setopt hist_fcntl_lock
+# Enable extended globbing for advanced patterns
+setopt extendedglob
+# Don't store history/fc commands in history
+setopt hist_no_store
+# Don't store function definitions in history
+setopt hist_no_functions
 
 # Large in-memory history; persisted size (SAVEHIST) set slightly smaller to limit disk usage
 HISTSIZE=500000
 SAVEHIST=100000
+# Set history file location
+HISTFILE="$HOME/.zsh_history"
 
 # Ensure history directory exists if HISTFILE is defined
 [[ -n $HISTFILE ]] && mkdir -p "${HISTFILE:h}" 2>/dev/null || true
 
-# HISTIGNORE: colon-separated patterns similar to bash; & repeats, suppress trivial commands
-: ${HISTIGNORE:="&:exit:ls:bg:fg:history:clear"}
-
-# HISTIGNORE implementation (zsh lacks native variable for this bash behavior)
-zshaddhistory() {
-    emulate -L zsh
-    local line=$1 pat
-    [[ -z $HISTIGNORE ]] && return 0
-    for pat in "${(@s/:/)HISTIGNORE}"; do
-        [[ -z $pat ]] && continue
-        case $line in
-            ${(~j:|:)pat}) return 1 ;;     # Reject (do not add) if matches pattern list
-        esac
-    done
-    return 0
-}
+# Use HISTORY_IGNORE to filter commands that start with blacklisted terms (with optional sudo prefix)
+HISTORY_IGNORE='(#s)[[:space:]]#(|sudo[[:space:]]##)(bg|fg|jobs|exit|logout|clear|reset|true|:)*'
