@@ -128,7 +128,9 @@ if command -v fzf &>/dev/null && command -v bfs &>/dev/null; then
     export FZF_RELOAD_PARENT_COMMAND='pwd | awk -F/ "{print \"/\"; for(i=2; i<=NF; i++) {path=\"\"; for(j=2; j<=i; j++) path=path\"/\"\$j; print path}}"'
 
     export FZF_LAYOUT="--layout reverse --border"
-    export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
+    export FZF_CTRL_T_OPTS="$FZF_DEFAULT_OPTS \
+        --walker file,dir,follow,hidden \
+        --walker-skip .git \
         --ansi \
         --prompt 'A> ' \
         --bind 'ctrl-a:reload(eval \$FZF_DEFAULT_COMMAND)+change-prompt(A> )' \
@@ -136,7 +138,13 @@ if command -v fzf &>/dev/null && command -v bfs &>/dev/null; then
         --bind 'ctrl-f:reload(eval \$FZF_RELOAD_FILE_COMMAND)+change-prompt(F> )' \
         --bind 'ctrl-u:reload(eval \$FZF_RELOAD_PARENT_COMMAND)+change-prompt(U> )' \
         $FZF_LAYOUT"
-    export FZF_CTRL_T_OPTS="--walker file,dir,follow,hidden --walker-skip .git"
+    export FZF_CTRL_R_OPTS="
+       --bind 'ctrl-a:ignore' \
+       --bind 'ctrl-s:ignore' \
+       --bind 'ctrl-d:ignore' \
+       --prompt '$> ' \
+       --delimiter='\t' --with-nth=2 \
+       --ansi $FZF_LAYOUT"
     export FZF_ALT_C_COMMAND=""
 fi
 
