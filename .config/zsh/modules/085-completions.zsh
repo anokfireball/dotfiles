@@ -83,8 +83,12 @@ _comp_gen() {
     out=$(eval "$gen" 2>/dev/null) || return
     header=${out[(f)1]}
     # Use Primary Name if Multi-Compdef
-    if [[ $header == '#compdef '* ]]; then
-        local names=(${(z)${header###compdef }})
+    if [[ $header == "#compdef"* ]]; then
+        # Fix: Use a safer parsing method for the compdef line
+        local header_without_compdef="${header#\#compdef }"
+        local names=()
+        # Use read to split the string on spaces
+        read -A names <<< "$header_without_compdef"
         primary=$names[1]
         [[ -n $primary ]] && compfile="$_compdir/_$primary"
     fi

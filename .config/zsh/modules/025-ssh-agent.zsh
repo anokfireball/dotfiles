@@ -3,14 +3,27 @@
 SSH_ENV="$HOME/.ssh/env"
 
 agent_load_env() {
-    [[ -f "$SSH_ENV" ]] && source "$SSH_ENV" >/dev/null 2>&1
+    if [[ -f "$SSH_ENV" ]]; then
+        # Source the SSH env file but suppress any echo output
+        source "$SSH_ENV" >/dev/null 2>&1
+    fi
 }
 
 agent_start() {
+    # Temporarily disable noclobber for this function to avoid "file exists" errors
+    local old_noclobber
+    [[ -o noclobber ]] && old_noclobber=1 || old_noclobber=0
+    unsetopt noclobber
+
     (
         umask 077
-        ssh-agent > "$SSH_ENV"
-    )
+        # Generate SSH agent env but filter out the echo command
+        ssh-agent | grep -v '^echo ' >"$SSH_ENV"
+    ) 2>/dev/null
+
+    # Restore noclobber setting
+    ((old_noclobber)) && setopt noclobber
+
     source "$SSH_ENV" >/dev/null 2>&1
 }
 
@@ -27,9 +40,9 @@ ssh_agent_init() {
     local state=$(agent_run_state)
     if [[ ! "$SSH_AUTH_SOCK" ]] || [[ $state -eq 2 ]]; then
         agent_start
-        ssh-add
+        ssh-add >/dev/null 2>&1
     elif [[ "$SSH_AUTH_SOCK" ]] && [[ $state -eq 1 ]]; then
-        ssh-add
+        ssh-add >/dev/null 2>&1
     fi
     # If state is 0, agent is running with keys - nothing to do
 }
