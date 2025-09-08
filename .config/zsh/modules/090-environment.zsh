@@ -1,8 +1,3 @@
-export PATH="$HOME/.local/bin:$PATH"
-if [[ -d "$HOME/.krew" ]]; then
-    export PATH="$HOME/.krew/bin:$PATH"
-fi
-
 export VISUAL=vim
 export EDITOR=vim
 
