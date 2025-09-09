@@ -48,8 +48,15 @@ return {
 		event = { "BufReadPre", "BufNewFile" },
 		config = function()
 			require("lint").linters_by_ft = {
+				bash = { "shellcheck" },
 				ghaction = { "actionlint" },
+				go = { "golangcilint" },
+				json = { "jsonlint" },
+				lua = { "luacheck" },
+				python = { "ruff" },
+				sh = { "shellcheck" },
 				yaml = { "yamllint" },
+				zsh = { "shellcheck" },
 			}
 		end,
 	},
@@ -74,7 +81,9 @@ return {
 				-- Go
 				"gopls",
 				"golangci-lint",
-				"goimports",
+				"gofumpt",
+				"goimports-reviser",
+				"golines",
 				-- JSON
 				"jsonls",
 				"jsonlint",
