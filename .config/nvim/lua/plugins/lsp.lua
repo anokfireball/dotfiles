@@ -53,7 +53,10 @@ return {
 				go = { "golangcilint" },
 				json = { "jsonlint" },
 				lua = { "luacheck" },
-				python = { "ruff" },
+				python = {
+					"mypy",
+					"ruff",
+				},
 				sh = { "shellcheck" },
 				yaml = { "yamllint" },
 				zsh = { "shellcheck" },
@@ -68,6 +71,7 @@ return {
 		dependencies = {
 			{ "mason-org/mason.nvim", opts = {} },
 			"mason-org/mason-lspconfig.nvim",
+			"jay-babu/mason-nvim-dap.nvim",
 		},
 		opts = {
 			ensure_installed = {
@@ -80,6 +84,7 @@ return {
 				"actionlint",
 				-- Go
 				"gopls",
+				"delve",
 				"golangci-lint",
 				"gofumpt",
 				"goimports-reviser",
@@ -94,6 +99,8 @@ return {
 				"stylua",
 				--python
 				"basedpyright",
+				"debugpy",
+				"mypy",
 				"ruff",
 				-- xml
 				"lemminx",
