@@ -17,6 +17,12 @@ return {
 				changedelete = { text = "~" },
 			},
 			on_attach = GitSignsOnAttach,
+			worktrees = {
+				{
+					toplevel = vim.env.HOME,
+					gitdir = vim.env.HOME .. "/.dotfiles.git",
+				},
+			},
 		},
 	},
 
@@ -26,13 +32,13 @@ return {
 		cmd = "DiffviewOpen",
 	},
 
-    -- Create shareable permalinks to code locations
-    {
-        'trevorhauter/gitportal.nvim',
-        cmd = "GitPortal",
-        opts = {
-            always_include_current_line = true,
-            switch_branch_or_commit_upon_ingestion = "ask",
-        }
-    }
+	-- Create shareable permalinks to code locations
+	{
+		"trevorhauter/gitportal.nvim",
+		cmd = "GitPortal",
+		opts = {
+			always_include_current_line = true,
+			switch_branch_or_commit_upon_ingestion = "ask",
+		},
+	},
 }
