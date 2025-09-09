@@ -10,6 +10,38 @@ return {
 		},
 	},
 
+	-- LSP configuration for auto-starting servers
+	{
+		"mason-org/mason-lspconfig.nvim",
+		dependencies = {
+			{ "mason-org/mason.nvim", opts = {} },
+			"neovim/nvim-lspconfig",
+		},
+		event = { "BufReadPre", "BufNewFile" },
+		config = function()
+			vim.lsp.config("gh_actions_ls", {
+				filetypes = { "ghaction" },
+			})
+
+			vim.lsp.config("basedpyright", {
+				settings = {
+					basedpyright = {
+						disableOrganizeImports = true,
+					},
+					python = {
+						analysis = {
+							ignore = { "*" },
+						},
+					},
+				},
+			})
+
+			require("mason-lspconfig").setup({
+				automatic_enable = true,
+			})
+		end,
+	},
+
 	-- Linting
 	{
 		"mfussenegger/nvim-lint",
@@ -62,41 +94,7 @@ return {
 				"yamllint",
 				"yamlfmt",
 			},
+			auto_update = true,
 		},
-	},
-
-	-- LSP configuration for auto-starting servers
-	{
-		"neovim/nvim-lspconfig",
-		dependencies = {
-			"mason-org/mason-lspconfig.nvim",
-		},
-		event = { "BufReadPre", "BufNewFile" },
-		config = function()
-			local lspconfig = require("lspconfig")
-			require("mason-lspconfig").setup({
-				handlers = {
-					["gh_actions_ls"] = function()
-						lspconfig.gh_actions_ls.setup({
-							filetypes = { "ghaction" },
-						})
-					end,
-					["basedpyright"] = function()
-						lspconfig.basedpyright.setup({
-							settings = {
-								basedpyright = {
-									disableOrganizeImports = true,
-								},
-								python = {
-									analysis = {
-										ignore = { "*" },
-									},
-								},
-							},
-						})
-					end,
-				},
-			})
-		end,
 	},
 }
