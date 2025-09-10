@@ -11,11 +11,6 @@ return {
 		},
 	},
 
-	-- Debug Adapter Protocol
-	{
-		"mfussenegger/nvim-dap",
-	},
-
 	-- Premade Python config for nvim-dap
 	{
 		"mfussenegger/nvim-dap-python",
@@ -24,6 +19,16 @@ return {
 		config = function()
 			local path = vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv/bin/python"
 			require("dap-python").setup(path)
+		end,
+	},
+
+	-- UI for nvim-dap
+	{
+		"miroshQa/debugmaster.nvim",
+		dependencies = { "mfussenegger/nvim-dap" },
+		config = function()
+			local dm = require("debugmaster")
+			vim.keymap.set({ "n", "v" }, "<leader>d", dm.mode.toggle, { nowait = true })
 		end,
 	},
 }
