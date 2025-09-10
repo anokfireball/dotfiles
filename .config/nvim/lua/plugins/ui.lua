@@ -7,7 +7,7 @@ return {
 		opts = {
 			options = {
 				numbers = function(opts)
-					return string.format(' %s', opts.ordinal)
+					return string.format(" %s", opts.ordinal)
 				end,
 				indicator = {
 					icon = "",
@@ -18,7 +18,7 @@ return {
 				show_close_icon = false,
 				persist_buffer_sort = true,
 				enforce_regular_tabs = false,
-				separator_style = { '', '' },
+				separator_style = { "", "" },
 				tab_size = 1,
 				show_duplicate_prefix = true,
 				custom_areas = {
@@ -34,18 +34,18 @@ return {
 						if ok then
 							buf_count = #buffers
 						else
-							buf_count = math.max(1, #vim.fn.getbufinfo({buflisted = 1}))
+							buf_count = math.max(1, #vim.fn.getbufinfo({ buflisted = 1 }))
 						end
 
 						local screen_width = vim.o.columns
-                        -- TODO should get actual content width instead of guesstimating
+						-- TODO should get actual content width instead of guesstimating
 						local avg_tab_width = 20
 						local total_content_width = math.min(buf_count * avg_tab_width, screen_width * 0.7)
 
 						local padding_size = math.max(0, math.floor((screen_width - total_content_width) / 2))
 
 						return {
-							{ text = string.rep(" ", padding_size), link = "BufferLineFill" }
+							{ text = string.rep(" ", padding_size), link = "BufferLineFill" },
 						}
 					end,
 				},
@@ -601,6 +601,27 @@ return {
 						return { "treesitter", "indent" }
 					else
 						return ""
+					end
+				end,
+			})
+
+			-- Disable UFO completely in diff mode
+			vim.api.nvim_create_autocmd({ "OptionSet" }, {
+				pattern = "diff",
+				callback = function()
+					if vim.opt.diff:get() then
+						require("ufo").disable()
+					else
+						require("ufo").enable()
+					end
+				end,
+			})
+
+			-- Check diff status on buffer enter
+			vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter" }, {
+				callback = function()
+					if vim.opt.diff:get() then
+						require("ufo").disable()
 					end
 				end,
 			})
