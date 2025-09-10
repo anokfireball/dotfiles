@@ -53,5 +53,6 @@
   "todo-comments.nvim": { "branch": "main", "commit": "304a8d204ee787d2544d8bc23cd38d2f929e7cc5" },
   "vimade": { "branch": "master", "commit": "732bb05431f459899ed4cdb68afef8f8de6576e0" },
   "visual-whitespace.nvim": { "branch": "main", "commit": "77bd21fb442cf2b97d7224f8269c053e9def9cb9" },
+  "wezterm-types": { "branch": "main", "commit": "a2f04152cdd04b07d9579229470f67cba39471e5" },
   "which-key.nvim": { "branch": "main", "commit": "370ec46f710e058c9c1646273e6b225acf47cbed" }
 }

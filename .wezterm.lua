@@ -1,6 +1,8 @@
+---@type Wezterm
 local wezterm = require("wezterm")
 
 local target_os = wezterm.target_triple
+---@type Config
 local config = wezterm.config_builder()
 
 if target_os:find("apple") then
@@ -34,7 +36,7 @@ config.color_scheme = "Dracula (Official)"
 
 config.hide_tab_bar_if_only_one_tab = true
 config.window_decorations = "RESIZE"
-config.scrollback_lines = 250  -- 4K @ 16 pixels per line = ~135 lines
+config.scrollback_lines = 250 -- 4K @ 16 pixels per line = ~135 lines
 config.enable_scroll_bar = false
 
 return config
