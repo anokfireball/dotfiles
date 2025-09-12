@@ -36,6 +36,13 @@
         "webfetch": true
       },
       "permission": {
+        "bash": {
+          "cat *": "allow",
+          "ls *": "allow",
+          "find *": "allow",
+          "grep *": "allow",
+          "*": "ask"
+        },
         "edit": "deny",
         "webfetch": "allow"
       },
@@ -59,7 +66,15 @@
         "webfetch": true
       },
       "permission": {
-        "edit": "deny"
+        "bash": {
+          "cat *": "allow",
+          "ls *": "allow",
+          "find *": "allow",
+          "grep *": "allow",
+          "*": "ask"
+        },
+        "edit": "deny",
+        "webfetch": "allow"
       },
       "prompt": "{file:./prompts/review.txt}"
     },
@@ -84,8 +99,11 @@
       "permission": {
         "bash": {
           "mkdir *": "allow",
+          "touch *.md": "allow",
           "*": "ask"
-        }
+        },
+        "edit": "allow",
+        "webfetch": "ask"
       },
       "prompt": "{file:./prompts/ticket.txt}"
     },
@@ -117,7 +135,9 @@
           "cp *.md *": "allow",
           "mv *.md *": "allow",
           "*": "ask"
-        }
+        },
+        "edit": "allow",
+        "webfetch": "ask"
       },
       "prompt": "{file:./prompts/docs.txt}"
     },
@@ -143,31 +163,32 @@
         "bash": {
           "mkdir *": "allow",
           "*": "ask"
-        }
+        },
+        "edit": "allow",
+        "webfetch": "ask"
       },
       "prompt": "{file:./prompts/test.txt}"
     }
   },
-  "permission": {
-    "bash": {
-      "cat *": "allow",
-      "diff *": "allow",
-      "echo *": "allow",
-      "find *": "allow",
-      "grep *": "allow",
-      "head *": "allow",
-      "ls *": "allow",
-      "pwd": "allow",
-      "tail *": "allow",
-      "git diff *": "allow",
-      "git log *": "allow",
-      "git show *": "allow",
-      "git status *": "allow",
-      "git add *": "deny",
-      "git commit": "deny",
-      "*": "ask"
+  "mcp": {
+    "context7": {
+      "type": "local",
+      "command": ["npx", "-y", "@upstash/context7-mcp"],
+      "enabled": true
     },
-    "edit": "ask",
-    "webfetch": "ask"
+    "sequentialthinking": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "enabled": true
+    },
+    "taskmanager": {
+      "type": "local",
+      "command": ["npx", "-y", "@kazuph/mcp-taskmanager"],
+      "enabled": true
+    }
   }
 }
