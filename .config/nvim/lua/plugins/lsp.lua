@@ -24,10 +24,6 @@ return {
 		},
 		event = { "BufReadPre", "BufNewFile" },
 		config = function()
-			vim.lsp.config("gh_actions_ls", {
-				filetypes = { "ghaction" },
-			})
-
 			vim.lsp.config("basedpyright", {
 				settings = {
 					basedpyright = {
@@ -39,6 +35,10 @@ return {
 						},
 					},
 				},
+			})
+
+			vim.lsp.config("gh_actions_ls", {
+				filetypes = { "ghaction" },
 			})
 
 			require("mason-lspconfig").setup({
@@ -54,6 +54,7 @@ return {
 		config = function()
 			require("lint").linters_by_ft = {
 				bash = { "shellcheck" },
+				dockerfile = { "hadolint" },
 				ghaction = { "actionlint" },
 				go = { "golangcilint" },
 				json = { "jsonlint" },
@@ -84,6 +85,9 @@ return {
 				"bashls",
 				"shellcheck",
 				"shfmt",
+				-- Docker
+				"docker-language-server",
+				"hadolint",
 				-- GitHub Actions
 				"gh-actions-language-server",
 				"actionlint",
@@ -94,6 +98,9 @@ return {
 				"gofumpt",
 				"goimports-reviser",
 				"golines",
+				-- Helm
+				"helm-ls",
+				"kube-linter",
 				-- JSON
 				"jsonls",
 				"jsonlint",
