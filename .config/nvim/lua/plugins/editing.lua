@@ -121,12 +121,6 @@ return {
 		},
 	},
 
-	-- PCRE Regexes
-	{
-		"othree/eregex.vim",
-		event = "CmdlineEnter",
-	},
-
 	-- GitHub Copilot
 	{
 		"zbirenbaum/copilot.lua",

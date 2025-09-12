@@ -338,6 +338,41 @@ return {
 		end,
 	},
 
+	-- Contextual QoL improvement to search highlighting
+	{
+		"kevinhwang91/nvim-hlslens",
+		version = "*",
+		event = "BufReadPre",
+		config = function(ctx)
+			require("hlslens").setup(ctx.opts)
+
+			vim.api.nvim_set_hl(0, "HlSearchLens", { link = "Search" })
+			vim.api.nvim_set_hl(0, "HlSearchLensNear", { link = "CurSearch" })
+			vim.api.nvim_set_hl(0, "HlSearchNear", { link = "CurSearch" })
+
+			local opts = { noremap = true, silent = true }
+			local map = function(lhs, rhs)
+				vim.keymap.set("n", lhs, rhs, opts)
+			end
+
+			map("n", function()
+				vim.cmd("normal! " .. tostring(vim.v.count1) .. "n")
+				require("hlslens").start()
+			end)
+			map("N", function()
+				vim.cmd("normal! " .. tostring(vim.v.count1) .. "N")
+				require("hlslens").start()
+			end)
+
+			for _, k in ipairs({ "*", "#", "g*", "g#" }) do
+				map(k, function()
+					vim.cmd("normal! " .. k)
+					require("hlslens").start()
+				end)
+			end
+		end,
+	},
+
 	-- Rendered markdown in TUI
 	{
 		"MeanderingProgrammer/render-markdown.nvim",

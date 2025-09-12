@@ -59,6 +59,7 @@ return {
 				local filetype = vim.bo[bufnr].filetype
 				local format_on_save_filetypes = {
 					"go",
+					"json",
 					"lua",
 				}
 
