@@ -1,7 +1,7 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "theme": "dracula",
-  "share": "manual",
+  "share": "disabled",
   "autoupdate": false,
   "mode": {
     "build": {
