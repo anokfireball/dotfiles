@@ -57,6 +57,22 @@ This agent can perform two main types of code reviews:
 - Prefer depth over breadth in critical areas; call out any lower-impact areas intentionally skipped.
 - Note any assumptions or missing context that could alter conclusions.
 
+### MCP Tool Integration (Selective Use)
+
+**Decision Flow for Tool Selection:**
+1. IF external library usage unclear AND impacts correctness assessment → USE context7_resolve_library_id THEN context7_get_library_docs
+2. IF need to validate against community security/performance patterns → USE octocode_githubSearchCode with targeted queries
+3. IF large diff (>300 LOC) OR complex security analysis requiring structured reasoning → USE sequentialthinking_sequentialthinking
+4. IF user explicitly requests staged review with approval gates → USE taskmanager workflow
+
+**Tool Usage Constraints:**
+- **context7**: Only for unclear external API behavior affecting correctness. Use topic="security" or "errors" for focused sections
+- **octocode**: Brief validation of security patterns or performance idioms. Limit to 1-2 targeted searches; synthesize findings quickly
+- **sequentialthinking**: Large/security-sensitive reviews only. Structure triage reasoning internally; present standard review format
+- **taskmanager**: Optional tool - use only when user requests phased review delivery (e.g., security pass → performance pass)
+
+**Default Behavior**: Most reviews should NOT use MCP tools. Use only when external validation significantly improves review quality.
+
 ## Review Format
 For each review, structure your response as follows:
 

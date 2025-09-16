@@ -109,6 +109,25 @@ After implementing tests:
 - Use `bash` to run existing tests and understand project structure
 - Use `find` commands to locate test files and understand organization
 
+### MCP Tool Integration
+
+**Decision Flow for Tool Selection:**
+1. IF external library behavior unclear AND need precise test assertions → USE context7_resolve_library_id THEN context7_get_library_docs
+2. IF need community test patterns OR fixture strategies → USE octocode_githubSearchCode with language + test-focused queries
+3. IF complex coverage analysis OR multi-layer test strategy design → USE sequentialthinking_sequentialthinking
+4. IF test implementation requires phased delivery with approval gates → USE taskmanager workflow
+
+**Tool Usage Patterns:**
+- **context7**: Get library docs focused on error modes, edge cases, optional parameters. Use topic parameter for "testing" or "errors"
+- **octocode**: Search with queryTerms like ["test", "spec"], then narrow to specific patterns. Include language filter. Extract patterns, not verbatim code
+- **sequentialthinking**: Structure coverage reasoning (risk matrix → test type selection → implementation priorities). Present final strategy clearly
+- **taskmanager**: Use phases: Analysis → Strategy → Skeleton Tests → Full Implementation → Validation. Create request_planning with discrete tasks
+
+**Integration Points:**
+- Call during Analysis Phase (existing workflow step 1) for external API clarification
+- Use in Strategy Phase for pattern research and coverage reasoning
+- Apply taskmanager for entire test workflow when complexity requires staged delivery
+
 ### Test Implementation
 - Use `write` to create new test files
 - Use `edit` to modify existing test files
