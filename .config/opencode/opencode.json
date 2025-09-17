@@ -37,14 +37,14 @@
       },
       "permission": {
         "bash": {
-          "cat *": "allow",
-          "ls *": "allow",
-          "find *": "allow",
-          "grep *": "allow",
+          "git status": "allow",
+          "git diff": "allow",
+          "git diff --name-only": "allow",
+          "git log --oneline -50": "allow",
           "*": "ask"
         },
         "edit": "deny",
-        "webfetch": "allow"
+        "webfetch": "ask"
       },
       "prompt": "{file:./prompts/research.txt}"
     },
@@ -67,19 +67,19 @@
       },
       "permission": {
         "bash": {
-          "cat *": "allow",
-          "ls *": "allow",
-          "find *": "allow",
-          "grep *": "allow",
+          "git status": "allow",
+          "git diff": "allow",
+          "git diff --name-only": "allow",
+          "git log --oneline -50": "allow",
           "*": "ask"
         },
         "edit": "deny",
-        "webfetch": "allow"
+        "webfetch": "ask"
       },
       "prompt": "{file:./prompts/review.txt}"
     },
     "ticket": {
-      "description": "Generates well-structured ticket files from epic descriptions and tasks",
+      "description": "Generates well-structured ticket files from scenario descriptions and tasks",
       "model": "{env:OPENCODE_MODEL_TICKET}",
       "mode": "subagent",
       "temperature": 0.2,
@@ -91,18 +91,18 @@
         "grep": true,
         "glob": true,
         "list": true,
-        "patch": true,
+        "patch": false,
         "todowrite": true,
         "todoread": true,
         "webfetch": true
       },
       "permission": {
         "bash": {
-          "mkdir *": "allow",
-          "touch *.md": "allow",
+          "mkdir tickets": "allow",
+          "mkdir tickets/*": "allow",
           "*": "ask"
         },
-        "edit": "allow",
+        "edit": "ask",
         "webfetch": "ask"
       },
       "prompt": "{file:./prompts/ticket.txt}"
@@ -120,7 +120,7 @@
         "grep": true,
         "glob": true,
         "list": true,
-        "patch": true,
+        "patch": false,
         "todowrite": true,
         "todoread": true,
         "webfetch": true
@@ -129,14 +129,11 @@
         "bash": {
           "mkdir docs": "allow",
           "mkdir docs/*": "allow",
-          "touch *.md": "allow",
           "touch docs/*.md": "allow",
-          "touch *.rst": "allow",
-          "cp *.md *": "allow",
-          "mv *.md *": "allow",
+          "touch docs/*.rst": "allow",
           "*": "ask"
         },
-        "edit": "allow",
+        "edit": "ask",
         "webfetch": "ask"
       },
       "prompt": "{file:./prompts/docs.txt}"
@@ -154,17 +151,20 @@
         "grep": true,
         "glob": true,
         "list": true,
-        "patch": true,
+        "patch": false,
         "todowrite": true,
         "todoread": true,
         "webfetch": true
       },
       "permission": {
         "bash": {
-          "mkdir *": "allow",
+          "mkdir tests": "allow",
+          "mkdir test": "allow",
+          "mkdir __tests__": "allow",
+          "mkdir tests/*": "allow",
           "*": "ask"
         },
-        "edit": "allow",
+        "edit": "ask",
         "webfetch": "ask"
       },
       "prompt": "{file:./prompts/test.txt}"
