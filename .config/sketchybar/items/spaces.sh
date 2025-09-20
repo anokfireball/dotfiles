@@ -8,7 +8,6 @@ for m in $(aerospace list-monitors | awk '{print $1}'); do
     space=(
       space="$sid"
       icon="$sid"
-      icon.highlight_color=$RED
       icon.padding_left=10
       icon.padding_right=10
       display=$(($(aerospace list-monitors | wc -l) + 1 - $m))
@@ -20,8 +19,7 @@ for m in $(aerospace list-monitors | awk '{print $1}'); do
       label.color=$GREY
       label.font="sketchybar-app-font:Regular:16.0"
       label.y_offset=-1
-      label.highlight_color=$WHITE
-      script="$PLUGIN_DIR/space.sh"
+      script="$PLUGIN_DIR/space_windows.sh"
     )
 
     sketchybar --add space space.$sid left \
@@ -63,3 +61,9 @@ space_creator=(
 sketchybar --add item space_creator left               \
            --set space_creator "${space_creator[@]}"   \
            --subscribe space_creator aerospace_workspace_change
+
+# Trigger an initial workspace change event to apply styling to the focused workspace on startup
+FOCUSED_WS=$(aerospace list-workspaces --focused)
+if [ -n "$FOCUSED_WS" ]; then
+  sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE="$FOCUSED_WS" PREV_WORKSPACE=""
+fi

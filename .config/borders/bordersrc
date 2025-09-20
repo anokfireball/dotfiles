@@ -1,10 +1,17 @@
 #!/bin/bash
 
+PALETTE_FILE="${HOME}/.config/sketchybar/palette_dracula.sh"
+[ -f "$PALETTE_FILE" ] && source "$PALETTE_FILE"
+
+ACTIVE=${DRACULA_PURPLE:-0xffBD93F9}
+INACTIVE=0x6644475A
+
 options=(
 	style=round
 	width=10.0
 	hidpi=on
-	active_color=0xffFFFFFF
+	active_color=$ACTIVE
+	inactive_color=$INACTIVE
 )
 
 borders "${options[@]}"

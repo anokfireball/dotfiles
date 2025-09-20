@@ -7,8 +7,8 @@ PLUGIN_DIR="$CONFIG_DIR/plugins"
 ITEM_DIR="$CONFIG_DIR/items"
 
 bar=(
-  border_color=0x00000000
-  border_width=5
+  border_color=$BAR_BORDER_COLOR
+  border_width=1
   color=$BAR_COLOR
   corner_radius=10
   height=35
@@ -29,23 +29,23 @@ default=(
   updates=when_shown
   padding_left=5
   padding_right=5
-  background.border_width=3
+  background.border_width=2
   background.corner_radius=7
   background.height=23
-  icon.color=0xffffffff
+  icon.color=$ICON_COLOR
   icon.font="$FONT:Heavy:16.0"
   icon.padding_left=4
   icon.padding_right=4
-  label.color=0xffffffff
+  label.color=$LABEL_COLOR
   label.font="$FONT:Semibold:13.0"
   label.padding_left=4
   label.padding_right=4
   popup.background.border_color=$POPUP_BORDER_COLOR
   popup.background.border_width=1
   popup.background.color=$POPUP_BACKGROUND_COLOR
-  popup.background.corner_radius=15
+  popup.background.corner_radius=12
   popup.background.shadow.drawing=on
-  popup.blur_radius=20
+  popup.blur_radius=25
 )
 sketchybar --default "${default[@]}"
 
