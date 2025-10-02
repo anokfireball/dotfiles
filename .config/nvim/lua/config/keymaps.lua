@@ -415,25 +415,3 @@ end
 map("n", "<leader>sl", create_session_picker("read", "Load Session"), "[S]ession [L]oad")
 map("n", "<leader>sd", create_session_picker("delete", "Delete Session"), "[S]ession [D]elete")
 map("n", "<leader>ss", save_session_with_prompt, "[S]ession [S]ave")
-
--- Folding (nvim-ufo)
-map("n", "zM", function()
-	require("ufo").closeAllFolds()
-end, "Close all folds")
-
-map("n", "zR", function()
-	require("ufo").openAllFolds()
-end, "Open all folds")
-
-map("n", "zm", function()
-	require("ufo").closeFoldsWith()
-end, "Close folds with kind")
-
-map("n", "zr", function()
-	require("ufo").openFoldsExceptKinds()
-end, "Open folds except kinds")
-
-map("n", "zp", function()
-	require("ufo").peekFoldedLinesUnderCursor()
-end, "Peek fold")
-

@@ -82,11 +82,6 @@ vim.o.scrolloff = 10
 -- raise a dialog asking whether to save staged changes
 vim.o.confirm = true
 
-vim.o.foldcolumn = "0"
-vim.o.foldlevel = 99
-vim.o.foldlevelstart = 99
-vim.o.foldenable = true
-
 -- do not show cmd line by default
 vim.o.cmdheight = 0
 

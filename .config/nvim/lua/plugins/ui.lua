@@ -356,18 +356,24 @@ return {
 			end
 
 			map("n", function()
-				vim.cmd("normal! " .. tostring(vim.v.count1) .. "n")
-				require("hlslens").start()
+				local ok = pcall(vim.cmd, "normal! " .. tostring(vim.v.count1) .. "n")
+				if ok then
+					require("hlslens").start()
+				end
 			end)
 			map("N", function()
-				vim.cmd("normal! " .. tostring(vim.v.count1) .. "N")
-				require("hlslens").start()
+				local ok = pcall(vim.cmd, "normal! " .. tostring(vim.v.count1) .. "N")
+				if ok then
+					require("hlslens").start()
+				end
 			end)
 
 			for _, k in ipairs({ "*", "#", "g*", "g#" }) do
 				map(k, function()
-					vim.cmd("normal! " .. k)
-					require("hlslens").start()
+					local ok = pcall(vim.cmd, "normal! " .. k)
+					if ok then
+						require("hlslens").start()
+					end
 				end)
 			end
 		end,
@@ -595,71 +601,22 @@ return {
 
 	-- Smarter folding
 	{
-		"kevinhwang91/nvim-ufo",
-		dependencies = "kevinhwang91/promise-async",
+		"chrisgrieser/nvim-origami",
 		event = "BufReadPre",
-		config = function()
-			require("ufo").setup({
-				provider_selector = function(bufnr, filetype, buftype)
-					if buftype ~= "" then
-						return ""
-					end
-
-					if not filetype or filetype == "" then
-						return ""
-					end
-
-					local has_lsp_folding = false
-					for _, client in pairs(vim.lsp.get_active_clients({ bufnr = bufnr })) do
-						if client.server_capabilities and client.server_capabilities.foldingRangeProvider then
-							has_lsp_folding = true
-							break
-						end
-					end
-
-					local has_treesitter = false
-					local ok, parsers = pcall(require, "nvim-treesitter.parsers")
-					if ok and parsers then
-						if type(parsers.has_parser) == "function" then
-							has_treesitter = parsers.has_parser(filetype)
-						else
-							local parser_ok = pcall(vim.treesitter.get_parser, bufnr)
-							has_treesitter = parser_ok
-						end
-					end
-
-					if has_lsp_folding and has_treesitter then
-						return { "lsp", "treesitter" }
-					elseif has_lsp_folding then
-						return { "lsp", "indent" }
-					elseif has_treesitter then
-						return { "treesitter", "indent" }
-					else
-						return ""
-					end
-				end,
-			})
-
-			-- Disable UFO completely in diff mode
-			vim.api.nvim_create_autocmd({ "OptionSet" }, {
-				pattern = "diff",
-				callback = function()
-					if vim.opt.diff:get() then
-						require("ufo").disable()
-					else
-						require("ufo").enable()
-					end
-				end,
-			})
-
-			-- Check diff status on buffer enter
-			vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter" }, {
-				callback = function()
-					if vim.opt.diff:get() then
-						require("ufo").disable()
-					end
-				end,
-			})
+		opts = {
+			foldtext = {
+				diagnosticsCount = false,
+				gitsignsCount = false,
+			},
+			autoFold = {
+				kinds = { "imports" },
+			},
+		},
+		init = function()
+			vim.o.foldcolumn = "0"
+			vim.o.foldlevel = 99
+			vim.o.foldlevelstart = 99
+			vim.o.foldenable = true
 		end,
 	},
 }
