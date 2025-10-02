@@ -80,42 +80,19 @@ return {
 
 	-- AI coding assistant
 	{
-		"olimorris/codecompanion.nvim",
-		cmd = { "CodeCompanion", "CodeCompanionActions", "CodeCompanionChat" },
-		keys = {
-			{ "<leader>ca", "<cmd>CodeCompanionActions<cr>", mode = { "n", "v" }, desc = "[C]odeCompanion [A]ctions" },
-			{ "<leader>cc", "<cmd>CodeCompanionChat Toggle<cr>", mode = { "n", "v" }, desc = "[C]odeCompanion [C]hat" },
-			{
-				"<leader>ce",
-				"<cmd>CodeCompanion /explain<cr>",
-				mode = { "n", "v" },
-				desc = "[C]odeCompanion [E]xplain",
-			},
-			{ "<leader>cf", "<cmd>CodeCompanion /fix<cr>", mode = { "n", "v" }, desc = "[C]odeCompanion [F]ix" },
-			{
-				"<leader>cv",
-				"<cmd>CodeCompanion /commit<cr>",
-				mode = { "n", "v" },
-				desc = "[C]odeCompanion [V]CS Commit Message",
-			},
-			{ "ga", "<cmd>CodeCompanionChat Add<cr>", mode = "v", desc = "Add to CodeCompanion" },
-		},
+		"sudo-tee/opencode.nvim",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
-			"nvim-treesitter/nvim-treesitter",
-			"zbirenbaum/copilot.lua",
 			"MeanderingProgrammer/render-markdown.nvim",
+			"saghen/blink.cmp",
+			"nvim-telescope/telescope.nvim",
 		},
 		opts = {
-			strategies = {
-				chat = {
-					adapter = "copilot",
-				},
-				inline = {
-					adapter = "copilot",
-				},
-				cmd = {
-					adapter = "copilot",
+			preferred_picker = "telescope",
+			preferred_completion = "blink",
+			ui = {
+				icons = {
+					preset = "text",
 				},
 			},
 		},
