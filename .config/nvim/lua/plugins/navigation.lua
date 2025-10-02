@@ -64,7 +64,10 @@ return {
 					starter.sections.sessions(),
 					starter.sections.recent_files(nil, nil, false),
 					{ name = "New Buffer", action = "enew", section = "Builtin actions" },
-					{ name = "File Explorer", action = "Neotree", section = "Builtin actions" },
+					{ name = "Explorer", action = "Neotree", section = "Builtin actions" },
+					{ name = "Lazy.nvim", action = "Lazy", section = "Builtin actions" },
+					{ name = "Mason", action = "Mason", section = "Builtin actions" },
+					{ name = "Quit", action = "qa", section = "Builtin actions" },
 				},
 				content_hooks = {
 					starter.gen_hook.adding_bullet(),
