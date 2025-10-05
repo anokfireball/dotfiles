@@ -27,5 +27,14 @@ HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='fg=#bd93f9,bold'
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='fg=#ff5555,bold'
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
+function zvm_after_init() {
+    if command -v fzf &>/dev/null; then
+        eval "$(fzf --zsh)"
+    fi
+    bindkey -M viins '^S' _sudo-toggle
+    bindkey -M vicmd '^R' redo
+}
+ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
+zcomet load jeffreytse/zsh-vi-mode
 # Syntax Highlight After Suggestions (Must Load Last)
 zcomet load zsh-users/zsh-syntax-highlighting
