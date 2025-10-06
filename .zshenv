@@ -8,6 +8,7 @@ export OPENCODE_MODEL_DOCS="github-copilot/gpt-5-mini"
 export OPENCODE_MODEL_PLAN="github-copilot/gpt-5"
 export OPENCODE_MODEL_RESEARCH="github-copilot/gemini-2.5-pro"
 export OPENCODE_MODEL_REVIEW="github-copilot/gpt-5-codex"
+export OPENCODE_MODEL_SCOUT="github-copilot/gpt-4.1"
 export OPENCODE_MODEL_TICKET="github-copilot/claude-3.7-sonnet-thought"
 
 if [[ -f "$HOME/.work/.zshenv" ]]; then

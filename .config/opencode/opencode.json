@@ -78,6 +78,46 @@
       },
       "prompt": "{file:./prompts/review.txt}"
     },
+    "scout": {
+      "description": "Scout agent for fast, read-only code reconnaissance and exploration",
+      "model": "{env:OPENCODE_MODEL_SCOUT}",
+      "mode": "subagent",
+      "temperature": 0.0,
+      "tools": {
+        "bash": true,
+        "edit": false,
+        "write": false,
+        "read": true,
+        "grep": true,
+        "glob": true,
+        "list": true,
+        "patch": false,
+        "todowrite": true,
+        "todoread": true,
+        "webfetch": false
+      },
+      "permission": {
+        "bash": {
+          "git log*": "allow",
+          "git grep*": "allow",
+          "git ls-files*": "allow",
+          "git show*": "allow",
+          "git diff*": "allow",
+          "find *": "allow",
+          "fd *": "allow",
+          "grep *": "allow",
+          "ls *": "allow",
+          "cat *": "allow",
+          "head *": "allow",
+          "tail *": "allow",
+          "rg *": "allow",
+          "*": "ask"
+        },
+        "edit": "deny",
+        "webfetch": "deny"
+      },
+      "prompt": "{file:./prompts/scout.txt}"
+    },
     "ticket": {
       "description": "Generates well-structured ticket files from scenario descriptions and tasks",
       "model": "{env:OPENCODE_MODEL_TICKET}",
