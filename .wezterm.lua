@@ -14,13 +14,24 @@ if target_os:find("apple") then
 	})
 	config.font_size = 14
 	config.freetype_load_target = "HorizontalLcd"
-	config.keys = {
-		-- consistent ctrl behaviour between both systems
-		{ key = "c", mods = "SUPER", action = wezterm.action.DisableDefaultAssignment },
-		{ key = "v", mods = "SUPER", action = wezterm.action.DisableDefaultAssignment },
-		-- no tabs on the emulator level
-		{ key = "t", mods = "SUPER", action = wezterm.action.DisableDefaultAssignment },
-	}
+
+	local keys = {}
+
+	-- consistent caps lock behaviour between systems
+	for key = string.byte("a"), string.byte("z") do
+		table.insert(keys, {
+			key = string.char(key),
+			mods = "SUPER",
+			action = wezterm.action.SendKey({ key = string.char(key), mods = "CTRL" }),
+		})
+	end
+	table.insert(keys, { key = "c", mods = "SUPER|SHIFT", action = wezterm.action.CopyTo("Clipboard") })
+	table.insert(keys, { key = "v", mods = "SUPER|SHIFT", action = wezterm.action.PasteFrom("Clipboard") })
+
+	-- no tabs on the emulator level
+	table.insert(keys, { key = "t", mods = "SUPER", action = wezterm.action.DisableDefaultAssignment })
+
+	config.keys = keys
 elseif target_os:find("windows") then
 	config.font = wezterm.font_with_fallback({
 		base_mono,
