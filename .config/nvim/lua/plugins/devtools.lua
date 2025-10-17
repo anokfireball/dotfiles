@@ -32,4 +32,17 @@ return {
 			vim.keymap.set({ "n", "v" }, "<leader>d", dm.mode.toggle, { nowait = true })
 		end,
 	},
+
+	-- Task runner
+	{
+		"stevearc/overseer.nvim",
+		cmd = { "OverseerRun", "OverseerRunAgain", "OverseerList", "OverseerToggle" },
+		opts = {
+			templates = {
+				"builtin",
+				"user.go_run_file",
+				"user.go_run_module",
+			},
+		},
+	},
 }
