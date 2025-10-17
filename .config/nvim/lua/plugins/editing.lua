@@ -1,4 +1,13 @@
 return {
+	-- SOPS file encryption/decryption
+	{
+		"anokfireball/sops-edit.nvim",
+		ft = { "yaml", "json", "dosini", "sh" },
+		opts = {
+			verbose = false,
+		},
+	},
+
 	-- Clipboard manager
 	{
 		"AckslD/nvim-neoclip.lua",
