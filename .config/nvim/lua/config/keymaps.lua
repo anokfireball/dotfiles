@@ -165,15 +165,50 @@ map("n", "<leader>tc", function()
 	require("treesitter-context").toggle()
 end, "[T]oggle [C]ontext")
 
-map("n", "<leader>ta", function()
-	require("copilot")
-	local output = vim.api.nvim_exec("Copilot status", { output = true })
-	if output:match("Ready") then
-		vim.cmd("Copilot disable")
-	else
-		vim.cmd("Copilot enable")
+local function toggle_copilot_global()
+	local ok, suggestion = pcall(require, "copilot.suggestion")
+	if not ok then
+		vim.notify("Copilot not loaded", vim.log.levels.WARN)
+		return
 	end
-end, "[T]oggle Copilot [A]utocomplete")
+
+	if not suggestion.is_visible or type(suggestion.dismiss) ~= "function" then
+		vim.notify("Copilot suggestion module not ready", vim.log.levels.WARN)
+		return
+	end
+
+	local current_global_state = vim.g.copilot_auto_trigger_global
+	if current_global_state == nil then
+		current_global_state = false -- Default to disabled
+	end
+
+	local new_global_state = not current_global_state
+	vim.g.copilot_auto_trigger_global = new_global_state
+
+	if not new_global_state then
+		suggestion.dismiss()
+	end
+
+	for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+		if vim.api.nvim_buf_is_loaded(buf) then
+			local current_buf_state = vim.b[buf].copilot_suggestion_auto_trigger
+			if current_buf_state ~= new_global_state then
+				vim.api.nvim_buf_set_var(buf, "copilot_suggestion_auto_trigger", new_global_state)
+			end
+		end
+	end
+
+	-- Force statusline refresh
+	vim.cmd("redrawstatus")
+end
+
+map("n", "<leader>ta", toggle_copilot_global, "[T]oggle Copilot [A]uto-trigger")
+
+vim.api.nvim_create_user_command(
+	"CopilotToggle",
+	toggle_copilot_global,
+	{ desc = "Toggle Copilot auto-trigger globally" }
+)
 
 map("n", "<leader>tf", function()
 	vim.cmd("VimadeFocus")

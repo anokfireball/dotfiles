@@ -46,6 +46,22 @@ vim.api.nvim_create_autocmd("User", {
 	end,
 })
 
+-- Sync new buffers with global copilot auto-trigger state
+vim.api.nvim_create_autocmd("BufEnter", {
+	desc = "Sync copilot auto-trigger with global state for new buffers",
+	callback = function()
+		local global_state = vim.g.copilot_auto_trigger_global
+		-- Default to disabled if no global state is set
+		local effective_global_state = global_state ~= nil and global_state or false
+
+		-- Only sync if buffer doesn't already have a setting to avoid redundant writes
+		local current_buf_state = vim.b.copilot_suggestion_auto_trigger
+		if current_buf_state ~= effective_global_state then
+			vim.b.copilot_suggestion_auto_trigger = effective_global_state
+		end
+	end,
+})
+
 -- Remove trailing whitespace and multiple empty lines at EOF on save
 vim.api.nvim_create_autocmd("BufWritePre", {
 	pattern = "*",
