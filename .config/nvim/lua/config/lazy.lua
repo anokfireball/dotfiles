@@ -20,6 +20,10 @@ require("lazy").setup({
 	} },
 	install = { colorscheme = { "dracula", "habamax" } },
 	checker = { enabled = true },
+	rocks = {
+		enabled = true,
+		server = "https://luarocks.org",
+	},
 })
 
 -- Prepend Mason's bin directory to PATH for proper LSP integration

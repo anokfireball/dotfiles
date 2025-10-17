@@ -3,6 +3,8 @@
   "theme": "dracula",
   "share": "disabled",
   "autoupdate": false,
+  "username": "anokfireball",
+  "small_model": "{env:OPENCODE_MODEL_SMALL}",
   "mode": {
     "build": {
       "model": "{env:OPENCODE_MODEL_BUILD}"
