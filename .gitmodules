@@ -1,0 +1,3 @@
+[submodule ".local/src/urlpicker"]
+	path = .local/src/urlpicker
+	url = git@github.com:anokfireball/urlpicker.git
