@@ -88,6 +88,26 @@ return {
 		end,
 	},
 
+	{
+		"fnune/recall.nvim",
+		event = "BufReadPre",
+		cmd = { "RecallMark", "RecallUnmark", "RecallToggle", "RecallNext", "RecallPrev", "RecallClear" },
+		opts = {
+			telescope = {
+				mappings = {
+					unmark_selected_entry = {
+						normal = "",
+						insert = "",
+					},
+				},
+			},
+		},
+		config = function(ctx)
+			local recall = require("recall")
+			recall.setup(ctx.opts)
+		end,
+	},
+
 	-- Tree File Explorer
 	{
 		"nvim-neo-tree/neo-tree.nvim",

@@ -142,6 +142,12 @@ map("n", "<leader>fn", function()
 	vim.cmd("Telescope notify")
 end, "[F]ind [N]otifications")
 
+-- Recall (Marks)
+map("n", "<leader>m", "<cmd>RecallToggle<cr>", "Toggle Mark")
+map("n", "[m", "<cmd>RecallNext<cr>", "Next Mark")
+map("n", "]m", "<cmd>RecallPrev<cr>", "Previous Mark")
+map("n", "<leader>fm", "<cmd>Telescope recall<cr>", "[F]ind [M]arks")
+
 -- Notifications
 map("n", "<leader>nd", function()
 	require("notify").dismiss()
