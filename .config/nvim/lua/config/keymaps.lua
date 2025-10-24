@@ -165,6 +165,9 @@ map("n", "<leader>td", function()
 		vim.diagnostic.enable(true)
 	end
 	Set_diagnostic_severity(vim.g.min_diagnostic_severity)
+
+	-- Force statusline refresh
+	vim.cmd("redrawstatus")
 end, "[T]oggle [D]iagnostic Severity")
 
 map("n", "<leader>tc", function()

@@ -475,10 +475,6 @@ return {
 			local function copilot_status()
 				local robot = "󰚩"
 
-				if not package.loaded["copilot"] then
-					return nil
-				end
-
 				local buffer_auto_trigger = vim.b.copilot_suggestion_auto_trigger
 				local global_auto_trigger = vim.g.copilot_auto_trigger_global
 
@@ -496,6 +492,25 @@ return {
 				end
 
 				return robot .. " +"
+			end
+
+			-- Function to get diagnostic level status for statusline
+			local function diagnostic_level_status()
+				local bulb = "󰛩"
+
+				local severity = vim.g.min_diagnostic_severity
+
+				if not vim.diagnostic.is_enabled() or severity == nil then
+					return bulb .. " -"
+				end
+
+				if severity == vim.diagnostic.severity.ERROR then
+					return bulb .. " W"
+				elseif severity == vim.diagnostic.severity.HINT then
+					return bulb .. " A"
+				end
+
+				return bulb .. " ?"
 			end
 
 			statusline.setup(ctx.opts)
@@ -518,12 +533,25 @@ return {
 					local location = statusline.section_location({ trunc_width = 75 })
 					local search = statusline.section_searchcount({ trunc_width = 75 })
 					local copilot = copilot_status()
+					local diag_level = diagnostic_level_status()
+
+					-- Format git branch and filename with file icon (no explicit delimiter)
+					local git_branch = ""
+					if git ~= "" then
+						git_branch = git:gsub("^%s+", ""):gsub("%s+$", "")
+					end
+
+					local file_icon = ""
+					local filename_with_icon = ""
+					if filename ~= "" then
+						filename_with_icon = file_icon .. " " .. filename
+					end
 
 					return statusline.combine_groups({
 						{ hl = mode_hl, strings = { mode } },
-						{ hl = "MiniStatuslineDevinfo", strings = { git, diff, diagnostics, lsp, copilot } },
+						{ hl = "MiniStatuslineDevinfo", strings = { diff, diagnostics, lsp, copilot, diag_level } },
 						"%<", -- Mark general truncate point
-						{ hl = "MiniStatuslineFilename", strings = { filename } },
+						{ hl = "MiniStatuslineFilename", strings = { git_branch, filename_with_icon } },
 						"%=", -- End left alignment
 						{ hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
 						{ hl = mode_hl, strings = { search, location } },
