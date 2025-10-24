@@ -129,6 +129,9 @@ return {
 			select = {
 				lookahead = true,
 			},
+			move = {
+				enable = false,
+			},
 		},
 	},
 }
