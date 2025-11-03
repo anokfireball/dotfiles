@@ -212,6 +212,7 @@
       "prompt": "{file:./prompts/test.txt}"
     }
   },
+  "disabled_providers": ["opencode"],
   "mcp": {
     "context7": {
       "type": "local",
