@@ -551,8 +551,9 @@ return {
 						{ hl = mode_hl, strings = { mode } },
 						{ hl = "MiniStatuslineDevinfo", strings = { diff, diagnostics, lsp, copilot, diag_level } },
 						"%<", -- Mark general truncate point
-						{ hl = "MiniStatuslineFilename", strings = { git_branch, filename_with_icon } },
+						{ hl = "MiniStatuslineFilename", strings = { filename_with_icon } },
 						"%=", -- End left alignment
+						{ hl = "MiniStatuslineFilename", strings = { git_branch } },
 						{ hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
 						{ hl = mode_hl, strings = { search, location } },
 					})
