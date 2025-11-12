@@ -19,6 +19,17 @@ sude() {
   READLINE_POINT=${#READLINE_LINE}
 }
 
+# Create directory and change into it
+mkcd() {
+    if [ -z "$1" ]; then
+        echo "Usage: mkcd <directory>"
+        return 1
+    fi
+
+    local dir="$1"
+    mkdir -p "$dir" && cd "$dir"
+}
+
 extract() {
   if [ -z "$1" ] || [ -z "$2" ]; then
     echo "Usage: extract <archive> <destination>"
@@ -315,4 +326,12 @@ fi
 
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
 alias d='dotfiles'
+
+# Clear shell and tmux buffer if inside tmux
+clr() {
+  clear
+  if [ -n "$TMUX" ]; then
+    tmux clear-history
+  fi
+}
 

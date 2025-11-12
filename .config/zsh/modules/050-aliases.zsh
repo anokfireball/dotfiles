@@ -243,6 +243,25 @@ if command -v tmux &>/dev/null; then
     compdef _tmux t 2>/dev/null || true
 fi
 
+# Create directory and change into it
+mkcd() {
+    if [[ -z "$1" ]]; then
+        echo "Usage: mkcd <directory>"
+        return 1
+    fi
+
+    local dir="$1"
+    mkdir -p "$dir" && cd "$dir"
+}
+
 alias dotfiles='git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
 alias d='dotfiles'
+
+# Clear shell and tmux buffer if inside tmux
+clr() {
+  clear
+  if [[ -n "$TMUX" ]]; then
+    tmux clear-history
+  fi
+}
 
