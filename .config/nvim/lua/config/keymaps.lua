@@ -42,12 +42,6 @@ map("n", "<C-Down>", "<cmd>resize -1<CR>", "Decrease window height by 1")
 map("n", "<C-Left>", "<cmd>vertical resize -1<CR>", "Decrease window width by 1")
 map("n", "<C-Right>", "<cmd>vertical resize +1<CR>", "Increase window width by 1")
 
--- Arrow key disabling
-map("n", "<Up>", "<Nop>", "Disable Up Arrow")
-map("n", "<Down>", "<Nop>", "Disable Down Arrow")
-map("n", "<Left>", "<Nop>", "Disable Left Arrow")
-map("n", "<Right>", "<Nop>", "Disable Right Arrow")
-
 -- ========================================================================
 -- LSP and Diagnostics
 -- ========================================================================
