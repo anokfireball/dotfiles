@@ -7,7 +7,6 @@ typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 # Only proceed if interactive
 [[ $- != *i* ]] && return
 
-# Module dispatcher
 _zsh_modules_dir="${XDG_CONFIG_HOME:-$HOME/.config}/zsh/modules"
 if [[ -d $_zsh_modules_dir ]]; then
   for m in $_zsh_modules_dir/*.zsh(Nn); do
