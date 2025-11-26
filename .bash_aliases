@@ -334,4 +334,5 @@ clr() {
     tmux clear-history
   fi
 }
+alias c='clr'
 
