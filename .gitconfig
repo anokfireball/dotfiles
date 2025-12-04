@@ -1,9 +1,10 @@
 [user]
 	email = github@kthxbye.cyou
 	name = Fabian Koller
+	signingkey = ~/.ssh/id_ed25519_signing.pub
 [core]
 	compression = 9
-	excludesfile = /home/ntauthority/.gitignore_global
+	excludesfile = ~/.gitignore_global
 
 [init]
 	defaultBranch = main
@@ -12,6 +13,13 @@
 	sort = -committerdate
 [tag]
 	sort = -version:refname
+
+[commit]
+	gpgsign = true
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	allowedSignersFile = ~/.config/git/allowed_signers
 
 [pull]
 	rebase = true
@@ -49,3 +57,5 @@
 [includeIf "gitdir:~/.work/"]
 	path = ~/.work/.gitconfig
 
+[log]
+	showSignature = true
