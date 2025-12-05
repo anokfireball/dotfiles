@@ -256,6 +256,7 @@ mkcd() {
 
 alias dotfiles='git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
 alias d='dotfiles'
+compdef git d
 
 # Clear shell and tmux buffer if inside tmux
 clr() {

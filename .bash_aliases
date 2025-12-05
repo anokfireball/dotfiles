@@ -326,6 +326,9 @@ fi
 
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
 alias d='dotfiles'
+if [ -n "$(type -t __git_complete)" ]; then
+  __git_complete d __git_main
+fi
 
 # Clear shell and tmux buffer if inside tmux
 clr() {
