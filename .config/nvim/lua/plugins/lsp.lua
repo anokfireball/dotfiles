@@ -42,6 +42,26 @@ return {
 				filetypes = { "ghaction" },
 			})
 
+			vim.lsp.config("helm_ls", {
+				filetypes = { "helm" },
+				settings = {
+					["helm-ls"] = {
+						yamlls = {
+							enabled = true,
+							path = "yaml-language-server",
+							config = {
+								schemaStore = {
+									enable = true,
+								},
+								schemas = {
+									kubernetes = "templates/**",
+								},
+							},
+						},
+					},
+				},
+			})
+
 			require("mason-lspconfig").setup({
 				automatic_enable = true,
 			})

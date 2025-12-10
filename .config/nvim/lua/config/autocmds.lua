@@ -9,6 +9,15 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end,
 })
 
+-- Helm template filetype detection
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+	desc = "Detect Helm templates",
+	pattern = { "*/templates/*.yaml", "*/templates/*.tpl", "*/templates/*.yml" },
+	callback = function()
+		vim.bo.filetype = "helm"
+	end,
+})
+
 -- Treesitter highlighting and indenting
 vim.api.nvim_create_autocmd("FileType", {
 	desc = "User: enable treesitter highlighting",
