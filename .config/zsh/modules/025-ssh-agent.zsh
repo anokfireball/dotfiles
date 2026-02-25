@@ -34,6 +34,21 @@ agent_run_state() {
     echo $?
 }
 
+add_extra_keys() {
+    local key
+    for key in "${SSH_EXTRA_KEYS[@]}"; do
+        # If key doesn't start with /, prepend ~/.ssh/
+        if [[ "$key" != /* ]]; then
+            key="$HOME/.ssh/$key"
+        fi
+
+        # Only add if key file exists
+        if [[ -f "$key" ]]; then
+            ssh-add "$key" >/dev/null 2>&1
+        fi
+    done
+}
+
 ssh_agent_init() {
     agent_load_env
 
@@ -41,8 +56,10 @@ ssh_agent_init() {
     if [[ ! "$SSH_AUTH_SOCK" ]] || [[ $state -eq 2 ]]; then
         agent_start
         ssh-add >/dev/null 2>&1
+        add_extra_keys
     elif [[ "$SSH_AUTH_SOCK" ]] && [[ $state -eq 1 ]]; then
         ssh-add >/dev/null 2>&1
+        add_extra_keys
     fi
     # If state is 0, agent is running with keys - nothing to do
 }
