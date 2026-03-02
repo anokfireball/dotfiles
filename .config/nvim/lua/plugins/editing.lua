@@ -23,7 +23,7 @@ return {
 
 	-- Auto-pairs
 	{
-		"echasnovski/mini.pairs",
+		"nvim-mini/mini.pairs",
 		version = false,
 		event = "InsertEnter",
 		opts = {
@@ -49,7 +49,7 @@ return {
 
 	-- Split/join code blocks
 	{
-		"echasnovski/mini.splitjoin",
+		"nvim-mini/mini.splitjoin",
 		version = false,
 		event = "BufReadPre",
 		opts = {
@@ -66,7 +66,7 @@ return {
 
 	-- Surround text objects
 	{
-		"echasnovski/mini.surround",
+		"nvim-mini/mini.surround",
 		version = false,
 		event = "BufReadPre",
 		opts = {

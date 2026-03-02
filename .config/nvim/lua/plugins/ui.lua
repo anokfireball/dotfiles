@@ -429,7 +429,7 @@ return {
 
 	-- Highlight word under cursor
 	{
-		"echasnovski/mini.cursorword",
+		"nvim-mini/mini.cursorword",
 		version = false,
 		event = "BufReadPre",
 		config = function(ctx)
@@ -440,7 +440,7 @@ return {
 
 	-- Indent visualization
 	{
-		"echasnovski/mini.indentscope",
+		"nvim-mini/mini.indentscope",
 		version = false,
 		event = "BufReadPre",
 		opts = {
@@ -462,7 +462,7 @@ return {
 
 	-- Status line
 	{
-		"echasnovski/mini.statusline",
+		"nvim-mini/mini.statusline",
 		version = false,
 		event = "VimEnter",
 		opts = {

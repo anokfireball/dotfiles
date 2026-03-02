@@ -1,7 +1,7 @@
 return {
 	-- Columnar File Explorer
 	{
-		"echasnovski/mini.files",
+		"nvim-mini/mini.files",
 		version = false,
 		event = function()
 			-- Load when opening a directory
@@ -34,7 +34,7 @@ return {
 
 	-- Session Management
 	{
-		"echasnovski/mini.sessions",
+		"nvim-mini/mini.sessions",
 		version = false,
 		event = "VeryLazy",
 		opts = {
@@ -47,8 +47,8 @@ return {
 
 	-- Dashboard
 	{
-		"echasnovski/mini.starter",
-		dependencies = { "echasnovski/mini.sessions" },
+		"nvim-mini/mini.starter",
+		dependencies = { "nvim-mini/mini.sessions" },
 		version = false,
 		event = function()
 			if vim.fn.argc() == 0 then
