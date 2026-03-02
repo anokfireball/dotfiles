@@ -85,7 +85,7 @@ return {
 						-- Special UI buffers from plugins
 						"neo-tree",
 						"minifiles",
-						"starter",
+						"ministarter",
 						"WhichKey",
 						"notify",
 						"TelescopePrompt",
