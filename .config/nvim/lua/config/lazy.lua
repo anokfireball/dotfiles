@@ -22,7 +22,7 @@ require("lazy").setup({
 	checker = { enabled = true },
 	rocks = {
 		enabled = true,
-		server = "https://luarocks.org",
+		server = "https://lumen-oss.github.io/rocks-binaries/",
 	},
 })
 
