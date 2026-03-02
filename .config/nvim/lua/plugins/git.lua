@@ -34,7 +34,7 @@ return {
 
 	-- Create shareable permalinks to code locations
 	{
-		"trevorhauter/gitportal.nvim",
+		url = "https://codeberg.org/trevorhauter/gitportal.nvim",
 		cmd = "GitPortal",
 		opts = {
 			always_include_current_line = true,

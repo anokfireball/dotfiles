@@ -24,7 +24,7 @@ return {
 
 	-- UI for nvim-dap
 	{
-		"miroshQa/debugmaster.nvim",
+		"MironPascalCaseFan/debugmaster.nvim",
 		dependencies = { "mfussenegger/nvim-dap" },
 		event = "VeryLazy",
 		config = function()
