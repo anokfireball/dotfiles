@@ -60,6 +60,29 @@ upgrade() {
         echo "Cleaning up brew packages..."
         brew cleanup --prune=all --scrub --quiet
     fi
+    if [[ -n "$WSL_DISTRO_NAME" ]] && command -v powershell.exe &>/dev/null; then
+        if powershell.exe -NoProfile -Command 'if (Get-Command winget -ErrorAction SilentlyContinue) { exit 0 } else { exit 1 }' &>/dev/null; then
+            echo "Updating winget packages..."
+            local winget_output
+            local winget_script="$HOME/.config/zsh/scripts/winget-upgrade.ps1"
+            if [[ -f "$winget_script" ]]; then
+                winget_output=$(powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$winget_script" 2>&1)
+            else
+                winget_output="__WINGET_FAILED__"
+                false
+            fi
+
+            if [[ $? -eq 0 ]]; then
+                if [[ "$winget_output" == *"__WINGET_UPDATED__"* ]]; then
+                    echo "  Updated"
+                else
+                    echo "  Already up to date"
+                fi
+            else
+                echo "  Failed"
+            fi
+        fi
+    fi
 }
 alias u='upgrade'
 
