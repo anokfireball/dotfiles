@@ -4,6 +4,14 @@
   "share": "disabled",
   "autoupdate": false,
   "username": "anokfireball",
+  "plugin": [
+    // dynamic context pruning
+    "@tarquinen/opencode-dcp@latest",
+    // terminal emulation for tools that require interactive sessions
+    "opencode-pty",
+    // background process management
+    "@zenobius/opencode-background"
+  ],
   "small_model": "{env:OPENCODE_MODEL_SMALL}",
   "mode": {
     "build": {
@@ -241,6 +249,11 @@
     "kubernetes": {
       "type": "local",
       "command": ["npx", "-y", "kubernetes-mcp-server@latest"],
+      "enabled": true
+    },
+    "markitdown": {
+      "type": "local",
+      "command": ["uvx", "markitdown-mcp"],
       "enabled": true
     }
   }
