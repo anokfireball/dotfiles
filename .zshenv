@@ -3,9 +3,9 @@ export VISUAL=nvim
 
 export LG_CONFIG_FILE="$HOME/.config/lazygit/config.yml"
 
-export OPENCODE_MODEL_SMALL="github-copilot/gpt-5-mini"
+export OPENCODE_MODEL_SMALL="github-copilot/gpt-5.4-mini"
 export OPENCODE_MODEL_BUILD="github-copilot/claude-sonnet-4.6"
-export OPENCODE_MODEL_DOCS="github-copilot/gpt-5.1-codex-mini"
+export OPENCODE_MODEL_DOCS="github-copilot/gpt-5.4-mini"
 export OPENCODE_MODEL_PLAN="github-copilot/claude-opus-4.6"
 export OPENCODE_MODEL_RESEARCH="github-copilot/gpt-5.4"
 export OPENCODE_MODEL_REVIEW="github-copilot/gpt-5.3-codex"
