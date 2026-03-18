@@ -28,23 +28,28 @@ alias x='extract'
 
 # System upgrade function - handles multiple package managers
 upgrade() {
+    local overall_status=0
+
     if command -v apt &>/dev/null; then
         echo "Updating apt packages..."
         sudo apt update -qq && sudo apt full-upgrade -y -qq
         echo "Cleaning up apt packages..."
         sudo apt autoremove -y -qq && sudo apt autoclean -qq
+        echo
     fi
     if command -v pacman &>/dev/null; then
         echo "Updating pacman packages..."
         sudo pacman -Syu --noconfirm --quiet
         echo "Cleaning up pacman packages..."
         sudo pacman -Sc --noconfirm --quiet
+        echo
     fi
     if command -v flatpak &>/dev/null; then
         echo "Updating flatpak packages..."
         sudo flatpak update -y -q
         echo "Cleaning up flatpak packages..."
         sudo flatpak uninstall --unused -y -q
+        echo
     fi
     if command -v snap &>/dev/null; then
         echo "Updating snap packages..."
@@ -53,36 +58,49 @@ upgrade() {
         sudo snap list --all | awk '/disabled/{print $1, $3}' | while read snapname revision; do
             sudo snap remove "$snapname" --revision="$revision"
         done
+        echo
     fi
     if command -v brew &>/dev/null; then
         echo "Updating brew packages..."
         brew update --quiet && brew upgrade --quiet
         echo "Cleaning up brew packages..."
         brew cleanup --prune=all --scrub --quiet
+        echo
     fi
+
     if [[ -n "$WSL_DISTRO_NAME" ]] && command -v powershell.exe &>/dev/null; then
         if powershell.exe -NoProfile -Command 'if (Get-Command winget -ErrorAction SilentlyContinue) { exit 0 } else { exit 1 }' &>/dev/null; then
-            echo "Updating winget packages..."
-            local winget_output
             local winget_script="$HOME/.config/zsh/scripts/winget-upgrade.ps1"
             if [[ -f "$winget_script" ]]; then
-                winget_output=$(powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$winget_script" 2>&1)
-            else
-                winget_output="__WINGET_FAILED__"
-                false
-            fi
-
-            if [[ $? -eq 0 ]]; then
-                if [[ "$winget_output" == *"__WINGET_UPDATED__"* ]]; then
-                    echo "  Updated"
-                else
-                    echo "  Already up to date"
+                powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$winget_script"
+                if [[ $? -ne 0 ]]; then
+                    overall_status=1
                 fi
             else
+                echo "Updating winget packages..."
                 echo "  Failed"
+                overall_status=1
             fi
+            echo
         fi
     fi
+
+    # Update OpenCode superpowers if installed
+    if [[ -d ~/.config/opencode/superpowers/.git ]]; then
+        echo "Updating OpenCode superpowers..."
+        local output=$(git -C ~/.config/opencode/superpowers pull --rebase 2>&1)
+        if [[ $? -eq 0 ]]; then
+            if [[ "$output" == *"Already up to date"* ]]; then
+                echo "  Already up to date"
+            else
+                echo "  Updated (restart OpenCode to load changes)"
+            fi
+        else
+            echo "  Failed (run 'cd ~/.config/opencode/superpowers && git status')"
+        fi
+    fi
+
+    return $overall_status
 }
 alias u='upgrade'
 
@@ -289,4 +307,3 @@ clr() {
   fi
 }
 alias c='clr'
-
