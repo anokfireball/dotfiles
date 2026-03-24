@@ -224,32 +224,31 @@
   "mcp": {
     "context7": {
       "type": "local",
-      "command": ["npx", "-y", "@upstash/context7-mcp"],
+      "command": ["npx", "--prefer-offline", "@upstash/context7-mcp"],
       "enabled": true
     },
     "sequentialthinking": {
       "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "@modelcontextprotocol/server-sequential-thinking"
-      ],
+      "command": ["npx", "--prefer-offline", "@modelcontextprotocol/server-sequential-thinking"],
       "enabled": true
     },
     "taskmanager": {
       "type": "local",
-      "command": ["npx", "-y", "@kazuph/mcp-taskmanager"],
+      "command": ["npx", "--prefer-offline", "@kazuph/mcp-taskmanager"],
       "enabled": true
     },
     "octocode": {
       "type": "local",
-      "command": ["npx", "-y", "octocode-mcp@latest"],
+      "command": ["npx", "--prefer-offline", "octocode-mcp"],
       "enabled": true
     },
     "kubernetes": {
       "type": "local",
-      "command": ["npx", "-y", "kubernetes-mcp-server@latest"],
-      "enabled": true
+      "command": ["npx", "--prefer-offline", "kubernetes-mcp-server"],
+      "enabled": true,
+      "environment": {
+        "KUBECONFIG": "{env:KUBECONFIG}"
+      }
     },
     "markitdown": {
       "type": "local",
