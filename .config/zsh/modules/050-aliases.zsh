@@ -67,7 +67,6 @@ upgrade() {
         brew cleanup --prune=all --scrub --quiet
         echo
     fi
-
     if [[ -n "$WSL_DISTRO_NAME" ]] && command -v powershell.exe &>/dev/null; then
         if powershell.exe -NoProfile -Command 'if (Get-Command winget -ErrorAction SilentlyContinue) { exit 0 } else { exit 1 }' &>/dev/null; then
             local winget_script="$HOME/.config/zsh/scripts/winget-upgrade.ps1"
@@ -86,17 +85,33 @@ upgrade() {
     fi
 
     # Update OpenCode superpowers if installed
-    if [[ -d ~/.config/opencode/superpowers/.git ]]; then
-        echo "Updating OpenCode superpowers..."
-        local output=$(git -C ~/.config/opencode/superpowers pull --rebase 2>&1)
-        if [[ $? -eq 0 ]]; then
-            if [[ "$output" == *"Already up to date"* ]]; then
-                echo "  Already up to date"
+    if [[ -d ~/.config/opencode ]]; then
+        echo "Updating OpenCode..."
+        if [[ -d ~/.config/opencode/superpowers/.git ]]; then
+            local output=$(git -C ~/.config/opencode/superpowers pull --rebase 2>&1)
+            if [[ $? -eq 0 ]]; then
+                if [[ "$output" == *"Already up to date"* ]]; then
+                    echo "  Superpowers: already up to date"
+                else
+                    echo "  Superpowers: updated (restart OpenCode to load changes)"
+                fi
             else
-                echo "  Updated (restart OpenCode to load changes)"
+                echo "  Superpowers: failed (run 'cd ~/.config/opencode/superpowers && git status')"
             fi
-        else
-            echo "  Failed (run 'cd ~/.config/opencode/superpowers && git status')"
+        fi
+        if [[ -f ~/.config/opencode/package.json ]] && command -v npm &>/dev/null; then
+            local npm_output
+            npm_output=$(npm update --prefix ~/.config/opencode 2>&1)
+            if [[ $? -eq 0 ]]; then
+                if [[ -z "$npm_output" ]]; then
+                    echo "  MCP servers: already up to date"
+                else
+                    echo "  MCP servers: updated"
+                fi
+            else
+                echo "  MCP servers: failed"
+                overall_status=1
+            fi
         fi
     fi
 
