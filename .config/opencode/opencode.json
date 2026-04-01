@@ -227,21 +227,6 @@
       "command": ["npx", "--prefer-offline", "@upstash/context7-mcp"],
       "enabled": true
     },
-    "sequentialthinking": {
-      "type": "local",
-      "command": ["npx", "--prefer-offline", "@modelcontextprotocol/server-sequential-thinking"],
-      "enabled": true
-    },
-    "taskmanager": {
-      "type": "local",
-      "command": ["npx", "--prefer-offline", "@kazuph/mcp-taskmanager"],
-      "enabled": true
-    },
-    "octocode": {
-      "type": "local",
-      "command": ["npx", "--prefer-offline", "octocode-mcp"],
-      "enabled": true
-    },
     "kubernetes": {
       "type": "local",
       "command": ["npx", "--prefer-offline", "kubernetes-mcp-server"],
@@ -253,6 +238,25 @@
     "markitdown": {
       "type": "local",
       "command": ["uvx", "markitdown-mcp"],
+      "enabled": true
+    },
+    "octocode": {
+      "type": "local",
+      "command": ["npx", "--prefer-offline", "octocode-mcp"],
+      "enabled": true
+    },
+    "sequentialthinking": {
+      "type": "local",
+      "command": [
+        "npx",
+        "--prefer-offline",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "enabled": true
+    },
+    "taskmanager": {
+      "type": "local",
+      "command": ["npx", "--prefer-offline", "@kazuph/mcp-taskmanager"],
       "enabled": true
     }
   }
