@@ -27,6 +27,7 @@
       "model": "{env:OPENCODE_MODEL_REVIEW}"
     }
   },
+  "default_agent": "research",
   "agent": {
     "research": {
       "description": "Performs comprehensive research and analysis to answer questions about code, tools, frameworks, and project structure",
