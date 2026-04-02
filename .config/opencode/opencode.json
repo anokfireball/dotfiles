@@ -222,6 +222,28 @@
     }
   },
   "disabled_providers": ["opencode"],
+  "provider": {
+    "github-copilot": {
+      "blacklist": [
+        // Officially retired models
+        // Reference: https://docs.github.com/en/copilot/reference/ai-models/supported-models#model-retirement-history
+        "gpt-4o", // not in current supported models list
+        "gpt-5", // retired 2026-02-17
+        "gpt-5.1", // closing down 2026-04-15
+        "gpt-5.1-codex", // retired 2026-04-01
+        "gpt-5.1-codex-max", // retired 2026-04-01
+        "gpt-5.1-codex-mini", // retired 2026-04-01
+        "gemini-3-pro-preview", // retired 2026-03-26
+        "claude-opus-41", // retired 2026-02-17
+        // Personal preference for "superseeded" models
+        "claude-sonnet-4", // older Sonnet version
+        "claude-sonnet-4.5", // older Sonnet version
+        "claude-opus-4.5", // older Opus version
+        "gpt-5.2", // older GPT-5 generation
+        "gpt-5.2-codex" // older Codex variant
+      ]
+    }
+  },
   "mcp": {
     "context7": {
       "type": "local",
