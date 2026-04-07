@@ -15,6 +15,14 @@ return {
 				delete = { text = "_" },
 				topdelete = { text = "‾" },
 				changedelete = { text = "~" },
+				untracked = { text = "┆" },
+			},
+			signs_staged = {
+				add = { text = "+" },
+				change = { text = "~" },
+				delete = { text = "_" },
+				topdelete = { text = "‾" },
+				changedelete = { text = "~" },
 			},
 			on_attach = GitSignsOnAttach,
 			worktrees = {
@@ -38,7 +46,7 @@ return {
 		cmd = "GitPortal",
 		opts = {
 			always_include_current_line = true,
-			switch_branch_or_commit_upon_ingestion = "ask",
+			switch_branch_or_commit_upon_ingestion = "ask_first",
 		},
 	},
 }

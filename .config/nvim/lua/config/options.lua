@@ -110,6 +110,8 @@ Set_diagnostic_severity(vim.g.min_diagnostic_severity)
 -- Initialize copilot auto-trigger state (default to enabled)
 vim.g.copilot_auto_trigger_global = true
 
+vim.g.ai_cmp = false
+
 -- Explicitly set some filetypes
 vim.filetype.add({
 	pattern = {

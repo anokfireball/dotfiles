@@ -53,7 +53,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(event)
 		map("n", "<leader>th", function()
 			vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
-		end, "Toggle Inlay Hints", { buffer = event.buf })
+		end, "Toggle Inlay Hints", { buf = event.buf })
 	end,
 })
 
@@ -221,16 +221,16 @@ end, "[T]oggle [F]ocus")
 GitSignsOnAttach = function(bufnr)
 	local gitsigns = require("gitsigns")
 	-- https://github.com/lewis6991/gitsigns.nvim/issues/255#issuecomment-2099420323
-	local hl = vim.api.nvim_get_hl_by_name("Comment", true)
+	local hl = vim.api.nvim_get_hl(0, { name = "Comment" })
 	vim.api.nvim_set_hl(0, "Blame", {
-		fg = hl.foreground,
-		bg = hl.background,
+		fg = hl.fg,
+		bg = hl.bg,
 		italic = true,
 	})
 	vim.api.nvim_set_hl(0, "GitSignsCurrentLineBlame", { link = "Blame" })
 
 	local function map_gitsigns(mode, lhs, func, desc)
-		vim.keymap.set(mode, lhs, func, { desc = desc, buffer = bufnr })
+		vim.keymap.set(mode, lhs, func, { desc = desc, buf = bufnr })
 	end
 
 	-- Navigation

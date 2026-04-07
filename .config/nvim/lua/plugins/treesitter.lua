@@ -55,7 +55,6 @@ return {
 					ts.install(languages)
 
 					vim.treesitter.language.register("yaml", "ghaction")
-					vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 				end,
 			},
 			{
@@ -111,15 +110,11 @@ return {
 					}
 
 					if vim.tbl_contains(blacklist, ft) then
-						-- Disable treesitter for this buffer
-						-- Only try to disable if treesitter module is available
-						pcall(function()
-							require("nvim-treesitter.configs").setup({
-								highlight = {
-									enable = false,
-								},
-							})
-						end)
+						-- Disable treesitter highlighting for this buffer
+						pcall(vim.treesitter.stop, args.buf)
+					else
+						-- Enable treesitter-based indentation per-buffer.
+						vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 					end
 				end,
 			})
@@ -128,9 +123,6 @@ return {
 		opts = {
 			select = {
 				lookahead = true,
-			},
-			move = {
-				enable = false,
 			},
 		},
 	},

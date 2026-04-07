@@ -56,7 +56,7 @@ return {
 			end
 		end,
 		config = function(ctx)
-			starter = require("mini.starter")
+			local starter = require("mini.starter")
 			starter.setup({
 				evaluate_single = true,
 				header = "",
@@ -91,7 +91,7 @@ return {
 	{
 		"fnune/recall.nvim",
 		event = "BufReadPre",
-		cmd = { "RecallMark", "RecallUnmark", "RecallToggle", "RecallNext", "RecallPrev", "RecallClear" },
+		cmd = { "RecallMark", "RecallUnmark", "RecallToggle", "RecallNext", "RecallPrevious", "RecallClear" },
 		opts = {
 			telescope = {
 				mappings = {
@@ -170,7 +170,7 @@ return {
 		"nvim-telescope/telescope.nvim",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
-			{ "nvim-telescope/telescope-fzf-native.nvim" },
+			{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 			{ "nvim-telescope/telescope-ui-select.nvim" },
 			{ "nvim-tree/nvim-web-devicons" },
 		},

@@ -58,10 +58,12 @@ return {
 					},
 				},
 				-- TODO does not work with copilot
-                -- https://github.com/Saghen/blink.cmp/issues/1501 ?
-                -- https://github.com/LazyVim/LazyVim/blob/25abbf546d564dc484cf903804661ba12de45507/lua/lazyvim/plugins/extras/ai/copilot.lua#L28-L40 ?
+				-- https://github.com/Saghen/blink.cmp/issues/1501 ?
+				-- https://github.com/LazyVim/LazyVim/blob/25abbf546d564dc484cf903804661ba12de45507/lua/lazyvim/plugins/extras/ai/copilot.lua#L28-L40 ?
 				ghost_text = {
-					enabled = vim.b.copilot_suggestion_hidden,
+					enabled = function()
+						return vim.b.copilot_suggestion_hidden
+					end,
 					show_with_menu = true,
 					show_without_menu = true,
 					show_with_selection = true,

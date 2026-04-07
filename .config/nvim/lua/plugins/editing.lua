@@ -130,7 +130,7 @@ return {
 					["@"] = { "mention", mode = "i" },
 					["/"] = { "slash_commands", mode = "i" },
 					["#"] = { "context_items", mode = "i" },
-					["<tab>"] = { "switch_mode", mode = { "n" } },
+					["<tab>"] = { "toggle_pane", mode = { "n" } }, -- renamed from "switch_mode" in opencode.nvim; now toggles between input/output panes
 					["<up>"] = { "prev_prompt_history", mode = { "n", "i" } },
 					["<down>"] = { "next_prompt_history", mode = { "n", "i" } },
 				},
@@ -162,11 +162,11 @@ return {
 				icons = {
 					preset = "nerdfonts",
 				},
-			},
-			completion = {
-				file_sources = {
-					enabled = true,
-					preferred_cli_tool = nil,
+				completion = {
+					file_sources = {
+						enabled = true,
+						preferred_cli_tool = nil,
+					},
 				},
 			},
 		},
