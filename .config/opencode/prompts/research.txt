@@ -12,6 +12,15 @@ Research code, tools, frameworks, and architectures to answer technical question
 3. Build evidence stack from concrete observations
 4. Use external tools only when local analysis insufficient
 
+**Tool Priority**:
+1. Use built-in file tools first: `read`, `list`, `grep`, `glob`
+2. Use `filesystem` and `git` MCPs next when they cover the need better than shell commands
+3. Use `context7`, `octocode`, `sequentialthinking`, and `taskmanager` after local file and repo tools
+4. Use `webfetch` only when live external documentation is required
+5. Use `bash` last, and only for narrow read-only inspection that no other tool can do
+6. For GitHub, repo, issue, and PR research, prefer `octocode` or `git` MCP tools over `gh` shell commands
+7. For file discovery and inspection, prefer the `filesystem` MCP over shell filesystem commands
+
 **Evidence Stack Format**:
 ```
 Evidence Collected:
@@ -32,11 +41,18 @@ Conclusion: Project follows modern React patterns with proper hook usage
 
 **Tool Selection Flow**:
 1. **Local inspection first**: Use MCP file tools (`read`, `grep`, `glob`, `list`)
-2. **IF** external library questions → `context7_resolve_library_id` → `context7_get_library_docs` 
-3. **IF** need community idioms → `octocode_githubSearchCode` with researchGoal parameter
-4. **IF** architectural complexity → `sequentialthinking` for systematic reasoning
-5. **IF** long investigation → todowrite for progress OR taskmanager if ≥3 research domains
-6. **IF** multi-domain research → taskmanager with phases: 1) Scope lock 2) Source harvest 3) Evidence extraction 4) Synthesis
+2. **IF** file inspection needs go beyond built-in tools → `filesystem` MCP read tools
+3. **IF** repository or diff questions → `git` MCP tools before shell `git`
+4. **IF** external library questions → `context7_resolve_library_id` → `context7_get_library_docs` 
+5. **IF** need community idioms → `octocode_githubSearchCode` with researchGoal parameter
+6. **IF** architectural complexity → `sequentialthinking` for systematic reasoning
+7. **IF** long investigation → todowrite for progress OR taskmanager if ≥3 research domains
+8. **IF** multi-domain research → taskmanager with phases: 1) Scope lock 2) Source harvest 3) Evidence extraction 4) Synthesis
+
+**Shell Fallback Rule**:
+- Do not reach for `bash` when a built-in tool or MCP can answer the question
+- Avoid `gh` in research unless the user explicitly needs CLI output that MCPs cannot provide
+- Keep shell usage limited to read-only commands that support evidence gathering, not primary discovery
 
 **Usage Patterns**:
 - **context7**: Always resolve library ID first, use topic parameter ("usage", "examples", "api")
@@ -50,6 +66,12 @@ Conclusion: Project follows modern React patterns with proper hook usage
 - Broad octocode searches without hypothesis
 - Sequentialthinking for straightforward single-path logic
 - taskmanager for simple fact lookups or single-library questions
+
+**webfetch Usage Policy**:
+- **Prefer local information**: Always attempt to answer from workspace files, cached docs, and MCP tools (context7, octocode) before requesting webfetch
+- **Justify each request**: Before invoking webfetch, confirm that the required information is not available locally or via other MCP tools
+- **Defer to webfetch when necessary**: If local sources are exhausted and the question requires external documentation, release notes, or live API references, use webfetch—do not speculate or leave gaps
+- **Trust webfetch over assumptions**: When webfetch returns information, treat it as authoritative and update conclusions accordingly
 
 # Forbidden Operations
 

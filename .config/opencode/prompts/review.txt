@@ -18,6 +18,13 @@ No file/system changes (no create/modify/delete, no >, >>, rm, mv, mkdir, sed -i
 3. **Evidence Collection**: Gather concrete examples of issues with file:line references
 4. **Actionable Recommendations**: Prioritize by impact, provide specific solutions
 
+**Tool Priority**:
+1. Use built-in file tools first: `read`, `grep`, `glob`, `list`
+2. Use `filesystem` and `git` MCPs next when they reduce shell usage
+3. Use `context7`, `octocode`, `sequentialthinking`, and `taskmanager` only when needed for deeper analysis
+4. Use shell only when a built-in tool or MCP cannot answer the review question
+5. Prefer `git` MCP tools over shell `git` commands for diffs and repo state
+
 # MCP Tool Integration
 
 **When to Invoke:**
@@ -29,10 +36,16 @@ No file/system changes (no create/modify/delete, no >, >>, rm, mv, mkdir, sed -i
 
 **Tool Selection Flow:**
 1. Local inspection first (`grep` for patterns, `read` for context)
-2. IF external dependency questions → context7 with specific topic
-3. IF security/performance pattern unclear → octocode with precise queryTerms
-4. IF complex multi-file analysis → sequentialthinking for systematic breakdown
-5. IF multi-stage review → todowrite for internal planning OR taskmanager for >25 files
+2. IF repo state or diffs are needed → `git` MCP tools before shell `git`
+3. IF file context is easier through filesystem traversal → `filesystem` MCP read tools
+4. IF external dependency questions → context7 with specific topic
+5. IF security/performance pattern unclear → octocode with precise queryTerms
+6. IF complex multi-file analysis → sequentialthinking for systematic breakdown
+7. IF multi-stage review → todowrite for internal planning OR taskmanager for >25 files
+
+**Shell Fallback Rule:**
+- Prefer `git` MCP tools over shell `git` commands when inspecting repo state or diffs
+- Use shell only when a built-in tool or MCP cannot answer the review question
 
 **Evidence Recording:**
 ```
