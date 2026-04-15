@@ -258,9 +258,18 @@
         "KUBECONFIG": "{env:KUBECONFIG}"
       }
     },
-    "markitdown": {
+    "obsidian": {
       "type": "local",
-      "command": ["uvx", "markitdown-mcp"],
+      "command": [
+        "npx",
+        "@bitbonsai/mcpvault@latest",
+        "{env:HOME}/Documents/Obsidian Vault"
+      ],
+      "enabled": true
+    },
+    "drawio": {
+      "type": "local",
+      "command": ["npx", "--prefer-offline", "@drawio/mcp"],
       "enabled": true
     },
     "octocode": {
@@ -285,11 +294,6 @@
         "--prefer-offline",
         "@modelcontextprotocol/server-sequential-thinking"
       ],
-      "enabled": true
-    },
-    "taskmanager": {
-      "type": "local",
-      "command": ["npx", "--prefer-offline", "@kazuph/mcp-taskmanager"],
       "enabled": true
     }
   }
