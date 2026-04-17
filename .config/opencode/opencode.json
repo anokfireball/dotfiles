@@ -14,18 +14,31 @@
   "small_model": "{env:OPENCODE_MODEL_SMALL}",
   "default_agent": "research",
   "agent": {
-    // Built-in agents — model overrides for granular control
+    // Built-in agents — model overrides only; no permission overrides for build/general
     "build": {
       "model": "{env:OPENCODE_MODEL_BUILD}"
     },
     "plan": {
-      "model": "{env:OPENCODE_MODEL_PLAN}"
+      "model": "{env:OPENCODE_MODEL_PLAN}",
+      // Upstream already restricts edit/bash to ask. Gate infra/writing MCPs.
+      "permission": {
+        "kubernetes_*": "ask",
+        "obsidian_*": "ask",
+        "drawio_*": "ask"
+      }
     },
     "general": {
       "model": "{env:OPENCODE_MODEL_GENERAL}"
     },
     "explore": {
-      "model": "{env:OPENCODE_MODEL_EXPLORE}"
+      "model": "{env:OPENCODE_MODEL_EXPLORE}",
+      // Already read-only upstream. Deny MCPs irrelevant to fast recon.
+      "permission": {
+        "kubernetes_*": "deny",
+        "obsidian_*": "deny",
+        "drawio_*": "deny",
+        "sequentialthinking_*": "deny"
+      }
     },
     "compaction": {
       "model": "{env:OPENCODE_MODEL_COMPACTION}"
@@ -42,15 +55,37 @@
       "mode": "primary",
       "temperature": 0.0,
       "permission": {
-        "bash": {
-          "git status": "allow",
-          "git diff": "allow",
-          "git diff --name-only": "allow",
-          "git log --oneline -50": "allow",
-          "*": "ask"
-        },
+        // Read access — all allowed
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow",
+        "lsp": "allow",
+        "codesearch": "allow",
+        // Mutations — hard deny
         "edit": "deny",
-        "webfetch": "ask"
+        // Bash — safety valve (git MCP covers read-only git needs)
+        "bash": "ask",
+        // Agent orchestration
+        "task": "allow",
+        "skill": "allow",
+        "todowrite": "allow",
+        "question": "allow",
+        // Web access — allow (research needs docs, links, external sources)
+        "webfetch": "allow",
+        "websearch": "allow",
+        // External dirs — ask
+        "external_directory": "ask",
+        "doom_loop": "ask",
+        // MCPs — broad read access, gate infra
+        "context7_*": "allow",
+        "octocode_*": "allow",
+        "git_*": "allow",
+        "filesystem_*": "allow",
+        "sequentialthinking_*": "allow",
+        "obsidian_*": "allow",
+        "kubernetes_*": "ask",
+        "drawio_*": "deny"
       },
       "prompt": "{file:./prompts/research.txt}"
     },
@@ -60,15 +95,37 @@
       "mode": "primary",
       "temperature": 0.1,
       "permission": {
-        "bash": {
-          "git status": "allow",
-          "git diff": "allow",
-          "git diff --name-only": "allow",
-          "git log --oneline -50": "allow",
-          "*": "ask"
-        },
+        // Read access — all allowed
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow",
+        "lsp": "allow",
+        "codesearch": "allow",
+        // Mutations — hard deny
         "edit": "deny",
-        "webfetch": "ask"
+        // Bash — safety valve (git MCP covers read-only git needs)
+        "bash": "ask",
+        // Agent orchestration
+        "task": "allow",
+        "skill": "allow",
+        "todowrite": "allow",
+        "question": "allow",
+        // Web access — allow (review needs to look up docs, RFCs, CVEs)
+        "webfetch": "allow",
+        "websearch": "allow",
+        // External dirs — ask
+        "external_directory": "ask",
+        "doom_loop": "ask",
+        // MCPs — code-focused only; no obsidian/kubernetes/drawio
+        "context7_*": "allow",
+        "octocode_*": "allow",
+        "git_*": "allow",
+        "filesystem_*": "allow",
+        "sequentialthinking_*": "allow",
+        "obsidian_*": "deny",
+        "kubernetes_*": "deny",
+        "drawio_*": "deny"
       },
       "prompt": "{file:./prompts/review.txt}"
     },
@@ -78,13 +135,36 @@
       "mode": "subagent",
       "temperature": 0.2,
       "permission": {
-        "bash": {
-          "mkdir tickets": "allow",
-          "mkdir tickets/*": "allow",
-          "*": "ask"
-        },
+        // Read access — allowed for code context
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow",
+        "lsp": "allow",
+        "codesearch": "allow",
+        // Writes — ask (ticket files only)
         "edit": "ask",
-        "webfetch": "ask"
+        // No shell needs
+        "bash": "deny",
+        // No subagent chaining or skills
+        "task": "deny",
+        "skill": "deny",
+        "todowrite": "allow",
+        "question": "allow",
+        // Web — ask only (may need to reference issue URLs)
+        "webfetch": "ask",
+        "websearch": "deny",
+        "external_directory": "deny",
+        "doom_loop": "deny",
+        // MCPs — obsidian only (ticket storage)
+        "obsidian_*": "allow",
+        "context7_*": "deny",
+        "octocode_*": "deny",
+        "kubernetes_*": "deny",
+        "drawio_*": "deny",
+        "git_*": "deny",
+        "filesystem_*": "deny",
+        "sequentialthinking_*": "deny"
       },
       "prompt": "{file:./prompts/ticket.txt}"
     },
@@ -94,15 +174,39 @@
       "mode": "subagent",
       "temperature": 0.2,
       "permission": {
+        // Read access — allowed for code context
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow",
+        "lsp": "allow",
+        "codesearch": "allow",
+        // Writes — ask (doc files)
+        "edit": "ask",
+        // Bash — mkdir for doc dirs, rest ask
         "bash": {
-          "mkdir docs": "allow",
-          "mkdir docs/*": "allow",
-          "touch docs/*.md": "allow",
-          "touch docs/*.rst": "allow",
+          "mkdir*": "allow",
           "*": "ask"
         },
-        "edit": "ask",
-        "webfetch": "ask"
+        // No subagent chaining or skills
+        "task": "deny",
+        "skill": "deny",
+        "todowrite": "allow",
+        "question": "allow",
+        // Web — ask (may need external API docs)
+        "webfetch": "ask",
+        "websearch": "ask",
+        "external_directory": "deny",
+        "doom_loop": "deny",
+        // MCPs — docs toolchain only
+        "context7_*": "allow",
+        "obsidian_*": "allow",
+        "drawio_*": "allow",
+        "filesystem_*": "allow",
+        "octocode_*": "deny",
+        "kubernetes_*": "deny",
+        "git_*": "deny",
+        "sequentialthinking_*": "deny"
       },
       "prompt": "{file:./prompts/docs.txt}"
     },
@@ -112,15 +216,45 @@
       "mode": "subagent",
       "temperature": 0.1,
       "permission": {
+        // Read access — allowed for code context
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow",
+        "lsp": "allow",
+        "codesearch": "allow",
+        // Writes — ask (test files)
+        "edit": "ask",
+        // Bash — test runners + mkdir explicitly allowed
         "bash": {
-          "mkdir tests": "allow",
-          "mkdir test": "allow",
-          "mkdir __tests__": "allow",
-          "mkdir tests/*": "allow",
+          "npm test*": "allow",
+          "npx jest*": "allow",
+          "npx vitest*": "allow",
+          "pytest*": "allow",
+          "go test*": "allow",
+          "make test*": "allow",
+          "mkdir*": "allow",
           "*": "ask"
         },
-        "edit": "ask",
-        "webfetch": "ask"
+        // No subagent chaining or skills
+        "task": "deny",
+        "skill": "deny",
+        "todowrite": "allow",
+        "question": "allow",
+        // Web — ask (may need test framework docs)
+        "webfetch": "ask",
+        "websearch": "deny",
+        "external_directory": "deny",
+        "doom_loop": "deny",
+        // MCPs — test toolchain only
+        "context7_*": "allow",
+        "filesystem_*": "allow",
+        "octocode_*": "deny",
+        "kubernetes_*": "deny",
+        "obsidian_*": "deny",
+        "drawio_*": "deny",
+        "git_*": "deny",
+        "sequentialthinking_*": "deny"
       },
       "prompt": "{file:./prompts/test.txt}"
     }
