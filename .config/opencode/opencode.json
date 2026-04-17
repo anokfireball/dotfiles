@@ -1,6 +1,5 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "theme": "dracula",
   "share": "disabled",
   "autoupdate": false,
   "username": "anokfireball",
@@ -13,20 +12,6 @@
     "@zenobius/opencode-background"
   ],
   "small_model": "{env:OPENCODE_MODEL_SMALL}",
-  "mode": {
-    "build": {
-      "model": "{env:OPENCODE_MODEL_BUILD}"
-    },
-    "plan": {
-      "model": "{env:OPENCODE_MODEL_PLAN}"
-    },
-    "research": {
-      "model": "{env:OPENCODE_MODEL_RESEARCH}"
-    },
-    "review": {
-      "model": "{env:OPENCODE_MODEL_REVIEW}"
-    }
-  },
   "default_agent": "research",
   "agent": {
     // Built-in agents — model overrides for granular control
@@ -53,21 +38,9 @@
     },
     "research": {
       "description": "Performs comprehensive research and analysis to answer questions about code, tools, frameworks, and project structure",
+      "model": "{env:OPENCODE_MODEL_RESEARCH}",
       "mode": "primary",
       "temperature": 0.0,
-      "tools": {
-        "bash": true,
-        "edit": false,
-        "write": false,
-        "read": true,
-        "grep": true,
-        "glob": true,
-        "list": true,
-        "patch": false,
-        "todowrite": true,
-        "todoread": true,
-        "webfetch": true
-      },
       "permission": {
         "bash": {
           "git status": "allow",
@@ -83,21 +56,9 @@
     },
     "review": {
       "description": "Performs in-depth code reviews focusing on correctness, security, maintainability, and architecture",
+      "model": "{env:OPENCODE_MODEL_REVIEW}",
       "mode": "primary",
       "temperature": 0.1,
-      "tools": {
-        "bash": true,
-        "edit": false,
-        "write": false,
-        "read": true,
-        "grep": true,
-        "glob": true,
-        "list": true,
-        "patch": false,
-        "todowrite": true,
-        "todoread": true,
-        "webfetch": true
-      },
       "permission": {
         "bash": {
           "git status": "allow",
@@ -116,19 +77,6 @@
       "model": "{env:OPENCODE_MODEL_TICKET}",
       "mode": "subagent",
       "temperature": 0.2,
-      "tools": {
-        "bash": true,
-        "edit": true,
-        "write": true,
-        "read": true,
-        "grep": true,
-        "glob": true,
-        "list": true,
-        "patch": false,
-        "todowrite": true,
-        "todoread": true,
-        "webfetch": true
-      },
       "permission": {
         "bash": {
           "mkdir tickets": "allow",
@@ -145,19 +93,6 @@
       "model": "{env:OPENCODE_MODEL_DOCS}",
       "mode": "subagent",
       "temperature": 0.2,
-      "tools": {
-        "bash": true,
-        "edit": true,
-        "write": true,
-        "read": true,
-        "grep": true,
-        "glob": true,
-        "list": true,
-        "patch": false,
-        "todowrite": true,
-        "todoread": true,
-        "webfetch": true
-      },
       "permission": {
         "bash": {
           "mkdir docs": "allow",
@@ -176,19 +111,6 @@
       "model": "{env:OPENCODE_MODEL_TEST}",
       "mode": "subagent",
       "temperature": 0.1,
-      "tools": {
-        "bash": true,
-        "edit": true,
-        "write": true,
-        "read": true,
-        "grep": true,
-        "glob": true,
-        "list": true,
-        "patch": false,
-        "todowrite": true,
-        "todoread": true,
-        "webfetch": true
-      },
       "permission": {
         "bash": {
           "mkdir tests": "allow",
