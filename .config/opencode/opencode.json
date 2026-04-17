@@ -29,6 +29,28 @@
   },
   "default_agent": "research",
   "agent": {
+    // Built-in agents — model overrides for granular control
+    "build": {
+      "model": "{env:OPENCODE_MODEL_BUILD}"
+    },
+    "plan": {
+      "model": "{env:OPENCODE_MODEL_PLAN}"
+    },
+    "general": {
+      "model": "{env:OPENCODE_MODEL_GENERAL}"
+    },
+    "explore": {
+      "model": "{env:OPENCODE_MODEL_EXPLORE}"
+    },
+    "compaction": {
+      "model": "{env:OPENCODE_MODEL_COMPACTION}"
+    },
+    "title": {
+      "model": "{env:OPENCODE_MODEL_TITLE}"
+    },
+    "summary": {
+      "model": "{env:OPENCODE_MODEL_SUMMARY}"
+    },
     "research": {
       "description": "Performs comprehensive research and analysis to answer questions about code, tools, frameworks, and project structure",
       "mode": "primary",
