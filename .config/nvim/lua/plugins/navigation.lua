@@ -88,6 +88,7 @@ return {
 		end,
 	},
 
+	-- Global Mark Manager
 	{
 		"fnune/recall.nvim",
 		event = "BufReadPre",

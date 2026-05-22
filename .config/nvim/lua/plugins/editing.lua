@@ -14,7 +14,7 @@ return {
 		dependencies = { "nvim-telescope/telescope.nvim" },
 		cmd = { "Telescope neoclip" },
 		keys = {
-			{ "<leader>fc", "<cmd>Telescope neoclip<cr>", desc = "[F]ind in [C]lipboard History" },
+			{ "<leader>fy", "<cmd>Telescope neoclip<cr>", desc = "[F]ind [Y]ank History" },
 		},
 		config = function(ctx)
 			require("neoclip").setup(ctx.opts)

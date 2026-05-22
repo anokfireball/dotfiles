@@ -117,6 +117,13 @@ map_telescope("<leader>fr", "oldfiles", "[F]ind [R]ecent Files")
 map_telescope("<leader>ft", "builtin", "[F]ind [T]elescope Builtins")
 map_telescope("<leader>fw", "grep_string", "[F]ind current [W]ord (cwd)")
 map_telescope("<leader>fW", "grep_string", "[F]ind current [W]ord (open files)", { grep_open_files = true })
+map_telescope("<leader>fc", "git_status", "[F]ind [C]hanges (git status)")
+map("n", "<leader>fC", function()
+	require("telescope.builtin").find_files({
+		prompt_title = "Git Modified",
+		find_command = { "git", "diff", "--name-only" },
+	})
+end, "[F]ind [C]hanges (modified tracked)")
 
 -- Telescope special finders
 map("n", "<leader>fd", function()
