@@ -30,3 +30,8 @@ venv/
 
 # Git worktrees
 .worktrees
+worktrees/
+
+# Superpowers (opencode skills) generated artifacts
+.superpowers/
+docs/superpowers/
