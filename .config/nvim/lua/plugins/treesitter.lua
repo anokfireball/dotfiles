@@ -1,124 +1,78 @@
 return {
+	-- Parser + query manager (replaces archived nvim-treesitter)
 	{
-		"nvim-treesitter/nvim-treesitter-textobjects",
-		dependencies = {
-			{
-				"nvim-treesitter/nvim-treesitter",
-				branch = "main",
-				build = ":TSUpdate",
-				config = function(ctx)
-					local ts = require("nvim-treesitter")
-					ts.setup(ctx.opts)
-
-					local languages = {
-						"bash",
-						"c",
-						"comment",
-						"cpp",
-						"csv",
-						"diff",
-						"dockerfile",
-						"embedded_template",
-						"git_config",
-						"git_rebase",
-						"gitattributes",
-						"gitcommit",
-						"gitignore",
-						"go",
-						"gomod",
-						"gosum",
-						"gotmpl",
-						"gowork",
-						"helm",
-						"html",
-						"ini",
-						"jinja",
-						"jinja_inline",
-						"json",
-						"lua",
-						"luadoc",
-						"markdown",
-						"markdown_inline",
-						"mermaid",
-						"python",
-						"query",
-						"regex",
-						"requirements",
-						"ssh_config",
-						"terraform",
-						"tmux",
-						"toml",
-						"vimdoc",
-						"xml",
-						"yaml",
-					}
-					ts.install(languages)
-
-					vim.treesitter.language.register("yaml", "ghaction")
-				end,
-			},
-			{
-				"nvim-treesitter/nvim-treesitter-context",
-				opts = {},
-			},
-		},
-		event = "BufReadPre",
-		init = function()
-			-- Define filetypes to exclude from treesitter
-			vim.api.nvim_create_autocmd("FileType", {
-				callback = function(args)
-					local ft = vim.bo[args.buf].filetype
-					local buftype = vim.bo[args.buf].buftype
-
-					-- Skip special buffer types
-					if buftype ~= "" then
-						return
-					end
-
-					local blacklist = {
+		"arborist-ts/arborist.nvim",
+		lazy = false,
+		config = function()
+			require("arborist").setup({
+				update_cadence = "weekly",
+				install_popular = true,
+				ensure_installed = {
+					-- Languages beyond arborist's "popular" set that you use:
+					"comment",
+					"csv",
+					"embedded_template",
+					"git_config",
+					"git_rebase",
+					"gitattributes",
+					-- "gitcommit",  -- arborist hangs silently (needs tree-sitter generate)
+					"gitignore",
+					"gomod",
+					"gosum",
+					"gotmpl",
+					"gowork",
+					"helm",
+					"jinja",
+					"jinja_inline",
+					"luadoc",
+					"mermaid",
+					"query",
+					"requirements",
+					"ssh_config",
+					-- "terraform",  -- arborist hangs silently (mono-repo dialect build)
+					-- "tmux",       -- arborist hangs silently
+				},
+				disable = {
+					highlight = {
 						-- Plain text
 						"txt",
 						"text",
 						"plaintex",
-
-						-- Special UI buffers from plugins
-						"neo-tree",
-						"minifiles",
-						"ministarter",
-						"WhichKey",
-						"notify",
-						"TelescopePrompt",
-						"TelescopeResults",
-						"TelescopePreview",
-
-						-- Documentation (unless editing)
+						-- Documentation
 						"help",
 						"man",
 						"info",
-
 						-- Git interfaces
 						"git",
 						"fugitive",
 						"gitcommit",
 						"gitrebase",
 						"gitconfig",
-
 						-- Simple configs
 						"dosini",
 						"properties",
 						"conf",
-					}
-
-					if vim.tbl_contains(blacklist, ft) then
-						-- Disable treesitter highlighting for this buffer
-						pcall(vim.treesitter.stop, args.buf)
-					else
-						-- Enable treesitter-based indentation per-buffer.
-						vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-					end
-				end,
+					},
+				},
 			})
+
+			vim.treesitter.language.register("yaml", "ghaction")
 		end,
+	},
+
+	-- Treesitter text objects (select, move, swap)
+	{
+		"nvim-treesitter/nvim-treesitter-textobjects",
+		dependencies = {
+			"arborist-ts/arborist.nvim",
+			-- Sticky context (function headers at top of screen)
+			{
+				"nvim-treesitter/nvim-treesitter-context",
+				event = "BufReadPre",
+				opts = {},
+			},
+		},
+		event = "BufReadPre",
 		branch = "main",
 		opts = {
 			select = {
