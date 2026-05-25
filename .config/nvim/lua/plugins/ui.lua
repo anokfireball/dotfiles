@@ -647,7 +647,13 @@ return {
 			stages = "fade",
 			timeout = 5000,
 			top_down = true,
-			background_colour = "Normal",
+			background_colour = function()
+				local hl = vim.api.nvim_get_hl(0, { name = "Normal", link = false })
+				if hl.bg then
+					return string.format("#%06x", hl.bg)
+				end
+				return "#282a36" -- Dracula background fallback
+			end,
 		},
 		config = function(ctx)
 			require("notify").setup(ctx.opts)

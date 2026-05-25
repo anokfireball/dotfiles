@@ -3,6 +3,10 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+-- Python editing is powered by LSP/blink/debugpy here, so the legacy remote
+-- Python provider only adds startup cost when python ftplugins load.
+vim.g.loaded_python3_provider = 0
+
 vim.g.have_nerd_font = true
 vim.o.termguicolors = true
 
