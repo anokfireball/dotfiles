@@ -13,57 +13,75 @@
   ],
   "small_model": "{env:OPENCODE_MODEL_SMALL}",
   "default_agent": "research",
+  "permission": {
+    // Built-in tools
+    "edit": "ask",
+    "bash": "ask",
+    "webfetch": "ask",
+    "websearch": "deny",
+
+    // PTY plugin tools
+    "pty_*": "deny",
+
+    // Background process plugin tools
+    "createBackgroundProcess": "deny",
+    "listBackgroundProcesss": "deny",
+    "getBackgroundProcess": "deny",
+    "killTasks": "deny",
+
+    // Git MCP tools
+    "git_*": "deny",
+    "git_status": "allow",
+    "git_diff_unstaged": "allow",
+    "git_diff_staged": "allow",
+    "git_diff": "allow",
+    "git_log": "allow",
+    "git_show": "allow",
+    "git_branch": "allow",
+
+    // Filesystem MCP tools
+    "filesystem_*": "deny",
+    "filesystem_read_file": "allow",
+    "filesystem_read_text_file": "allow",
+    "filesystem_read_media_file": "allow",
+    "filesystem_read_multiple_files": "allow",
+    "filesystem_list_directory": "allow",
+    "filesystem_list_directory_with_sizes": "allow",
+    "filesystem_directory_tree": "allow",
+    "filesystem_search_files": "allow",
+    "filesystem_get_file_info": "allow",
+    "filesystem_list_allowed_directories": "allow",
+
+    // Draw.io MCP tools
+    "drawio_*": "deny"
+  },
   "agent": {
-    // Built-in agents — model overrides only; no permission overrides for build/general
+    // Built-in agents override the global baseline only where they differ.
     "build": {
-      "model": "{env:OPENCODE_MODEL_BUILD}"
-    },
-    "plan": {
-      "model": "{env:OPENCODE_MODEL_PLAN}",
-      // Upstream already restricts edit/bash to ask. Fine-grained MCP gates.
+      "model": "{env:OPENCODE_MODEL_BUILD}",
       "permission": {
+        // Built-in tools
+        "edit": "allow",
+        "webfetch": "allow",
+        "bash": {
+          "pytest*": "allow",
+          "go test*": "allow",
+          "go build*": "allow",
+          "make *": "allow",
+          "*": "ask"
+        },
+
+        // PTY plugin tools
+        "pty_*": "allow",
+
+        // Background process plugin tools
+        "createBackgroundProcess": "allow",
+        "listBackgroundProcesss": "allow",
+        "getBackgroundProcess": "allow",
+        "killTasks": "allow",
+
+        // Git MCP tools
         "git_*": "ask",
-        "filesystem_*": "ask",
-        "obsidian_*": "ask",
-        // Kubernetes — read-only auto-allow, mutations ask
-        "kubernetes_*": "deny",
-        "kubernetes_pods_list": "allow",
-        "kubernetes_pods_list_in_namespace": "allow",
-        "kubernetes_pods_get": "allow",
-        "kubernetes_pods_top": "allow",
-        "kubernetes_pods_log": "allow",
-        "kubernetes_events_list": "allow",
-        "kubernetes_namespaces_list": "allow",
-        "kubernetes_nodes_log": "allow",
-        "kubernetes_resources_list": "allow",
-        "kubernetes_pods_delete": "ask",
-        "kubernetes_pods_exec": "ask",
-        "kubernetes_pods_run": "ask",
-        "kubernetes_resources_create_or_update": "ask",
-        "kubernetes_resources_delete": "ask",
-        "drawio_*": "ask"
-      }
-    },
-    "general": {
-      "model": "{env:OPENCODE_MODEL_GENERAL}"
-    },
-    "explore": {
-      "model": "{env:OPENCODE_MODEL_EXPLORE}",
-      // Already read-only upstream. Fine-grained read access to MCPs.
-      "permission": {
-        // Kubernetes — read-only recon
-        "kubernetes_*": "deny",
-        "kubernetes_pods_list": "allow",
-        "kubernetes_pods_list_in_namespace": "allow",
-        "kubernetes_pods_get": "allow",
-        "kubernetes_pods_top": "allow",
-        "kubernetes_pods_log": "allow",
-        "kubernetes_events_list": "allow",
-        "kubernetes_namespaces_list": "allow",
-        "kubernetes_nodes_log": "allow",
-        "kubernetes_resources_list": "allow",
-        // Git — read-only
-        "git_*": "deny",
         "git_status": "allow",
         "git_diff_unstaged": "allow",
         "git_diff_staged": "allow",
@@ -71,32 +89,218 @@
         "git_log": "allow",
         "git_show": "allow",
         "git_branch": "allow",
-        // Filesystem — read-only
-        "filesystem_*": "deny",
-        "filesystem_read_file": "allow",
-        "filesystem_read_text_file": "allow",
-        "filesystem_read_media_file": "allow",
-        "filesystem_read_multiple_files": "allow",
-        "filesystem_list_directory": "allow",
-        "filesystem_list_directory_with_sizes": "allow",
-        "filesystem_directory_tree": "allow",
-        "filesystem_search_files": "allow",
-        "filesystem_get_file_info": "allow",
-        "filesystem_list_allowed_directories": "allow",
-        // Not needed for fast recon
+
+        // Filesystem MCP tools
+        "filesystem_*": "ask",
+        "filesystem_create_directory": "allow",
+
+        // Obsidian MCP tools
         "obsidian_*": "deny",
-        "drawio_*": "deny",
-        "sequentialthinking_*": "deny"
+
+        // Kubernetes MCP tools
+        "kubernetes_*": "deny",
+        "kubernetes_configuration_contexts_list": "allow",
+        "kubernetes_configuration_view": "allow",
+        "kubernetes_namespaces_list": "allow",
+        "kubernetes_pods_list": "allow",
+        "kubernetes_pods_list_in_namespace": "allow",
+        "kubernetes_pods_get": "allow",
+        "kubernetes_pods_top": "allow",
+        "kubernetes_pods_log": "allow",
+        "kubernetes_events_list": "allow",
+        "kubernetes_nodes_log": "allow",
+        "kubernetes_nodes_top": "allow",
+        "kubernetes_resources_list": "allow",
+        "kubernetes_resources_get": "allow",
+
+        // Draw.io MCP tools
+        "drawio_*": "deny"
+      }
+    },
+    "plan": {
+      "model": "{env:OPENCODE_MODEL_PLAN}",
+      // Upstream already restricts edit/bash to ask. Fine-grained MCP gates.
+      "permission": {
+        // Built-in tools
+        "webfetch": "allow",
+        "websearch": "ask",
+
+        // Git MCP tools
+        "git_*": "ask",
+        "git_status": "allow",
+        "git_diff_unstaged": "allow",
+        "git_diff_staged": "allow",
+        "git_diff": "allow",
+        "git_log": "allow",
+        "git_show": "allow",
+        "git_branch": "allow",
+
+        // Filesystem MCP tools
+        "filesystem_*": "deny",
+        "filesystem_write_file": "ask",
+        "filesystem_edit_file": "ask",
+        "filesystem_create_directory": "allow",
+
+        // Obsidian MCP tools
+        "obsidian_*": "deny",
+        "obsidian_read_note": "allow",
+        "obsidian_list_directory": "allow",
+        "obsidian_search_notes": "allow",
+        "obsidian_read_multiple_notes": "allow",
+        "obsidian_get_notes_info": "allow",
+        "obsidian_get_frontmatter": "allow",
+        "obsidian_get_vault_stats": "allow",
+        "obsidian_list_all_tags": "allow",
+        "obsidian_write_note": "ask",
+        "obsidian_patch_note": "ask",
+
+        // Kubernetes MCP tools
+        // Kubernetes — read-only auto-allow, mutations deny
+        "kubernetes_*": "deny",
+        "kubernetes_configuration_contexts_list": "allow",
+        "kubernetes_configuration_view": "allow",
+        "kubernetes_pods_list": "allow",
+        "kubernetes_pods_list_in_namespace": "allow",
+        "kubernetes_pods_get": "allow",
+        "kubernetes_pods_top": "allow",
+        "kubernetes_pods_log": "allow",
+        "kubernetes_events_list": "allow",
+        "kubernetes_namespaces_list": "allow",
+        "kubernetes_nodes_log": "allow",
+        "kubernetes_nodes_top": "allow",
+        "kubernetes_nodes_stats_summary": "allow",
+        "kubernetes_resources_list": "allow",
+        "kubernetes_resources_get": "allow",
+
+        // Draw.io MCP tools
+        "drawio_*": "ask"
+      }
+    },
+    "general": {
+      "model": "{env:OPENCODE_MODEL_GENERAL}",
+      "permission": {
+        // Built-in tools
+        "webfetch": "allow",
+        "websearch": "allow",
+
+        // PTY plugin tools
+        "pty_*": "ask",
+
+        // Background process plugin tools
+        "createBackgroundProcess": "ask",
+        "listBackgroundProcesss": "allow",
+        "getBackgroundProcess": "allow",
+        "killTasks": "ask",
+
+        // Filesystem MCP tools
+        "filesystem_*": "ask",
+        "filesystem_create_directory": "allow",
+
+        // Git MCP tools
+        "git_*": "ask",
+        "git_status": "allow",
+        "git_diff_unstaged": "allow",
+        "git_diff_staged": "allow",
+        "git_diff": "allow",
+        "git_log": "allow",
+        "git_show": "allow",
+        "git_branch": "allow",
+
+        // Obsidian MCP tools
+        "obsidian_*": "ask",
+        "obsidian_read_note": "allow",
+        "obsidian_list_directory": "allow",
+        "obsidian_search_notes": "allow",
+        "obsidian_read_multiple_notes": "allow",
+        "obsidian_get_notes_info": "allow",
+        "obsidian_get_frontmatter": "allow",
+        "obsidian_get_vault_stats": "allow",
+        "obsidian_list_all_tags": "allow",
+
+        // Kubernetes MCP tools
+        "kubernetes_*": "deny",
+        "kubernetes_configuration_contexts_list": "allow",
+        "kubernetes_configuration_view": "allow",
+        "kubernetes_namespaces_list": "allow",
+        "kubernetes_pods_list": "allow",
+        "kubernetes_pods_list_in_namespace": "allow",
+        "kubernetes_pods_get": "allow",
+        "kubernetes_pods_top": "allow",
+        "kubernetes_pods_log": "allow",
+        "kubernetes_events_list": "allow",
+        "kubernetes_nodes_log": "allow",
+        "kubernetes_nodes_top": "allow",
+        "kubernetes_nodes_stats_summary": "allow",
+        "kubernetes_resources_list": "allow",
+        "kubernetes_resources_get": "allow",
+        "kubernetes_pods_delete": "ask",
+        "kubernetes_pods_exec": "ask",
+        "kubernetes_pods_run": "ask",
+        "kubernetes_resources_create_or_update": "ask",
+        "kubernetes_resources_delete": "ask",
+        "kubernetes_resources_scale": "ask"
+      }
+    },
+    "explore": {
+      "model": "{env:OPENCODE_MODEL_EXPLORE}",
+      // Already read-only upstream. Fine-grained read access to MCPs.
+      "permission": {
+        // Built-in tools
+        "edit": "deny",
+        "bash": "deny",
+        "task": "deny",
+        "skill": "deny",
+        "webfetch": "deny",
+        "external_directory": "deny",
+
+        // Context7 MCP tools
+        "context7_*": "deny",
+
+        // Octocode MCP tools
+        "octocode_*": "deny",
+
+        // Sequential Thinking MCP tools
+        "sequentialthinking_*": "deny",
+
+        // Kubernetes MCP tools
+        // Kubernetes — read-only recon
+        "kubernetes_*": "deny",
+        "kubernetes_configuration_contexts_list": "allow",
+        "kubernetes_configuration_view": "allow",
+        "kubernetes_pods_list": "allow",
+        "kubernetes_pods_list_in_namespace": "allow",
+        "kubernetes_pods_get": "allow",
+        "kubernetes_pods_top": "allow",
+        "kubernetes_pods_log": "allow",
+        "kubernetes_events_list": "allow",
+        "kubernetes_namespaces_list": "allow",
+        "kubernetes_nodes_log": "allow",
+        "kubernetes_nodes_top": "allow",
+        "kubernetes_nodes_stats_summary": "allow",
+        "kubernetes_resources_list": "allow",
+        "kubernetes_resources_get": "allow",
+        // Obsidian MCP tools
+        // Not needed for fast recon
+        "obsidian_*": "deny"
       }
     },
     "compaction": {
-      "model": "{env:OPENCODE_MODEL_COMPACTION}"
+      "model": "{env:OPENCODE_MODEL_COMPACTION}",
+      "permission": {
+        "*": "deny"
+      }
     },
     "title": {
-      "model": "{env:OPENCODE_MODEL_TITLE}"
+      "model": "{env:OPENCODE_MODEL_TITLE}",
+      "permission": {
+        "*": "deny"
+      }
     },
     "summary": {
-      "model": "{env:OPENCODE_MODEL_SUMMARY}"
+      "model": "{env:OPENCODE_MODEL_SUMMARY}",
+      "permission": {
+        "*": "deny"
+      }
     },
     "research": {
       "description": "Performs comprehensive research and analysis to answer questions about code, tools, frameworks, and project structure",
@@ -104,53 +308,15 @@
       "mode": "primary",
       "temperature": 0.0,
       "permission": {
-        // Read access — all allowed
-        "read": "allow",
-        "glob": "allow",
-        "grep": "allow",
-        "list": "allow",
-        "lsp": "allow",
-        "codesearch": "allow",
+        // Built-in tools
         // Mutations — hard deny
         "edit": "deny",
-        // Bash — safety valve
-        "bash": "ask",
-        // Agent orchestration
-        "task": "allow",
-        "skill": "allow",
-        "todowrite": "allow",
-        "question": "allow",
         // Web access
         "webfetch": "allow",
         "websearch": "allow",
-        // External dirs
-        "external_directory": "ask",
-        "doom_loop": "ask",
-        // MCPs — safe blanket allows
-        "context7_*": "allow",
-        "octocode_*": "allow",
-        "sequentialthinking_*": "allow",
-        // Git — read-only (deny catch-all, then allowlist)
-        "git_*": "deny",
-        "git_status": "allow",
-        "git_diff_unstaged": "allow",
-        "git_diff_staged": "allow",
-        "git_diff": "allow",
-        "git_log": "allow",
-        "git_show": "allow",
-        "git_branch": "allow",
-        // Filesystem — read-only
-        "filesystem_*": "deny",
-        "filesystem_read_file": "allow",
-        "filesystem_read_text_file": "allow",
-        "filesystem_read_media_file": "allow",
-        "filesystem_read_multiple_files": "allow",
-        "filesystem_list_directory": "allow",
-        "filesystem_list_directory_with_sizes": "allow",
-        "filesystem_directory_tree": "allow",
-        "filesystem_search_files": "allow",
-        "filesystem_get_file_info": "allow",
-        "filesystem_list_allowed_directories": "allow",
+
+        // MCP tools
+        // Obsidian MCP tools
         // Obsidian — read-only
         "obsidian_*": "deny",
         "obsidian_read_note": "allow",
@@ -161,8 +327,12 @@
         "obsidian_get_frontmatter": "allow",
         "obsidian_get_vault_stats": "allow",
         "obsidian_list_all_tags": "allow",
+
+        // Kubernetes MCP tools
         // Kubernetes — read-only
         "kubernetes_*": "deny",
+        "kubernetes_configuration_contexts_list": "allow",
+        "kubernetes_configuration_view": "allow",
         "kubernetes_pods_list": "allow",
         "kubernetes_pods_list_in_namespace": "allow",
         "kubernetes_pods_get": "allow",
@@ -171,7 +341,11 @@
         "kubernetes_events_list": "allow",
         "kubernetes_namespaces_list": "allow",
         "kubernetes_nodes_log": "allow",
+        "kubernetes_nodes_top": "allow",
         "kubernetes_resources_list": "allow",
+        "kubernetes_resources_get": "allow",
+
+        // Draw.io MCP tools
         "drawio_*": "deny"
       },
       "prompt": "{file:./prompts/research.txt}"
@@ -182,56 +356,21 @@
       "mode": "primary",
       "temperature": 0.1,
       "permission": {
-        // Read access — all allowed
-        "read": "allow",
-        "glob": "allow",
-        "grep": "allow",
-        "list": "allow",
-        "lsp": "allow",
-        "codesearch": "allow",
+        // Built-in tools
         // Mutations — hard deny
         "edit": "deny",
-        // Bash — safety valve
-        "bash": "ask",
-        // Agent orchestration
-        "task": "allow",
-        "skill": "allow",
-        "todowrite": "allow",
-        "question": "allow",
         // Web access
         "webfetch": "allow",
-        "websearch": "allow",
-        // External dirs
-        "external_directory": "ask",
-        "doom_loop": "ask",
-        // MCPs — safe blanket allows
-        "context7_*": "allow",
-        "octocode_*": "allow",
-        "sequentialthinking_*": "allow",
-        // Git — read-only
-        "git_*": "deny",
-        "git_status": "allow",
-        "git_diff_unstaged": "allow",
-        "git_diff_staged": "allow",
-        "git_diff": "allow",
-        "git_log": "allow",
-        "git_show": "allow",
-        "git_branch": "allow",
-        // Filesystem — read-only
-        "filesystem_*": "deny",
-        "filesystem_read_file": "allow",
-        "filesystem_read_text_file": "allow",
-        "filesystem_read_media_file": "allow",
-        "filesystem_read_multiple_files": "allow",
-        "filesystem_list_directory": "allow",
-        "filesystem_list_directory_with_sizes": "allow",
-        "filesystem_directory_tree": "allow",
-        "filesystem_search_files": "allow",
-        "filesystem_get_file_info": "allow",
-        "filesystem_list_allowed_directories": "allow",
-        // No obsidian/kubernetes/drawio for code review
+
+        // MCP tools
+        // Obsidian MCP tools
+        // No obsidian for code review
         "obsidian_*": "deny",
+
+        // Kubernetes MCP tools
         "kubernetes_*": "deny",
+
+        // Draw.io MCP tools
         "drawio_*": "deny"
       },
       "prompt": "{file:./prompts/review.txt}"
@@ -242,47 +381,40 @@
       "mode": "subagent",
       "temperature": 0.2,
       "permission": {
-        // Read access — allowed for code context
-        "read": "allow",
-        "glob": "allow",
-        "grep": "allow",
-        "list": "allow",
-        "lsp": "allow",
-        "codesearch": "allow",
-        // Writes — ask (ticket files only)
-        "edit": "ask",
-        // No shell needs
-        "bash": "deny",
+        // Built-in tools
+        // Ticket files live in the workspace, not Obsidian.
+        "bash": {
+          "mkdir*": "allow",
+          "*": "deny"
+        },
         // No subagent chaining or skills
         "task": "deny",
         "skill": "deny",
-        "todowrite": "allow",
-        "question": "allow",
-        // Web — ask only (may need to reference issue URLs)
-        "webfetch": "ask",
-        "websearch": "deny",
+        // Web lookups are unnecessary for the documented workflow.
+        "webfetch": "deny",
         "external_directory": "deny",
         "doom_loop": "deny",
-        // Obsidian — read + controlled writes for ticket storage
-        "obsidian_*": "deny",
-        "obsidian_read_note": "allow",
-        "obsidian_list_directory": "allow",
-        "obsidian_search_notes": "allow",
-        "obsidian_read_multiple_notes": "allow",
-        "obsidian_get_notes_info": "allow",
-        "obsidian_get_frontmatter": "allow",
-        "obsidian_get_vault_stats": "allow",
-        "obsidian_list_all_tags": "allow",
-        "obsidian_write_note": "allow",
-        "obsidian_patch_note": "allow",
-        // Everything else denied
+
+        // Context7 MCP tools
         "context7_*": "deny",
-        "octocode_*": "deny",
+
+        // Filesystem MCP tools
+        "filesystem_write_file": "ask",
+        "filesystem_edit_file": "ask",
+        "filesystem_create_directory": "allow",
+
+        // Obsidian MCP tools
+        // Everything else denied.
+        "obsidian_*": "deny",
+
+        // Kubernetes MCP tools
         "kubernetes_*": "deny",
+
+        // Draw.io MCP tools
         "drawio_*": "deny",
-        "git_*": "deny",
-        "filesystem_*": "deny",
-        "sequentialthinking_*": "deny"
+
+        // Git MCP tools
+        "git_*": "deny"
       },
       "prompt": "{file:./prompts/ticket.txt}"
     },
@@ -292,48 +424,29 @@
       "mode": "subagent",
       "temperature": 0.2,
       "permission": {
-        // Read access — allowed for code context
-        "read": "allow",
-        "glob": "allow",
-        "grep": "allow",
-        "list": "allow",
-        "lsp": "allow",
-        "codesearch": "allow",
-        // Writes — ask (doc files)
-        "edit": "ask",
-        // Bash — mkdir for doc dirs, rest ask
+        // Built-in tools
+        // Bash — mkdir for doc dirs, everything else denied.
         "bash": {
           "mkdir*": "allow",
-          "*": "ask"
+          "*": "deny"
         },
         // No subagent chaining or skills
         "task": "deny",
         "skill": "deny",
-        "todowrite": "allow",
-        "question": "allow",
         // Web — ask (may need external API docs)
-        "webfetch": "ask",
-        "websearch": "ask",
         "external_directory": "deny",
         "doom_loop": "deny",
-        // MCPs — docs toolchain
-        "context7_*": "allow",
+
+        // Draw.io MCP tools
         "drawio_*": "allow",
+
+        // Filesystem MCP tools
         // Filesystem — read + controlled writes
-        "filesystem_*": "deny",
-        "filesystem_read_file": "allow",
-        "filesystem_read_text_file": "allow",
-        "filesystem_read_media_file": "allow",
-        "filesystem_read_multiple_files": "allow",
-        "filesystem_list_directory": "allow",
-        "filesystem_list_directory_with_sizes": "allow",
-        "filesystem_directory_tree": "allow",
-        "filesystem_search_files": "allow",
-        "filesystem_get_file_info": "allow",
-        "filesystem_list_allowed_directories": "allow",
         "filesystem_write_file": "ask",
         "filesystem_edit_file": "ask",
         "filesystem_create_directory": "allow",
+
+        // Obsidian MCP tools
         // Obsidian — read + controlled writes
         "obsidian_*": "deny",
         "obsidian_read_note": "allow",
@@ -347,11 +460,10 @@
         "obsidian_write_note": "allow",
         "obsidian_patch_note": "allow",
         "obsidian_update_frontmatter": "ask",
+
+        // Kubernetes MCP tools
         // Rest denied
-        "octocode_*": "deny",
-        "kubernetes_*": "deny",
-        "git_*": "deny",
-        "sequentialthinking_*": "deny"
+        "kubernetes_*": "deny"
       },
       "prompt": "{file:./prompts/docs.txt}"
     },
@@ -361,15 +473,7 @@
       "mode": "subagent",
       "temperature": 0.1,
       "permission": {
-        // Read access — allowed for code context
-        "read": "allow",
-        "glob": "allow",
-        "grep": "allow",
-        "list": "allow",
-        "lsp": "allow",
-        "codesearch": "allow",
-        // Writes — ask (test files)
-        "edit": "ask",
+        // Built-in tools
         // Bash — test runners + mkdir explicitly allowed
         "bash": {
           "npm test*": "allow",
@@ -384,37 +488,30 @@
         // No subagent chaining or skills
         "task": "deny",
         "skill": "deny",
-        "todowrite": "allow",
-        "question": "allow",
-        // Web — ask (may need test framework docs)
-        "webfetch": "ask",
-        "websearch": "deny",
         "external_directory": "deny",
         "doom_loop": "deny",
-        // MCPs — test toolchain
-        "context7_*": "allow",
+
+        // PTY plugin tools
+        "pty_*": "ask",
+
+        // Filesystem MCP tools
         // Filesystem — read + controlled writes
-        "filesystem_*": "deny",
-        "filesystem_read_file": "allow",
-        "filesystem_read_text_file": "allow",
-        "filesystem_read_media_file": "allow",
-        "filesystem_read_multiple_files": "allow",
-        "filesystem_list_directory": "allow",
-        "filesystem_list_directory_with_sizes": "allow",
-        "filesystem_directory_tree": "allow",
-        "filesystem_search_files": "allow",
-        "filesystem_get_file_info": "allow",
-        "filesystem_list_allowed_directories": "allow",
         "filesystem_write_file": "ask",
         "filesystem_edit_file": "ask",
         "filesystem_create_directory": "allow",
+
+        // Kubernetes MCP tools
         // Rest denied
-        "octocode_*": "deny",
         "kubernetes_*": "deny",
+
+        // Obsidian MCP tools
         "obsidian_*": "deny",
+
+        // Draw.io MCP tools
         "drawio_*": "deny",
-        "git_*": "deny",
-        "sequentialthinking_*": "deny"
+
+        // Git MCP tools
+        "git_*": "deny"
       },
       "prompt": "{file:./prompts/test.txt}"
     }
