@@ -172,26 +172,43 @@ return {
 		},
 	},
 
-	-- GitHub Copilot
+	-- Inline AI-assisted autocomplete
 	{
-		"zbirenbaum/copilot.lua",
-		cmd = "Copilot",
-		event = "InsertEnter",
-		opts = {
-			panel = {
-				enabled = false,
-			},
-			suggestion = {
-				enabled = not vim.g.ai_cmp,
-				auto_trigger = true,
-				hide_during_completion = vim.g.ai_cmp,
-				keymap = {
-					accept = false,
-					accept_word = "<S-Right>",
-					next = "<C-n>",
-					prev = "<C-p>",
+		"cursortab/cursortab.nvim",
+		lazy = false,
+		build = "cd server && go build",
+		config = function()
+			require("cursortab").setup({
+				log_level = "info",
+				provider = {
+					type = "zeta-2",
+					model = "zed-industries_zeta-2",
+					url = "http://localhost:1234",
+					completion_path = "/v1/completions",
+					completion_timeout = 8000,
+					max_tokens = 256,
+					context_size = 1024,
+					temperature = 0.0,
 				},
-			},
-		},
+				keymaps = {
+					accept = false,
+					partial_accept = false,
+					trigger = false,
+				},
+				-- Disable blink integration: use native ghost text only
+				blink = {
+					enabled = false,
+					ghost_text = false,
+				},
+				behavior = {
+					idle_completion_delay = 100,
+					text_change_debounce = 100,
+					cursor_prediction = {
+						enabled = true,
+						auto_advance = true,
+					},
+				},
+			})
+		end,
 	},
 }

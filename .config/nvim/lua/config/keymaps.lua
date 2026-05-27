@@ -61,30 +61,36 @@ vim.api.nvim_create_autocmd("LspAttach", {
 -- Plugin Keymaps
 -- ========================================================================
 
--- Completion and AI (Blink + Copilot)
+-- Completion and AI (Blink + Cursortab)
+local function feed(keys)
+	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), "n", false)
+end
+
 map("i", "<Right>", function()
 	if require("blink.cmp").is_visible() then
-		return require("blink.cmp").accept()
+		require("blink.cmp").accept()
+	elseif require("cursortab").accept() then
+		-- cursortab accepted its ghost text
 	else
-		return require("copilot.suggestion").accept()
+		feed("<Right>")
 	end
-end, "Accept completion/suggestion", { expr = true })
+end, "Accept completion/suggestion")
 
 map("i", "<Down>", function()
 	if require("blink.cmp").is_visible() then
-		return require("blink.cmp").select_next()
+		require("blink.cmp").select_next()
 	else
-		return require("copilot.suggestion").next()
+		feed("<Down>")
 	end
-end, "Next completion/suggestion", { expr = true })
+end, "Next completion item")
 
 map("i", "<Up>", function()
 	if require("blink.cmp").is_visible() then
-		return require("blink.cmp").select_prev()
+		require("blink.cmp").select_prev()
 	else
-		return require("copilot.suggestion").prev()
+		feed("<Up>")
 	end
-end, "Previous completion/suggestion", { expr = true })
+end, "Previous completion item")
 
 -- Treesitter text objects
 local function map_textobject(lhs, textobject, desc)
@@ -175,49 +181,27 @@ map("n", "<leader>tc", function()
 	require("treesitter-context").toggle()
 end, "[T]oggle [C]ontext")
 
-local function toggle_copilot_global()
-	local ok, suggestion = pcall(require, "copilot.suggestion")
+map("n", "<leader>ta", function()
+	local ok, cursortab = pcall(require, "cursortab")
 	if not ok then
-		vim.notify("Copilot not loaded", vim.log.levels.WARN)
+		vim.notify("Cursortab not loaded", vim.log.levels.WARN)
 		return
 	end
-
-	if not suggestion.is_visible or type(suggestion.dismiss) ~= "function" then
-		vim.notify("Copilot suggestion module not ready", vim.log.levels.WARN)
-		return
-	end
-
-	local current_global_state = vim.g.copilot_auto_trigger_global
-	if current_global_state == nil then
-		current_global_state = false -- Default to disabled
-	end
-
-	local new_global_state = not current_global_state
-	vim.g.copilot_auto_trigger_global = new_global_state
-
-	if not new_global_state then
-		suggestion.dismiss()
-	end
-
-	for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-		if vim.api.nvim_buf_is_loaded(buf) then
-			local current_buf_state = vim.b[buf].copilot_suggestion_auto_trigger
-			if current_buf_state ~= new_global_state then
-				vim.api.nvim_buf_set_var(buf, "copilot_suggestion_auto_trigger", new_global_state)
-			end
-		end
-	end
-
+	cursortab.toggle()
 	-- Force statusline refresh
 	vim.cmd("redrawstatus")
-end
-
-map("n", "<leader>ta", toggle_copilot_global, "[T]oggle Copilot [A]uto-trigger")
+end, "[T]oggle [A]I inline completion")
 
 vim.api.nvim_create_user_command(
 	"CopilotToggle",
-	toggle_copilot_global,
-	{ desc = "Toggle Copilot auto-trigger globally" }
+	function()
+		local ok, cursortab = pcall(require, "cursortab")
+		if ok then
+			cursortab.toggle()
+			vim.cmd("redrawstatus")
+		end
+	end,
+	{ desc = "Toggle inline AI completion (cursortab)" }
 )
 
 map("n", "<leader>tf", function()

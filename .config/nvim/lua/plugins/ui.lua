@@ -471,27 +471,17 @@ return {
 		config = function(ctx)
 			local statusline = require("mini.statusline")
 
-			-- Function to get copilot status for statusline
+			-- Function to get cursortab status for statusline
 			local function copilot_status()
 				local robot = "󰚩"
-
-				local buffer_auto_trigger = vim.b.copilot_suggestion_auto_trigger
-				local global_auto_trigger = vim.g.copilot_auto_trigger_global
-
-				local effective_state
-				if buffer_auto_trigger ~= nil then
-					effective_state = buffer_auto_trigger
-				elseif global_auto_trigger ~= nil then
-					effective_state = global_auto_trigger
-				else
-					effective_state = false -- Default disabled
+				local ok, daemon = pcall(require, "cursortab.daemon")
+				if not ok then
+					return robot .. " ?"
 				end
-
-				if not effective_state then
-					return robot .. " -"
+				if daemon.is_enabled() then
+					return robot .. " +"
 				end
-
-				return robot .. " +"
+				return robot .. " -"
 			end
 
 			-- Function to get diagnostic level status for statusline
