@@ -16,13 +16,13 @@ Convert high-level epic descriptions into individual, standalone tickets for iss
 **When to Invoke** (Optional Enhancement):
 - Complex epic breakdown → `sequentialthinking_sequentialthinking` for systematic task decomposition
 - Cross-module dependencies → `octocode_githubViewRepoStructure` for architecture understanding
-- Progress tracking → `todowrite` for large multi-ticket epics OR `taskmanager` if >5 stories
-- Large epics (>5 stories, cross-team coordination) → taskmanager
+- Progress tracking → `todowrite` for large multi-ticket epics
+- Large epics (>5 stories, cross-team coordination) → todowrite with delivery phases
 
 **Usage Pattern**:
 - **sequentialthinking**: For complex epics requiring systematic breakdown (epic analysis → task identification → dependency mapping → ticket prioritization)
 - **octocode**: When tickets need architectural context (search for similar implementations, understand module relationships)
-- **taskmanager**: For large epics with phases: 1) Domain decomposition 2) Story set draft 3) Dependency graph 4) Risk matrix 5) Delivery plan
+- **todowrite**: For large epics with phases: 1) Domain decomposition 2) Story set draft 3) Dependency graph 4) Risk matrix 5) Delivery plan
 - **Local tools**: Primary for understanding existing project structure and patterns
 
 **Simple epics typically need no MCP tools** - direct ticket creation is preferred.

@@ -31,19 +31,19 @@ For each proposed test, provide explicit reasoning:
 # MCP Tool Integration
 
 **When to Invoke**:
-- Unknown library testing patterns → `context7_resolve_library_id` → `context7_get_library_docs` 
+- Unknown library testing patterns → `context7_resolve-library-id` → `context7_query-docs` 
 - Community test patterns → `octocode_githubSearchCode` with language + test-focused queries
 - Complex coverage analysis → `sequentialthinking_sequentialthinking` for structured reasoning
 - Multi-phase test implementation → `todowrite` for progress tracking
-- Comprehensive test suites (complexity ≥12, multi-layer testing) → taskmanager
+- Comprehensive test suites (complexity ≥12, multi-layer testing) → todowrite with phase milestones
 
 **Tool Selection Flow**:
 1. **Local analysis first**: Use `grep`, `read`, `glob` to understand existing test patterns
 2. **IF** external library testing unclear → context7 with topic="testing", "errors", "edge-cases"
 3. **IF** need community patterns → octocode with queryTerms=["test", "spec"] + language filter
 4. **IF** complex coverage analysis → sequentialthinking for risk matrix → test type selection → priorities
-5. **IF** phased implementation → todowrite for milestones OR taskmanager if complexity ≥12
-6. **IF** comprehensive test suite → taskmanager with phases: 1) Coverage baseline 2) Critical path units 3) Integration scenarios 4) Edge & negative cases 5) Gap re-evaluation
+5. **IF** phased implementation → todowrite for milestones
+6. **IF** comprehensive test suite → todowrite with phases: 1) Coverage baseline 2) Critical path units 3) Integration scenarios 4) Edge & negative cases 5) Gap re-evaluation
 
 **Usage Patterns**:
 - **context7**: Focus on error modes, edge cases, optional parameters with testing topic
@@ -125,7 +125,7 @@ After implementation:
 - Don't use external tools before analyzing local test infrastructure  
 - Don't implement tests that duplicate existing coverage
 - Don't ignore existing project testing conventions
-- Don't use taskmanager for simple single-layer test additions
+- Don't use todowrite for simple single-layer test additions
 
 # Key Principles
 
