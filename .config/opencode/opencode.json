@@ -16,7 +16,57 @@
   "permission": {
     // Built-in tools
     "edit": "ask",
-    "bash": "ask",
+    "bash": {
+      "*": "ask",
+      "git status*": "allow",
+      "git diff*": "allow",
+      "git log*": "allow",
+      "git show*": "allow",
+      "git branch*": "allow",
+      "git rev-parse*": "allow",
+      "git remote*": "allow",
+      "git ls-files*": "allow",
+      "git blame*": "allow",
+      "git reflog*": "allow",
+      "git stash list*": "allow",
+      "git tag*": "allow",
+      "git shortlog*": "allow",
+      "git describe*": "allow",
+      "git config --get*": "allow",
+      "rg *": "allow",
+      "fd *": "allow",
+      "jq *": "allow",
+      "yq *": "allow",
+      "bat *": "allow",
+      "eza *": "allow",
+      "grep *": "allow",
+      "sort *": "allow",
+      "uniq *": "allow",
+      "wc *": "allow",
+      "cut *": "allow",
+      "dirname *": "allow",
+      "basename *": "allow",
+      "realpath *": "allow",
+      "file *": "allow",
+      "stat *": "allow",
+      "cat *": "allow",
+      "ls *": "allow",
+      "find *": "allow",
+      "head *": "allow",
+      "tail *": "allow",
+      "paste *": "allow",
+      "tr *": "allow",
+      "pwd": "allow",
+      "which *": "allow",
+      "column *": "allow",
+      "comm *": "allow",
+      "diff *": "allow",
+      "cmp *": "allow",
+      "strings *": "allow",
+      "md5 *": "allow",
+      "shasum *": "allow",
+      "sha256sum *": "allow"
+    },
     "webfetch": "ask",
     "websearch": "deny",
 
@@ -28,29 +78,6 @@
     "listBackgroundProcesss": "deny",
     "getBackgroundProcess": "deny",
     "killTasks": "deny",
-
-    // Git MCP tools
-    "git_*": "deny",
-    "git_status": "allow",
-    "git_diff_unstaged": "allow",
-    "git_diff_staged": "allow",
-    "git_diff": "allow",
-    "git_log": "allow",
-    "git_show": "allow",
-    "git_branch": "allow",
-
-    // Filesystem MCP tools
-    "filesystem_*": "deny",
-    "filesystem_read_file": "allow",
-    "filesystem_read_text_file": "allow",
-    "filesystem_read_media_file": "allow",
-    "filesystem_read_multiple_files": "allow",
-    "filesystem_list_directory": "allow",
-    "filesystem_list_directory_with_sizes": "allow",
-    "filesystem_directory_tree": "allow",
-    "filesystem_search_files": "allow",
-    "filesystem_get_file_info": "allow",
-    "filesystem_list_allowed_directories": "allow",
 
     // Draw.io MCP tools
     "drawio_*": "deny"
@@ -67,8 +94,7 @@
           "pytest*": "allow",
           "go test*": "allow",
           "go build*": "allow",
-          "make *": "allow",
-          "*": "ask"
+          "make *": "allow"
         },
 
         // PTY plugin tools
@@ -80,22 +106,19 @@
         "getBackgroundProcess": "allow",
         "killTasks": "allow",
 
-        // Git MCP tools
-        "git_*": "ask",
-        "git_status": "allow",
-        "git_diff_unstaged": "allow",
-        "git_diff_staged": "allow",
-        "git_diff": "allow",
-        "git_log": "allow",
-        "git_show": "allow",
-        "git_branch": "allow",
-
-        // Filesystem MCP tools
-        "filesystem_*": "ask",
-        "filesystem_create_directory": "allow",
-
         // Obsidian MCP tools
-        "obsidian_*": "deny",
+        "obsidian_*": "allow",
+        "obsidian_read_note": "allow",
+        "obsidian_list_directory": "allow",
+        "obsidian_search_notes": "allow",
+        "obsidian_read_multiple_notes": "allow",
+        "obsidian_get_notes_info": "allow",
+        "obsidian_get_frontmatter": "allow",
+        "obsidian_get_vault_stats": "allow",
+        "obsidian_list_all_tags": "allow",
+        "obsidian_write_note": "ask",
+        "obsidian_patch_note": "ask",
+        "obsidian_update_frontmatter": "ask",
 
         // Kubernetes MCP tools
         "kubernetes_*": "deny",
@@ -125,24 +148,8 @@
         "webfetch": "allow",
         "websearch": "ask",
 
-        // Git MCP tools
-        "git_*": "ask",
-        "git_status": "allow",
-        "git_diff_unstaged": "allow",
-        "git_diff_staged": "allow",
-        "git_diff": "allow",
-        "git_log": "allow",
-        "git_show": "allow",
-        "git_branch": "allow",
-
-        // Filesystem MCP tools
-        "filesystem_*": "deny",
-        "filesystem_write_file": "ask",
-        "filesystem_edit_file": "ask",
-        "filesystem_create_directory": "allow",
-
         // Obsidian MCP tools
-        "obsidian_*": "deny",
+        "obsidian_*": "allow",
         "obsidian_read_note": "allow",
         "obsidian_list_directory": "allow",
         "obsidian_search_notes": "allow",
@@ -191,20 +198,6 @@
         "listBackgroundProcesss": "allow",
         "getBackgroundProcess": "allow",
         "killTasks": "ask",
-
-        // Filesystem MCP tools
-        "filesystem_*": "ask",
-        "filesystem_create_directory": "allow",
-
-        // Git MCP tools
-        "git_*": "ask",
-        "git_status": "allow",
-        "git_diff_unstaged": "allow",
-        "git_diff_staged": "allow",
-        "git_diff": "allow",
-        "git_log": "allow",
-        "git_show": "allow",
-        "git_branch": "allow",
 
         // Obsidian MCP tools
         "obsidian_*": "ask",
@@ -384,8 +377,8 @@
         // Built-in tools
         // Ticket files live in the workspace, not Obsidian.
         "bash": {
-          "mkdir*": "allow",
-          "*": "deny"
+          "*": "deny",
+          "mkdir*": "allow"
         },
         // No subagent chaining or skills
         "task": "deny",
@@ -398,11 +391,6 @@
         // Context7 MCP tools
         "context7_*": "deny",
 
-        // Filesystem MCP tools
-        "filesystem_write_file": "ask",
-        "filesystem_edit_file": "ask",
-        "filesystem_create_directory": "allow",
-
         // Obsidian MCP tools
         // Everything else denied.
         "obsidian_*": "deny",
@@ -411,10 +399,7 @@
         "kubernetes_*": "deny",
 
         // Draw.io MCP tools
-        "drawio_*": "deny",
-
-        // Git MCP tools
-        "git_*": "deny"
+        "drawio_*": "deny"
       },
       "prompt": "{file:./prompts/ticket.txt}"
     },
@@ -427,8 +412,8 @@
         // Built-in tools
         // Bash — mkdir for doc dirs, everything else denied.
         "bash": {
-          "mkdir*": "allow",
-          "*": "deny"
+          "*": "deny",
+          "mkdir*": "allow"
         },
         // No subagent chaining or skills
         "task": "deny",
@@ -439,12 +424,6 @@
 
         // Draw.io MCP tools
         "drawio_*": "allow",
-
-        // Filesystem MCP tools
-        // Filesystem — read + controlled writes
-        "filesystem_write_file": "ask",
-        "filesystem_edit_file": "ask",
-        "filesystem_create_directory": "allow",
 
         // Obsidian MCP tools
         // Obsidian — read + controlled writes
@@ -482,8 +461,7 @@
           "pytest*": "allow",
           "go test*": "allow",
           "make test*": "allow",
-          "mkdir*": "allow",
-          "*": "ask"
+          "mkdir*": "allow"
         },
         // No subagent chaining or skills
         "task": "deny",
@@ -494,12 +472,6 @@
         // PTY plugin tools
         "pty_*": "ask",
 
-        // Filesystem MCP tools
-        // Filesystem — read + controlled writes
-        "filesystem_write_file": "ask",
-        "filesystem_edit_file": "ask",
-        "filesystem_create_directory": "allow",
-
         // Kubernetes MCP tools
         // Rest denied
         "kubernetes_*": "deny",
@@ -508,10 +480,7 @@
         "obsidian_*": "deny",
 
         // Draw.io MCP tools
-        "drawio_*": "deny",
-
-        // Git MCP tools
-        "git_*": "deny"
+        "drawio_*": "deny"
       },
       "prompt": "{file:./prompts/test.txt}"
     }
@@ -570,16 +539,6 @@
     "octocode": {
       "type": "local",
       "command": ["npx", "--prefer-offline", "octocode-mcp"],
-      "enabled": true
-    },
-    "git": {
-      "type": "local",
-      "command": ["uvx", "mcp-server-git", "--repository", "."],
-      "enabled": true
-    },
-    "filesystem": {
-      "type": "local",
-      "command": ["npx", "-y", "@modelcontextprotocol/server-filesystem", "."],
       "enabled": true
     },
     "sequentialthinking": {
