@@ -99,6 +99,30 @@ upgrade() {
                 echo "  Superpowers: failed (run 'cd ~/.config/opencode/superpowers && git status')"
             fi
         fi
+        if [[ -d ~/.config/opencode/skills/avoid-ai-writing/.git ]]; then
+            local output=$(git -C ~/.config/opencode/skills/avoid-ai-writing pull --rebase 2>&1)
+            if [[ $? -eq 0 ]]; then
+                if [[ "$output" == *"Already up to date"* ]]; then
+                    echo "  avoid-ai-writing: already up to date"
+                else
+                    echo "  avoid-ai-writing: updated (restart OpenCode to load changes)"
+                fi
+            else
+                echo "  avoid-ai-writing: failed (run 'cd ~/.config/opencode/skills/avoid-ai-writing && git status')"
+            fi
+        fi
+        if [[ -d ~/.local/share/impeccable/.git ]]; then
+            local output=$(git -C ~/.local/share/impeccable pull --rebase 2>&1)
+            if [[ $? -eq 0 ]]; then
+                if [[ "$output" == *"Already up to date"* ]]; then
+                    echo "  impeccable: already up to date"
+                else
+                    echo "  impeccable: updated (restart OpenCode to load changes)"
+                fi
+            else
+                echo "  impeccable: failed (run 'cd ~/.local/share/impeccable && git status')"
+            fi
+        fi
         if [[ -f ~/.config/opencode/package.json ]] && command -v npm &>/dev/null; then
             local npm_output
             npm_output=$(npm update --prefix ~/.config/opencode 2>&1)
