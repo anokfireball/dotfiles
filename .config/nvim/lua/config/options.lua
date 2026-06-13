@@ -9,6 +9,11 @@ vim.g.loaded_python3_provider = 0
 
 vim.g.have_nerd_font = true
 vim.o.termguicolors = true
+-- Hardcode background to prevent nvim TUI from probing OSC 4 palette on
+-- FocusGained to detect theme changes. Avoids contributing to the tmux 3.6b
+-- colour response leak. Remove when upgrading to tmux 3.7+.
+vim.o.background = "dark"
+
 
 -- See `:help vim.o`
 vim.o.tabstop = 4

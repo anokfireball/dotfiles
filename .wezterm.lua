@@ -61,5 +61,6 @@ config.window_decorations = "RESIZE"
 config.scrollback_lines = 250 -- 4K @ 16 pixels per line = ~135 lines
 config.enable_scroll_bar = false
 config.swallow_mouse_click_on_window_focus = true
+config.term = "wezterm"
 
 return config
